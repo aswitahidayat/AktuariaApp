@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\DataMaster;
 
 use App\Http\Controllers\Controller;
-use App\UserType;
+use App\Models\UserType;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
@@ -31,16 +31,11 @@ class UserTypeController extends Controller
                 ->make(true);
         }
 
-        return view('datamaster.UserType.index');
+        return view('datamaster.usertype.index');
     }
 
     public function store(Request $request)
     {
-//        DB::table('groceries')
-//            ->updateOrInsert(
-//                ['id' => $request->id],
-//                ['name' => $request->name, 'type' => $request->type, 'price' => 1000]
-//            );
         if($request->usertype_id == ''){
             $data = new UserType();
             $data->usertype_name = $request->usertype_name;
@@ -49,9 +44,6 @@ class UserTypeController extends Controller
             $data->usertype_created_by = 1;
             $data->usertype_created_date = date(now());
             $data->save();
-//            DB::table('groceries')->insert(
-//                ['name' => $request->name, 'type' => $request->type]
-//            );
         }else{
             DB::table('kka_dab.mst_user_type')
                 ->where('usertype_id', $request->usertype_id)

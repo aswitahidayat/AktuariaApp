@@ -21,7 +21,7 @@
                  <small>
                      Data Master
                  </small>
-                 <i class="ace-icon fa fa-angle-double-right"></i>a
+                 <i class="ace-icon fa fa-angle-double-right"></i>
                  Setup User Type
              </h1>
         </div>
@@ -49,47 +49,7 @@
 </div>
 
 <!-- modal registration form -->
-<div class="modal fade" id="ajaxModel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title blue lighter bigger bolder" id="modelHeading"><i class="ace-icon fa fa-user cyan"></i> | New User Type</h4>
-            </div>
-            <div class="modal-body">
-                <form id="UsertypeForm" name="UsertypeForm" class="form-horizontal">
-                    <input type="hidden" name="usertype_id" id="usertype_id">
-                    <div class="form-group">
-                        <label for="usertype_name" class="col-form-label bolder">User Type Name :</label>
-                        <input type="text" class="form-control" id="usertype_name" name="usertype_name" placeholder="Enter Name" value="" maxlength="50" required="">
-                    </div>
-                    <div class="form-group">
-                        <label for="usertype_desc" class="col-form-label bolder">User Type Desc :</label>
-                        <textarea id="usertype_desc" name="usertype_desc" required="" placeholder="Enter Description" class="form-control"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label bolder">Status:</label>
-                        <div class="radio">
-                            <label>
-                                <input name="usertype_status" type="radio" class="ace" value="1" checked/>
-                                <span class="lbl"> Active</span>
-                            </label>
-                            <label>
-                                <input name="usertype_status" type="radio" class="ace" value="2" />
-                                <span class="lbl"> Inactive</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="saveBtn" value="create"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+@include('datamaster.usertype.form') 
 <!-- End modal registration form -->
 
 <script type="text/javascript">
@@ -137,7 +97,11 @@
                 $('#usertype_id').val(data.usertype_id);
                 $('#usertype_name').val(data.usertype_name);
                 $('#usertype_desc').val(data.usertype_desc);
-                $('#usertype_status').val(data.usertype_status);
+                if(data.usertype_status == 1){
+                    $("#usertype_status_active").prop("checked", true);
+                } else if(data.usertype_status != 1){
+                    $("#usertype_status_inactive").prop("checked", true);
+                }
             })
         });
         $('#saveBtn').click(function (e) {
@@ -152,6 +116,7 @@
                     $('#UsertypeForm').trigger("reset");
                     $('#ajaxModel').modal('hide');
                     table.draw();
+                    $('#saveBtn').html('Save Changes');
                 },
                 error: function (data) {
                     console.log('Error:', data);
