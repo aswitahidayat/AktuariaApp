@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\DataMaster;
 
 use App\Http\Controllers\Controller;
-use App\Identity;
+use App\Models\Identity;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
