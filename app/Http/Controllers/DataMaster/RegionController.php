@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\DataMaster;
 
 use App\Http\Controllers\Controller;
-use App\UserType;
+use App\Models\Province;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -27,8 +27,7 @@ class RegionController extends Controller
             return redirect()->to('/');
         }
 
-        $datas = UserType::paginate(10);
-
+        $datas = Province::paginate(10);
         return view('datamaster.region.index', compact('datas'));
     }
 
