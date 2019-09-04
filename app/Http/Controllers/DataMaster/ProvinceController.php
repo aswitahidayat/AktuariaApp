@@ -54,7 +54,7 @@ class ProvinceController extends Controller
             $data->prov_created_date = date(now());
             $data->save();
         }else{
-            DB::table('kka_dab.mst_Province')
+            DB::table('kka_dab.mst_province')
                 ->where('prov_id', $request->prov_id)
                 ->update(['prov_name' => $request->prov_name,
                     'prov_bps_code' => $request->prov_bps_code,

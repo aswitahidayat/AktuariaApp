@@ -53,7 +53,7 @@ $(function () {
         ajax: "{{ route('district.index') }}",
         columns: [
             {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
-            {name: 'dis_provid', data: 'dis_provid'},//
+            {name: 'prov_name', data: 'prov_name'},//
             {name: 'dis_name', data: 'dis_name'},//
             {name: 'dis_bps_code', data: 'dis_bps_code'},//
             {name: 'dis_status', data: 'dis_status'},//
@@ -77,12 +77,10 @@ $(function () {
                 $.each(data.data, (key, prov) => {
                     provHtml +=  `<option value="${prov.prov_id}" >${prov.prov_name}</option>`
                 });
-                debugger;
                 $(`#dis_provid`).html(provHtml);
             },
             error: function (data) {
                 console.log('Error:', data);
-                // $(`#saveBtn${module}`).html('Save Changes');
             }
         });
     });
@@ -91,18 +89,39 @@ $(function () {
         var id = $(this).data('id');
 
         $.get("{{ route('district.index') }}" +`/${id}/edit`, (data) => {
+            $(`#form${module}`).trigger("reset");
+            $(`#dis_provid`).html("");
             $('#modelHeading'+module).html(`Edit ${module}`);
             $(`#saveBtn${module}`).html("Edit");
-            $(`#modal${module}`).modal('show');
             $.each(data, (key,val) => {
                 $(`#${key}`).val(val);
             });
 
-            if(data.prov_status == 1){
-                $("#prov_status_active").prop("checked", true);
-            } else if(data.prov_status != 1){
-                $("#prov_status_inactive").prop("checked", true);
+            if(data.dis_status == 1){
+                $("#dis_status_active").prop("checked", true);
+            } else if(data.dis_status != 1){
+                $("#dis_status_inactive").prop("checked", true);
             }
+
+            $.ajax({
+                url: "{{ route('province.index') }}",
+                type: "GET",
+                dataType: 'json',
+                success: function (datas) {
+                    let provHtml = '';
+                    $.each(datas.data, (key, prov) => {
+                        provHtml +=  `<option value="${prov.prov_id}" >${prov.prov_name}</option>`
+                    });
+                    $(`#dis_provid`).html(provHtml);
+                    $("#dis_provid").val(data.dis_provid);
+
+                    $(`#modal${module}`).modal('show');
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    $(`#modal${module}`).modal('show');
+                }
+            });
         })
     });
 
@@ -132,7 +151,7 @@ $(function () {
         confirm("Are You sure want to delete !");
         $.ajax({
             type: "DELETE",
-            url: "{{ route('province.store') }}"+'/'+id,
+            url: "{{ route('district.store') }}"+'/'+id,
             success: function (data) {
                 table.draw();
             },
