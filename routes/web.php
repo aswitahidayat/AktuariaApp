@@ -26,8 +26,15 @@ Route::resource('identity','DataMaster\IdentityController');
 Route::get('/searchidentity','DataMaster\IdentityController@search');
 Route::resource('company','DataMaster\CompanyController');
 Route::get('/searchcompany','DataMaster\CompanyController@search');
+
 Route::resource('region','DataMaster\RegionController');
 Route::get('/searchregion','DataMaster\RegionController@search');
+
+Route::resource('province','DataMaster\ProvinceController');
+Route::resource('district','DataMaster\DistrictController');
+
+// Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
+
 Route::resource('service','DataMaster\ServiceController');
 Route::get('/searchservice','DataMaster\ServiceController@search');
 Route::resource('program','DataMaster\ProgramController');

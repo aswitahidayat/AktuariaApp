@@ -86,7 +86,7 @@
         </div>
     </div>
 </div>
-
+    
 @section('page-script')
 <script type="text/javascript">
     $('#search').on('keyup',function(){

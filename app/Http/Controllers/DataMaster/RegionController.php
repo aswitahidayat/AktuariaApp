@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Province;
 use Auth;
 use Illuminate\Http\Request;
+use DataTables;
+use DB;
 
 class RegionController extends Controller
 {
@@ -20,15 +22,28 @@ class RegionController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->level == 'user') {
             Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
             return redirect()->to('/');
         }
 
-        $datas = Province::paginate(10);
-        return view('datamaster.region.index', compact('datas'));
+        // if($request->ajax())
+        // {
+        //     $data = Province::get();
+        //     return Datatables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function($row){
+        //             $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->prov_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editUsertype">Edit</a>';
+        //             $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->prov_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteUsertype">Delete</a>';
+        //             return $btn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+
+        return view('datamaster.region.index');
     }
 
     public function search(Request $request)
