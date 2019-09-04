@@ -26,9 +26,9 @@
                     </h1>
                 </div>
                 <div align="right">
-        <span class="input-icon">
-            <a href="javascript:void(0)" id="createNewIdentity" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Identity</a>
-        </span>
+                    <span class="input-icon">
+                        <a href="javascript:void(0)" id="createNewIdentity" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Identity</a>
+                    </span>
                 </div>
                 <br>
                 <table class="table table-bordered data-table">
