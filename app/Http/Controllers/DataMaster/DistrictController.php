@@ -74,4 +74,30 @@ class DistrictController extends Controller
         District::find($dis_id)->delete();
         return response()->json(['success'=>'District Type deleted successfully.']);
     }
+
+    public function getdistrict(Request $request){
+        // var_dump($request);
+        // if(Auth::user()->level == 'user') {
+        //     Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
+        //     return redirect()->to('/');
+        // }
+        // if($request->ajax())
+        // {
+            // $data = District::get();
+            $cari = $request->cari;
+            $data = DB::table('kka_dab.mst_district')
+            ->where('dis_provid', $cari)
+            ->get();
+            
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editDistrict">Edit</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteDistrict">Delete</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        // }
+    }
 }

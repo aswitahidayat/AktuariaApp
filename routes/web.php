@@ -32,6 +32,9 @@ Route::get('/searchregion','DataMaster\RegionController@search');
 
 Route::resource('province','DataMaster\ProvinceController');
 Route::resource('district','DataMaster\DistrictController');
+Route::get('/getdistrict','DataMaster\DistrictController@getdistrict')->name("getdistrict");
+
+Route::resource('subdistrict','DataMaster\SubDistrictController');
 
 // Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
 
