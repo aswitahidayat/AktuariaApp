@@ -24,7 +24,7 @@
                                 <span class="lbl"> Active</span>
                             </label>
                             <label>
-                                <input name="prov_status" id="prov_status_active" type="radio" class="ace" value="1" />
+                                <input name="prov_status" id="prov_statu_inactive" type="radio" class="ace" value="2" />
                                 <span class="lbl"> Inactive</span>
                             </label>
                         </div>
