@@ -14,7 +14,7 @@
             <span class="input-icon">
                 <!-- <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
                 <i class="ace-icon fa fa-search nav-search-icon"></i> -->
-                <a href="#" data-toggle="modal" id="createDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add District</a>
+                <a href="#" id="createDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add District</a>
             </span>
 
     </div>
@@ -63,6 +63,7 @@ $(function () {
     });
 
     $(`#create${module}`).click(function () {
+        $("#dis_id").val('');
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
         $('#modelHeading'+module).html(`Create New  ${module}`);
@@ -83,6 +84,27 @@ $(function () {
                 console.log('Error:', data);
             }
         });
+    });
+
+    $('#dis_provid').select2({
+        placeholder: 'Cari...',
+        dropdownParent: $(`#modal${module}`),
+        ajax: {
+            url: "{{ route('province.index') }}",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results:  $.map(data.data, function (prov) {
+                        return {
+                        text: prov.prov_name,
+                        id: prov.prov_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -128,6 +150,8 @@ $(function () {
     $(`#saveBtn${module}`).click( function(e) {
         e.preventDefault();
         $(this).html('Sending..');
+        var data = $(`#form${module}`).serialize();
+        debugger;
         $.ajax({
             data: $(`#form${module}`).serialize(),
             url: "{{ route('district.store') }}",

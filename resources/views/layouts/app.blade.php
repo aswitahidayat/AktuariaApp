@@ -23,6 +23,11 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('assets/js/app.js')}}" ></script>
+
+    <!-- select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+    
     <!-- text fonts -->
     <link rel="stylesheet" href="{{asset('assets/css/fonts.googleapis.com.css')}}" />
 
@@ -308,6 +313,7 @@
 <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('assets/js/buttons.colVis.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.select.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <!-- ace scripts -->
 <script src="{{asset('assets/js/ace-elements.min.js')}}"></script>

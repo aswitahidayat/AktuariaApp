@@ -11,7 +11,7 @@
                 <input type="hidden" name="dis_id" id="dis_id">
                     <div class="form-group">
                         <label for="province-name" class="col-form-label bolder">Province Name:</label>
-                        <select class="chosen-select form-control" id="dis_provid" name="dis_provid" data-placeholder="Choose a State..."></select>
+                        <select class="form-control input-lg select2-single" style="width:500px;" id="dis_provid" name="dis_provid"></select>
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label bolder">District Name:</label>
@@ -43,4 +43,5 @@
         </div>
     </div>
 </div>
+
 <!-- END District MODAL -->
