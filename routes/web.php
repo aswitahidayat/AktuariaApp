@@ -24,8 +24,15 @@ Route::resource('usertype','DataMaster\UserTypeController');
 Route::get('/usersz','DataMaster\UserTypeController@indexuser')->name("usersz");
 Route::resource('identity','DataMaster\IdentityController');
 Route::get('/searchidentity','DataMaster\IdentityController@search');
+
 Route::resource('company','DataMaster\CompanyController');
 Route::get('/searchcompany','DataMaster\CompanyController@search');
+Route::get('company/detail/{id}','DataMaster\CompanyController@detail');
+
+Route::resource('detail','DataMaster\CompanyDetailController');
+Route::get('company/getdetail/{id}','DataMaster\CompanyDetailController@getDetail');
+
+// Route::resource('companydetail','DataMaster\CompanyDetailController');
 
 Route::resource('region','DataMaster\RegionController');
 Route::get('/searchregion','DataMaster\RegionController@search');
