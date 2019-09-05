@@ -61,7 +61,8 @@ class DistrictController extends Controller
         }else{
             DB::table('kka_dab.mst_district')
                 ->where('dis_id', $request->dis_id)
-                ->update(['dis_name' => $request->dis_name,
+                ->update(['dis_provid' => $request->dis_provid,
+                    'dis_name' => $request->dis_name,
                     'dis_bps_code' => $request->dis_bps_code,
                      'dis_status' => $request->dis_status,
                      'dis_updated_date' => date(now())]);
@@ -76,28 +77,19 @@ class DistrictController extends Controller
     }
 
     public function getdistrict(Request $request){
-        // var_dump($request);
-        // if(Auth::user()->level == 'user') {
-        //     Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-        //     return redirect()->to('/');
-        // }
-        // if($request->ajax())
-        // {
-            // $data = District::get();
-            $cari = $request->cari;
-            $data = DB::table('kka_dab.mst_district')
-            ->where('dis_provid', $cari)
-            ->get();
-            
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editDistrict">Edit</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteDistrict">Delete</a>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        // }
+        $cari = $request->cari;
+        $data = DB::table('kka_dab.mst_district')
+        ->where('dis_provid', $cari)
+        ->get();
+        
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editDistrict">Edit</a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteDistrict">Delete</a>';
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }
