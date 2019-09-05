@@ -71,10 +71,9 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {name: 'typeid_name', data: 'typeid_name'},//
                     {name: 'typeid_desc', data: 'typeid_desc'},//
-                    {name: 'typeid_status', data: 'typeid_status'},//
+                    {name: 'statusName', data: 'statusName'},//
                     {name: 'action', orderable: false, searchable: false,data: 'action'},
                 ]
-
             });
 
             //show modal

@@ -27,6 +27,10 @@ class UserTypeController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->usertype_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteUsertype">Delete</a>';
                     return $btn;
                 })
+                ->addColumn('statusName', function($row){
+                    $btn = $row->usertype_status == 1 ? "Active" : "Inactive" ;
+                    return $btn;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }

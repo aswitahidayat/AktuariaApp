@@ -31,7 +31,7 @@
         </span>
         </div>
         <br>
-        <table class="table table-bordered data-table">
+        <table id="tableUsertype" class="table table-striped table-bordered" style="width:100%">
             <thead>
             <tr>
                 <th width="23px">No</th>
@@ -62,7 +62,7 @@
 
         //show data
 
-        var table = $('.data-table').DataTable({
+        var table = $('#tableUsertype').DataTable({
             processing: true,
             serverSide: true,
             ordering: false,
@@ -71,7 +71,7 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {name: 'usertype_name', data: 'usertype_name'},//
                 {name: 'usertype_desc', data: 'usertype_desc'},//
-                {name: 'usertype_status', data: 'usertype_status'},//
+                {name: 'usertype_status', data: 'statusName'},//
                 {name: 'action', orderable: false, searchable: false,data: 'action'},
             ]
 
