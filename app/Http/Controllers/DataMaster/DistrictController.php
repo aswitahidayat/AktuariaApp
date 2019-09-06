@@ -41,9 +41,28 @@ class DistrictController extends Controller
         }
     }
 
-    public function edit($prov_id)
+    public function search(Request $request)
     {
-        $data = District::find($prov_id);
+        if ($request->ajax()) {
+            if($request->prov != ""){
+                $data = DB::table('kka_dab.mst_district')
+                            ->where('dis_provid', '=', "$request->prov")
+                            ->where('dis_name', 'LIKE', '%' . $request->q . "%")
+                            ->orderBy('dis_id')
+                            ->get();
+            } else{
+                $data = DB::table('kka_dab.mst_district')
+                            ->where('dis_name', 'LIKE', '%' . $request->q . "%")
+                            ->orderBy('dis_id')
+                            ->get();
+            }
+            return response()->json($data);
+        }
+    }
+
+    public function edit($dis_id)
+    {
+        $data = District::find($dis_id);
         return response()->json($data);
     }
 

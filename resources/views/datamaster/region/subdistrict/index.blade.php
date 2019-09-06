@@ -114,6 +114,11 @@ $(function () {
                 $("#subdis_status_inactive").prop("checked", true);
             }
 
+            $("#subdis_provid").val(data.dis_provid);
+            $("#subdis_disid").val(data.subdis_disid);
+            
+            $(`#modal${module}`).modal('show');
+
             $.ajax({
                 url: "{{ route('province.index') }}",
                 type: "GET",
@@ -141,15 +146,47 @@ $(function () {
         placeholder: 'Cari...',
         dropdownParent: $(`#modal${module}`),
         ajax: {
-            url: "{{ route('province.index') }}",
+            url: "{{ route('searchprovince') }}",
             dataType: 'json',
             delay: 250,
+            data: function (params, page){
+                return{
+                    q: params.term,
+                }
+            },
             processResults: function (data) {
                 return {
-                    results:  $.map(data.data, function (prov) {
+                    results:  $.map(data, function (prov) {
                         return {
                         text: prov.prov_name,
                         id: prov.prov_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#subdis_disid').select2({
+        placeholder: 'Cari...',
+        dropdownParent: $(`#modal${module}`),
+        ajax: {
+            url: "{{ route('searchdistrict') }}",
+            dataType: 'json',
+            delay: 250,
+            data: function (params, page){
+                return{
+                    q: params.term,
+                    prov: $(`#subdis_provid`).val(),
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results:  $.map(data, function (dis) {
+                        return {
+                        text: dis.dis_name,
+                        id: dis.dis_id
                         }
                     })
                 };

@@ -24,7 +24,7 @@ class ProvinceController extends Controller
 
         if($request->ajax())
         {
-            $data = Province::get();
+            $data = Province::orderBy('prov_id')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -34,6 +34,18 @@ class ProvinceController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = "";
+            $data = DB::table('kka_dab.mst_province')
+                        ->where('prov_name', 'LIKE', '%' . $request->q . "%")
+                        ->orderBy('prov_id')
+                        ->get();
+            return response()->json($data);
         }
     }
 

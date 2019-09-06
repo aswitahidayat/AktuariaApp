@@ -1,5 +1,5 @@
 <!-- BEGIN MODAL SUBDISTRICT -->
-<div class="modal fade" id="modalSubDistrict" tabindex="-1" role="dialog" aria-labelledby="AddSubDistrictModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalSubDistrict"  role="dialog" aria-labelledby="AddSubDistrictModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,7 @@
                     <input type="hidden" name="subdis_id" id="subdis_id">
                     <div class="form-group">
                         <label for="province-name" class="col-form-label bolder">Province Name:</label>
-                        <select class="chosen-select form-control" id="subdis_provid" name="subdis_provid" placeholder="Choose a Province...">
+                        <select class="chosen-select form-control" id="subdis_provid" name="subdis_provid" style="width:500px;" placeholder="Choose a Province...">
                             <!-- <option value="">  </option>
                             <option value="AL">Aceh</option>
                             <option value="AK">Sumatera Utara</option>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for="district-name" class="col-form-label bolder">District Name:</label>
-                        <select class="chosen-select form-control" id="subdis_disid" name="subdis_disid" placeholder="Choose a District...">
+                        <select class="chosen-select form-control" id="subdis_disid" name="subdis_disid" style="width:500px;" placeholder="Choose a District...">
                             <!-- <option value="">  </option>
                             <option value="AL">Banda Aceh</option>
                             <option value="AK">Sumatera Utara</option>

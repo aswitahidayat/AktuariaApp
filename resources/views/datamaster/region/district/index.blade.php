@@ -37,6 +37,7 @@
     </div>
 </div>
 
+
 <script>
 $(function () {
     var module = 'District';
@@ -90,12 +91,12 @@ $(function () {
         placeholder: 'Cari...',
         dropdownParent: $(`#modal${module}`),
         ajax: {
-            url: "{{ route('province.index') }}",
+            url: "{{ route('searchprovince') }}",
             dataType: 'json',
             delay: 250,
             processResults: function (data) {
                 return {
-                    results:  $.map(data.data, function (prov) {
+                    results:  $.map(data, function (prov) {
                         return {
                         text: prov.prov_name,
                         id: prov.prov_id
@@ -106,6 +107,7 @@ $(function () {
             cache: true
         }
     });
+    
 
     $('body').on('click', `.edit${module}`, function () {
         var id = $(this).data('id');

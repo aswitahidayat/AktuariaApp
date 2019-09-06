@@ -1,5 +1,5 @@
 <!-- BEGIN MODAL DISTRICT -->
-<div class="modal fade" id="modalDistrict" tabindex="-1" role="dialog" aria-labelledby="AddDistrictModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalDistrict" role="dialog" aria-labelledby="AddDistrictModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
