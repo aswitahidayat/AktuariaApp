@@ -68,6 +68,7 @@ $(function () {
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
+        $('#prov_id').val('');
         $('#modelHeading'+module).html(`Create New  ${module}`);
         $(`#modal${module}`).modal('show');
     });

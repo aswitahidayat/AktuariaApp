@@ -81,6 +81,7 @@
         $(`#create${module}`).click(function () {
             $(`#saveBtn${module}`).html("Save");
             $(`#form${module}`).trigger("reset");
+            $('#coytypehdr_id').val('');
             $('#modelHeading'+module).html(`Create New  ${module}`);
             $(`#modal${module}`).modal('show');
         });
@@ -120,6 +121,21 @@
                 error: function (data) {
                     console.log('Error:', data);
                     $(`#saveBtn${module}`).html('Save Changes');
+                }
+            });
+        });
+
+        $('body').on('click', `.delete${module}`, function () {
+            var id = $(this).data("id");
+            confirm("Are You sure want to delete !");
+            $.ajax({
+                type: "DELETE",
+                url: "{{ route('company.store') }}"+'/'+id,
+                success: function (data) {
+                    table.draw();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
                 }
             });
         });

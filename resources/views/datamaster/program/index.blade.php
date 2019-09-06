@@ -92,6 +92,7 @@
             $(`#create${module}`).click(function () {
                 $(`#saveBtn${module}`).html("Save");
                 $(`#form${module}`).trigger("reset");
+                $('#ordprg_id').val('');
                 $('#modelHeading'+module).html(`Create New  ${module}`);
                 $(`#modal${module}`).modal('show');
             });

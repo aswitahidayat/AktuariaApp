@@ -73,6 +73,7 @@ $(function () {
         $('#modelHeading'+module).html(`Create New  ${module}`);
         $(`#modal${module}`).modal('show');
         $(`#subdis_provid`).html("");
+        $('#subdis_id').val('');
         $.ajax({
             url: "{{ route('province.index') }}",
             type: "GET",
@@ -124,7 +125,6 @@ $(function () {
                     });
                     $(`#subdis_provid`).html(provHtml);
                     $("#subdis_provid").val(data.dis_provid);
-                    debugger;
 
                     $(`#modal${module}`).modal('show');
                     getDistrict(data.subdis_disid);
@@ -135,6 +135,27 @@ $(function () {
                 }
             });
         })
+    });
+
+    $('#subdis_provid').select2({
+        placeholder: 'Cari...',
+        dropdownParent: $(`#modal${module}`),
+        ajax: {
+            url: "{{ route('province.index') }}",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results:  $.map(data.data, function (prov) {
+                        return {
+                        text: prov.prov_name,
+                        id: prov.prov_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
     });
 
     $(`#saveBtn${module}`).click( function(e) {
@@ -176,7 +197,6 @@ $(function () {
     function getDistrict (val){
         $(`#subdis_disid`).html('');
         let varId = $(`#subdis_provid`).val();
-        debugger;
         $.ajax({
             url: `{{ route('getdistrict') }}?cari=${varId}`,
             type: "GET",
