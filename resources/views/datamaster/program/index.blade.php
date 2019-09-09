@@ -83,7 +83,7 @@
                     columns: [
                         {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                         {name: 'ordprg_name', data: 'ordprg_name'},//
-                        {name: 'ordprg_status', data: 'ordprg_status'},//
+                        {name: 'statusName', data: 'statusName'},//
                         {name: 'action', orderable: false, searchable: false,data: 'action'},
                     ]
 

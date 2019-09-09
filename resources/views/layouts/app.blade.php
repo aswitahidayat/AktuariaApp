@@ -25,6 +25,8 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{asset('assets/js/app.js')}}" ></script>
 
+    <link rel="stylesheet" href="{{asset('assets/css/app.css')}}" />
+
     <!-- select2 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
     
@@ -279,6 +281,8 @@
     </a>
 </div><!-- /.main-container -->
 <!-- basic scripts -->
+
+@include('layouts.form') 
 
 <!--[if !IE]> -->
 <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
