@@ -37,6 +37,10 @@ class SubDistrictController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
                     return $btn;
                 })
+                ->addColumn('statusName', function($row){
+                    $btn = $row->subdis_status == 1 ? "Active" : "Inactive" ;
+                    return $btn;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -80,5 +84,45 @@ class SubDistrictController extends Controller
     {
         SubDistrict::find($subdis_id)->delete();
         return response()->json(['success'=>'Sub District Type deleted successfully.']);
+    }
+
+    public function getsubdistrict(Request $request){
+        // $cari = $request->cari;
+        $query = DB::table('kka_dab.mst_sub_district')
+        // ->where('dis_provid', $cari)
+        ->leftJoin('kka_dab.mst_district', 'kka_dab.mst_sub_district.subdis_disid', '=', 'kka_dab.mst_district.dis_id')
+        ->leftJoin('kka_dab.mst_province', 'kka_dab.mst_district.dis_provid', '=', 'kka_dab.mst_province.prov_id');
+
+        if($request->provid != ''){
+            $query->where('kka_dab.mst_province.prov_id', $request->provid);
+        }
+
+        if($request->dis != ''){
+            $query->where('kka_dab.mst_district.dis_id', $request->dis);
+        }
+
+        if($request->name != ''){
+            $query->where('subdis_name', 'LIKE', "%$request->name%");
+        }
+
+        if($request->limit != ''){
+            $query->skip(0)->take(10);
+        }
+
+        $data =  $query->get();
+        
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editSubDistrict">Edit</a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
+                return $btn;
+            })
+            ->addColumn('statusName', function($row){
+                $btn = $row->dis_status == 1 ? "Active" : "Inactive" ;
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

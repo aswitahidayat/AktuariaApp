@@ -38,10 +38,16 @@ Route::resource('region','DataMaster\RegionController');
 Route::get('/searchregion','DataMaster\RegionController@search');
 
 Route::resource('province','DataMaster\ProvinceController');
+Route::post('searchprovince','DataMaster\ProvinceController@search')->name("searchprovince");
 Route::resource('district','DataMaster\DistrictController');
-Route::get('/getdistrict','DataMaster\DistrictController@getdistrict')->name("getdistrict");
-
+Route::post('/getdistrict','DataMaster\DistrictController@getdistrict')->name("getdistrict");
+Route::post('searchdistrict','DataMaster\DistrictController@search')->name("searchdistrict");
 Route::resource('subdistrict','DataMaster\SubDistrictController');
+Route::post('searchsubdistrict','DataMaster\SubDistrictController@getsubdistrict')->name("searchsubdistrict");
+Route::resource('village','DataMaster\VillageController');
+Route::post('searchvillage','DataMaster\VillageController@getvillage')->name("searchvillage");
+Route::resource('zip','DataMaster\ZipController');
+Route::post('searchzip','DataMaster\ZipController@getzip')->name("searchzip");
 
 // Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
 

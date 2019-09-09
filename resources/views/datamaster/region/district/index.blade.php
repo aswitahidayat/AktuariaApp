@@ -8,17 +8,40 @@
             Setup District
         </h1>
     </div>
+    <form id="formSearchDistrict" action="javascript:void(0);">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="province-name" class="col-sm-4 control-label no-padding-right">Province Name:</label>
+                    <div class="col-sm-8 pb-20">
+                        <select class="form-control input-lg select2-single" style="width:100%;" id="search_dis_provid" style="padding: 0px 12px;"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right">District Name:</label>
+                    <div class="col-sm-8 pb-20">
+                        <input type="text" class="form-control" id="search_dis_name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8 pb-20">
+                        <a href="#" id="createDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add District</a>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="ace-icon fa fa-search bigger-110"></i>Find</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="nav-search" id="nav-search">
+    </form>
+
+    <!-- <div class="nav-search" id="nav-search">
 
             <span class="input-icon">
-                <!-- <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
-                <i class="ace-icon fa fa-search nav-search-icon"></i> -->
-                <a href="#" id="createDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add District</a>
+                <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
+                <i class="ace-icon fa fa-search nav-search-icon"></i>
             </span>
 
-    </div>
-    <div class="row" style="margin-top: 34px;">&nbsp;</div>
+    </div> -->
     <div class="row">
         <table id="tableDistrict" class="table table-striped table-bordered table-hover" style="width:100%">
             <thead>
@@ -41,26 +64,46 @@
 <script>
 $(function () {
     var module = 'District';
+    var table = {};
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    var table = $(`#table${module}`).DataTable({
-        processing: true,
-        serverSide: true,
-        ordering: true,
-        ajax: "{{ route('district.index') }}",
-        columns: [
-            {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
-            {name: 'prov_name', data: 'prov_name'},//
-            {name: 'dis_name', data: 'dis_name'},//
-            {name: 'dis_bps_code', data: 'dis_bps_code'},//
-            {name: 'dis_status', data: 'dis_status'},//
-            {name: 'action', orderable: false, searchable: false, data: 'action'},
-        ]
+    function fill_datatable(provid = '', name = '') {
+        table = $(`#table${module}`).DataTable({
+            bLengthChange: true,
+            info: false,
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            searching: false,
+            ajax: {
+                url: "{{ route('getdistrict') }}",
+                type: "POST",
+                data: {
+                    provid: provid,
+                    name: name
+                }
+            }, 
+            columns: [
+                {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
+                {name: 'prov_name', data: 'prov_name'},//
+                {name: 'dis_name', data: 'dis_name'},//
+                {name: 'dis_bps_code', data: 'dis_bps_code'},//
+                {name: 'statusName', data: 'statusName'},//
+                {name: 'action', orderable: false, searchable: false, data: 'action'},
+            ]
+    
+        });
+    }
 
+    fill_datatable();
+    
+    $( "#formSearchDistrict" ).submit(function() {
+        $(`#table${module}`).DataTable().destroy();
+        fill_datatable($("#search_dis_provid").val(), $("#search_dis_name").val());
     });
 
     $(`#create${module}`).click(function () {
@@ -93,10 +136,43 @@ $(function () {
         ajax: {
             url: "{{ route('searchprovince') }}",
             dataType: 'json',
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    name: params.term,
+                }
+            },
+            delay: 250,
+            processResults: function (data) {
+                    
+                return {
+                    results:  $.map(data.data, function (prov) {
+                        return {
+                        text: prov.prov_name,
+                        id: prov.prov_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#search_dis_provid').select2({
+        placeholder: 'Cari...',
+        ajax: {
+            url: "{{ route('searchprovince') }}",
+            dataType: 'json',
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    name: params.term,
+                }
+            },
             delay: 250,
             processResults: function (data) {
                 return {
-                    results:  $.map(data, function (prov) {
+                    results:  $.map(data.data, function (prov) {
                         return {
                         text: prov.prov_name,
                         id: prov.prov_id

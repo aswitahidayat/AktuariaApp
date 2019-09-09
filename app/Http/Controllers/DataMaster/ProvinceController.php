@@ -32,6 +32,10 @@ class ProvinceController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->prov_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteProvince">Delete</a>';
                     return $btn;
                 })
+                ->addColumn('statusName', function($row){
+                    $btn = $row->prov_status == 1 ? "Active" : "Inactive" ;
+                    return $btn;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -41,11 +45,28 @@ class ProvinceController extends Controller
     {
         if ($request->ajax()) {
             $output = "";
-            $data = DB::table('kka_dab.mst_province')
-                        ->where('prov_name', 'LIKE', '%' . $request->q . "%")
-                        ->orderBy('prov_id')
-                        ->get();
-            return response()->json($data);
+
+            $query = DB::table('kka_dab.mst_province');
+
+            if($request->name != ''){
+                $query->where('prov_name', 'LIKE', "%$request->name%");
+            }
+
+            $data =  $query->orderBy('prov_id')->get();
+
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->prov_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editProvince">Edit</a>';
+                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->prov_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteProvince">Delete</a>';
+                        return $btn;
+                    })
+                    ->addColumn('statusName', function($row){
+                        $btn = $row->prov_status == 1 ? "Active" : "Inactive" ;
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
         }
     }
 

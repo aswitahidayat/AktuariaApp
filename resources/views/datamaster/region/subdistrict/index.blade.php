@@ -9,12 +9,48 @@
         </h1>
     </div>
 
+    <form id="formSearchSubDistrict" action="javascript:void(0);">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="province-name" class="col-sm-4 control-label no-padding-right">Province Name:</label>
+                    <div class="col-sm-8 pb-20">
+                        <select class="form-control input-lg select2-single" style="width:100%;" id="search_subdis_provid"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="province-name" class="col-sm-4 control-label no-padding-right">District Name:</label>
+                    <div class="col-sm-8 pb-20">
+                        <select class="form-control input-lg select2-single" style="width:100%;" id="search_subdis_dis"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8 ">
+                        <a href="#" id="createSubDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Sub District</a>
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="ace-icon fa fa-search bigger-110"></i>Find</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label no-padding-right">Sub District Name:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="search_subdis_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+
+    </form>
+
     <div class="nav-search" id="nav-search">
 
             <span class="input-icon">
                 <!-- <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
                 <i class="ace-icon fa fa-search nav-search-icon"></i> -->
-                <a href="#" id="createSubDistrict" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Sub District</a>
             </span>
 
     </div>
@@ -44,28 +80,49 @@
 <script>
 $(function () {
     var module = 'SubDistrict';
+    var table = {};
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    var table = $(`#table${module}`).DataTable({
-        processing: true,
-        serverSide: true,
-        ordering: true,
-        ajax: "{{ route('subdistrict.index') }}",
-        columns: [
-            {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
-            {name: 'prov_name', data: 'prov_name'},//
-            {name: 'dis_name', data: 'dis_name'},//            
-            {name: 'subdis_name', data: 'subdis_name'},//
-            {name: 'subdis_bps_code', data: 'subdis_bps_code'},//
-            {name: 'subdis_status', data: 'subdis_status'},//
-            {name: 'action', orderable: false, searchable: false, data: 'action'},
-        ]
+    function fill_datatableSubDis(provid = '', dis='', name = '') {
+        table = $(`#table${module}`).DataTable({
+            processing: true,
+            serverSide: true,
+            ordering: true,
+            searching: false,
+            ajax: {
+                url: "{{ route('searchsubdistrict') }}",
+                type: "POST",
+                data: {
+                    provid: provid,
+                    dis: dis,
+                    name: name,
+                }
+            },
+            
+            columns: [
+                {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
+                {name: 'prov_name', data: 'prov_name'},//
+                {name: 'dis_name', data: 'dis_name'},//            
+                {name: 'subdis_name', data: 'subdis_name'},//
+                {name: 'subdis_bps_code', data: 'subdis_bps_code'},//
+                {name: 'statusName', data: 'statusName'},//
+                {name: 'action', orderable: false, searchable: false, data: 'action'},
+            ]
+    
+        });
+    }
 
+    fill_datatableSubDis();
+    
+    $( "#formSearchSubDistrict" ).submit(function() {
+        $(`#table${module}`).DataTable().destroy();
+        fill_datatableSubDis($("#search_subdis_provid").val(), $('#search_subdis_dis').val(),$("#search_subdis_name").val());
     });
+
 
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
@@ -149,14 +206,15 @@ $(function () {
             url: "{{ route('searchprovince') }}",
             dataType: 'json',
             delay: 250,
+            type: 'POST',
             data: function (params, page){
                 return{
-                    q: params.term,
+                    name: params.term,
                 }
             },
             processResults: function (data) {
                 return {
-                    results:  $.map(data, function (prov) {
+                    results:  $.map(data.data, function (prov) {
                         return {
                         text: prov.prov_name,
                         id: prov.prov_id
@@ -175,10 +233,64 @@ $(function () {
             url: "{{ route('searchdistrict') }}",
             dataType: 'json',
             delay: 250,
+            type: 'POST',
             data: function (params, page){
                 return{
                     q: params.term,
                     prov: $(`#subdis_provid`).val(),
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results:  $.map(data, function (dis) {
+                        return {
+                        text: dis.dis_name,
+                        id: dis.dis_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#search_subdis_provid').select2({
+        placeholder: 'Cari...',
+        ajax: {
+            url: "{{ route('searchprovince') }}",
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    name: params.term,
+                }
+            },
+            processResults: function (data) {
+                return {
+                    results:  $.map(data.data, function (prov) {
+                        return {
+                        text: prov.prov_name,
+                        id: prov.prov_id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#search_subdis_dis').select2({
+        placeholder: 'Cari...',
+        ajax: {
+            url: "{{ route('searchdistrict') }}",
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    q: params.term,
+                    prov: $(`#search_subdis_provid`).val(),
                 }
             },
             processResults: function (data) {
@@ -235,8 +347,11 @@ $(function () {
         $(`#subdis_disid`).html('');
         let varId = $(`#subdis_provid`).val();
         $.ajax({
-            url: `{{ route('getdistrict') }}?cari=${varId}`,
-            type: "GET",
+            url: `{{ route('getdistrict') }}`,
+            type: "POST",
+            data: {
+                provid: `${varId}`
+            },
             dataType: 'json',
             success: function (data) {
                 let disHtml = '';

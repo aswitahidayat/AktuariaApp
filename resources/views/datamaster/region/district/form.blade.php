@@ -11,7 +11,9 @@
                 <input type="hidden" name="dis_id" id="dis_id">
                     <div class="form-group">
                         <label for="province-name" class="col-form-label bolder">Province Name:</label>
-                        <select class="form-control input-lg select2-single" style="width:500px;" id="dis_provid" name="dis_provid"></select>
+                        <div class="col-sm-12 p0 pb-20">
+                            <select class="form-control input-lg select2-single" style="width:100%;" id="dis_provid" name="dis_provid" style="padding-bottom: 20px;"></select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label bolder">District Name:</label>

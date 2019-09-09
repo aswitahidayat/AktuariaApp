@@ -44,18 +44,12 @@ class DistrictController extends Controller
     public function search(Request $request)
     {
         if ($request->ajax()) {
+            $query =District::where('dis_name', 'LIKE', '%' . $request->q . "%");
+
             if($request->prov != ""){
-                $data = DB::table('kka_dab.mst_district')
-                            ->where('dis_provid', '=', "$request->prov")
-                            ->where('dis_name', 'LIKE', '%' . $request->q . "%")
-                            ->orderBy('dis_id')
-                            ->get();
-            } else{
-                $data = DB::table('kka_dab.mst_district')
-                            ->where('dis_name', 'LIKE', '%' . $request->q . "%")
-                            ->orderBy('dis_id')
-                            ->get();
+                $query->where('dis_provid', '=', "$request->prov");
             }
+            $data = $query->orderBy('dis_id')->get();
             return response()->json($data);
         }
     }
@@ -96,16 +90,27 @@ class DistrictController extends Controller
     }
 
     public function getdistrict(Request $request){
-        $cari = $request->cari;
-        $data = DB::table('kka_dab.mst_district')
-        ->where('dis_provid', $cari)
-        ->get();
+        $query = DB::table('kka_dab.mst_district')
+                ->leftJoin('kka_dab.mst_province', 'kka_dab.mst_district.dis_provid', '=', 'kka_dab.mst_province.prov_id');
+        if($request->provid != ''){
+            $query->where('dis_provid', $request->provid);
+        }
+
+        if($request->name != ''){
+            $query->where('dis_name', 'LIKE', "%$request->name%");
+        }
+
+        $data =  $query->get();
         
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editDistrict">Edit</a>';
                 $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->dis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteDistrict">Delete</a>';
+                return $btn;
+            })
+            ->addColumn('statusName', function($row){
+                $btn = $row->dis_status == 1 ? "Active" : "Inactive" ;
                 return $btn;
             })
             ->rawColumns(['action'])
