@@ -41,6 +41,10 @@ class ProgramController extends Controller
                     $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordprg_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteOrderProgram">Delete</a>';
                     return $btn;
                 })
+                ->addColumn('statusName', function($row){
+                    $btn = $row->ordprg_status == 1 ? "Active" : "Inactive" ;
+                    return $btn;
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
