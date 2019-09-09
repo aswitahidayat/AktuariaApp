@@ -101,7 +101,7 @@ $(function () {
 
     fill_datatable();
     
-    $( "#formSearchDistrict" ).submit(function() {
+    $( `#formSearch${module}` ).submit(function() {
         $(`#table${module}`).DataTable().destroy();
         fill_datatable($("#search_dis_provid").val(), $("#search_dis_name").val());
     });

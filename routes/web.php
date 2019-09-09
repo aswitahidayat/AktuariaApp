@@ -49,10 +49,11 @@ Route::post('searchvillage','DataMaster\VillageController@getvillage')->name("se
 Route::resource('zip','DataMaster\ZipController');
 Route::post('searchzip','DataMaster\ZipController@getzip')->name("searchzip");
 
+
 // Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
 
-Route::resource('service','DataMaster\ServiceController');
-Route::get('/searchservice','DataMaster\ServiceController@search');
+Route::resource('service','DataMaster\OrderServiceController');
+Route::post('/searchservice','DataMaster\OrderServiceController@search')->name("searchservice");
 Route::resource('program','DataMaster\ProgramController');
 Route::get('/searchprogram','DataMaster\ProgramController@search');
 Route::resource('agent','Transaction\AgentController');
