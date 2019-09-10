@@ -21,9 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //*User Type Route
 Route::resource('usertype','DataMaster\UserTypeController');
-Route::get('/usersz','DataMaster\UserTypeController@indexuser')->name("usersz");
+Route::post('/searchusertype','DataMaster\UserTypeController@search')->name("searchusertype");
 Route::resource('identity','DataMaster\IdentityController');
-Route::get('/searchidentity','DataMaster\IdentityController@search');
+Route::post('/searchidentity','DataMaster\IdentityController@search')->name("searchidentity");
 
 Route::resource('company','DataMaster\CompanyController');
 Route::get('/searchcompany','DataMaster\CompanyController@search');

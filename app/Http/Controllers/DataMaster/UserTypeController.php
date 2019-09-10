@@ -17,25 +17,37 @@ class UserTypeController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
-            $data = UserType::get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->usertype_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editUsertype">Edit</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->usertype_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteUsertype">Delete</a>';
-                    return $btn;
-                })
-                ->addColumn('statusName', function($row){
-                    $btn = $row->usertype_status == 1 ? "Active" : "Inactive" ;
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+        if(Auth::user()->level == 'user') {
+            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
+            return redirect()->to('/');
         }
 
-        return view('datamaster.usertype.index');
+        return view('datamaster.usertype.usertypeindex');
+    }
+
+    public function search(Request $request)
+    {
+        $query = UserType::query();
+
+        if($request->name != ''){
+            $query->where('usertype_name', 'LIKE',  "%$request->name%");
+        }
+        $data = $query->orderBy('usertype_id')->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->usertype_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editUsertype">Edit</a>';
+                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->usertype_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteUsertype">Delete</a>';
+                return $btn;
+            })
+            ->addColumn('statusName', function($row){
+                $btn = $row->usertype_status == 1 ? "Active" : "Inactive" ;
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
     }
 
     public function store(Request $request)
@@ -45,7 +57,7 @@ class UserTypeController extends Controller
             $data->usertype_name = $request->usertype_name;
             $data->usertype_desc = $request->usertype_desc;
             $data->usertype_status = $request->usertype_status;
-            $data->usertype_created_by = 1;
+            $data->usertype_created_by = Auth::id();
             $data->usertype_created_date = date(now());
             $data->save();
         }else{

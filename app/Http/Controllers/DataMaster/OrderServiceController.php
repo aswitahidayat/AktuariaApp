@@ -29,38 +29,12 @@ class OrderServiceController extends Controller
             return redirect()->to('/');
         }
 
-        // $datas = UserType::paginate(10);
-
-        if($request->ajax())
-        {
-            $query = OrderService;
-
-            if($request->name != ''){
-                $query->where('kka_dab.mst_province.prov_id', $request->name);
-            }
-            $data = $query->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordsrvhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrderService">Edit</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordsrvhdr_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteOrderService">Delete</a>';
-                    return $btn;
-                })
-                ->addColumn('statusName', function($row){
-                    $btn = $row->ordsrvhdr_status == 1 ? "Active" : "Inactive" ;
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
         return view('datamaster.service.index', compact('datas'));
     }
 
     public function search(Request $request)
     {
-        $query = DB::table('kka_dab.mst_order_service_hdr');
-
+        $query = OrderService::query();
         if($request->name != ''){
             $query->where('ordsrvhdr_name', 'LIKE',  "%$request->name%");
         }
@@ -99,8 +73,8 @@ class OrderServiceController extends Controller
             $data->ordsrvhdr_created_date = date(now());
             $data->save();
         }else{
-            DB::table('kka_dab.mst_order_service_hdr')
-                ->where('ordsrvhdr_id', $request->ordsrvhdr_id)
+            OrderService::
+                where('ordsrvhdr_id', $request->ordsrvhdr_id)
                 ->update(['ordsrvhdr_name' => $request->ordsrvhdr_name,
                     'ordsrvhdr_desc' => $request->ordsrvhdr_desc,
                     'ordsrvhdr_price' => $request->ordsrvhdr_price,

@@ -17,9 +17,18 @@ class IdentityController extends Controller
 
     public function index(Request $request)
     {
+        return view('datamaster.identity.identityindex');
+    }
+
+    public function search (Request $request){
         if($request->ajax())
         {
-            $data = Identity::get();
+            $query = Identity::query();
+            if($request->name != ''){
+                $query->where('typeid_name', 'LIKE',  "%$request->name%");
+            }
+            $data = $query->get();
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -33,9 +42,7 @@ class IdentityController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        }
-
-        return view('datamaster.identity.index');
+        }   
     }
 
     public function store(Request $request)
@@ -49,8 +56,8 @@ class IdentityController extends Controller
             $data->typeid_created_date = date(now());
             $data->save();
         }else{
-            DB::table('kka_dab.mst_type_identity')
-                ->where('typeid_id', $request->typeid_id)
+            Identity::
+                where('typeid_id', $request->typeid_id)
                 ->update(['typeid_name' => $request->typeid_name,
                     'typeid_desc' => $request->typeid_desc,
                     'typeid_status' => $request->typeid_status]);
