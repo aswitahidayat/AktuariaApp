@@ -21,7 +21,7 @@
                         <label for="message-text" class="col-form-label bolder">Status:</label>
                         <div class="radio" id="usertype_status">
                             <label>
-                                <input name="usertype_status" id="usertype_status_active" type="radio" class="ace" value="1" checked/>
+                                <input name="usertype_status" id="usertype_status_active" type="radio" class="ace" value="1" />
                                 <span class="lbl"> Active</span>
                             </label>
                             <label>

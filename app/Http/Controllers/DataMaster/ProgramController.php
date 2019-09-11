@@ -52,24 +52,6 @@ class ProgramController extends Controller
         return view('datamaster.program.index', compact('datas'));
     }
 
-    // public function search(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $output = "";
-    //         $usertypes = DB::table('dm_usertype')->where('usertype_nm', 'LIKE', '%' . $request->search . "%")->get();
-    //         if ($usertypes) {
-    //             foreach ($usertypes as $key => $usertype) {
-    //                 $output .= '<tr>' .
-    //                     '<th>' . $usertype->usertype_nm . '</th>' .
-    //                     '<th>' . $usertype->usertype_status . '</th>' .
-    //                     '<th> test </th>' .
-    //                     '</tr>';
-    //             }
-    //             return Response($output);
-    //         }
-    //     }
-    // }
-
     public function edit($ordprg_id)
     {
         $program = OrderProgram::find($ordprg_id);

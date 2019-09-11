@@ -10,17 +10,17 @@
                         <input type="hidden" name="typeid_id" id="typeid_id">
                         <div class="form-group">
                             <label for="typeid_name" class="col-form-label bolder">Identity Name :</label>
-                            <input type="text" class="form-control" id="typeid_name" name="typeid_name" placeholder="Enter Name" value="" maxlength="50" required>
+                            <input type="text" class="form-control" id="typeid_name" name="typeid_name" placeholder="Enter Identity Name" value="" maxlength="50" required>
                         </div>
                         <div class="form-group">
                             <label for="identity_desc" class="col-form-label bolder">Identity Desc :</label>
-                            <textarea id="typeid_desc" name="typeid_desc" placeholder="Enter Description" class="form-control"></textarea>
+                            <textarea id="typeid_desc" name="typeid_desc" placeholder="Enter Identity Description" class="form-control"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="col-form-label bolder">Status:</label>
                             <div class="radio">
                                 <label>
-                                    <input name="typeid_status" id="typeid_status_active" type="radio" class="ace" value="1" checked/>
+                                    <input name="typeid_status" id="typeid_status_active" type="radio" class="ace" value="1" />
                                     <span class="lbl"> Active</span>
                                 </label>
                                 <label>
