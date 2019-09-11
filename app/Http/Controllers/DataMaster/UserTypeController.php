@@ -17,9 +17,8 @@ class UserTypeController extends Controller
 
     public function index(Request $request)
     {
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
+        if(Auth::user()->user_type == '3') {
+            abort(404);
         }
 
         return view('datamaster.usertype.usertypeindex');
