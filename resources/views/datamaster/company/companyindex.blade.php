@@ -64,7 +64,7 @@
 </div>
 
 <!-- modal registration form -->
-@include('datamaster.company.form') 
+@include('datamaster.company.companyForm') 
 <!-- End modal registration form -->
 
 @include('datamaster.company.companyscript') 

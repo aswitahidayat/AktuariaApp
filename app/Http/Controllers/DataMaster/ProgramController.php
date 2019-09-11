@@ -29,8 +29,6 @@ class ProgramController extends Controller
             return redirect()->to('/');
         }
 
-        // $datas = UserType::paginate(10);
-
         if($request->ajax())
         {
             $data = OrderProgram::get();

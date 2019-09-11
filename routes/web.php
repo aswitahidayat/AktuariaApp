@@ -32,7 +32,7 @@ Route::post('/searchcompany','DataMaster\CompanyController@search')->name("searc
 Route::resource('detail','DataMaster\CompanyDetailController');
 Route::get('company/detail/{id}','DataMaster\CompanyDetailController@detail');
 Route::post('company/getdetail','DataMaster\CompanyDetailController@getDetail');
-
+Route::get('getTemplate', 'DataMaster\CompanyController@getTemplate')->name("getTemplate");
 // Route::resource('companydetail','DataMaster\CompanyDetailController');
 
 Route::resource('region','DataMaster\RegionController');

@@ -71,13 +71,9 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         if($request->coytypehdr_id == ''){
-            $data = new Company();
-            $data->coytypehdr_name = $request->coytypehdr_name;
-            $data->coytypehdr_desc = $request->coytypehdr_desc;
-            $data->coytypehdr_status = $request->coytypehdr_status;
-            $data->coytypehdr_created_by = 1;
-            $data->coytypehdr_created_date = date(now());
-            $data->save();
+            
+
+            $this->companyTransaction($request);
         }else{
             Company::where('coytypehdr_id', $request->coytypehdr_id)
                 ->update(['coytypehdr_name' => $request->coytypehdr_name,
@@ -92,5 +88,51 @@ class CompanyController extends Controller
     {
         Company::find($coytypehdr_id)->delete();
         return response()->json(['success'=>'Company Type deleted successfully.']);
+    }
+
+    public function getTemplate(){
+        
+        $data = DB::table('kka_dab.mst_assumption_template')->get();
+        return response()->json($data);
+    }
+
+    function companyTransaction(Request $request){
+        // try{
+        //     DB::beginTransaction();
+
+
+        // insertGetId
+        // var_dump($request->header);
+        $q = Company::create([
+            'coytypehdr_name' => $request->header['coytypehdr_name'],
+            'coytypehdr_desc' => $request->header['coytypehdr_desc'],
+            'coytypehdr_status' => 1,
+            'coytypehdr_created_by' => 1,
+            'coytypehdr_created_date' => date(now())
+        ]);
+        
+        $dataDtl = [];
+        // var_dump($request->detail);
+        foreach ($request->detail as $key =>$value) {
+            $dataTmp = [];
+            $dataTmp['coytypedtl_hdrid'] = $q->coytypehdr_id; 
+            $dataTmp['coytypedtl_assumpt_sp'] = $value['coytypedtl_assumpt_sp'];
+            $dataTmp['coytypedtl_assumpt_code'] = $value['coytypedtl_assumpt_code'];
+            $dataTmp['coytypedtl_assumpt_value'] = $value['data']['value'];
+            $dataTmp['coytypedtl_status'] = 1;
+            $dataTmp['coytypedtl_created_by'] = 1; 
+            $dataTmp['coytypedtl_created_date'] = date(now());
+
+            $dataDtl[] = $dataTmp;
+        }
+
+        $varRetrun = CompanyDetail::insert($dataDtl);
+        return response()->json(['success'=>'Company Type saved successfully.']);
+
+        // DB::commit();
+        
+        // }catch(\Exception $e){
+        //     DB::rollback();
+        // }
     }
 }
