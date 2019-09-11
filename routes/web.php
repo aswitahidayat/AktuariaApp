@@ -22,15 +22,16 @@ Route::get('/home', 'HomeController@index')->name('home');
 //*User Type Route
 Route::resource('usertype','DataMaster\UserTypeController');
 Route::post('/searchusertype','DataMaster\UserTypeController@search')->name("searchusertype");
+
 Route::resource('identity','DataMaster\IdentityController');
-Route::post('/searchidentity','DataMaster\IdentityController@search')->name("searchidentity");
+Route::post('searchidentity','DataMaster\IdentityController@search')->name("searchidentity");
 
 Route::resource('company','DataMaster\CompanyController');
-Route::get('/searchcompany','DataMaster\CompanyController@search');
-Route::get('company/detail/{id}','DataMaster\CompanyController@detail');
+Route::post('/searchcompany','DataMaster\CompanyController@search')->name("searchcompany");
 
 Route::resource('detail','DataMaster\CompanyDetailController');
-Route::get('company/getdetail/{id}','DataMaster\CompanyDetailController@getDetail');
+Route::get('company/detail/{id}','DataMaster\CompanyDetailController@detail');
+Route::post('company/getdetail','DataMaster\CompanyDetailController@getDetail');
 
 // Route::resource('companydetail','DataMaster\CompanyDetailController');
 

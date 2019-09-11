@@ -28,10 +28,29 @@ class CompanyDetailController extends Controller
     {
 
     }
-    
-    public function getDetail($id)
+
+    public function detail($id) 
     {
-        $data = CompanyDetail::where('coytypedtl_hdrid', $id)->get();
+        if(Auth::user()->level == 'user') {
+            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
+            return redirect()->to('/');
+        }
+
+        $company = Company::where('coytypehdr_id', $id)->count();
+        if($company > 0){
+            return view('datamaster.company.detailindex',  ['id' => $id]);
+        } else {
+            return redirect()->to('/company');
+        }
+    }
+    
+    public function getdetail(Request $request){
+        $query = CompanyDetail::query();
+        if($request->name != ''){
+            $query->where('coytypehdr_name', 'LIKE',  "%$request->name%");
+        }
+        $data = $query->where('coytypedtl_hdrid', $request->company)->get();
+
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function($row){
@@ -60,12 +79,13 @@ class CompanyDetailController extends Controller
             $data = new CompanyDetail();
             $data->coytypedtl_hdrid = $request->coytypedtl_hdrid;
             $data->coytypedtl_assumpt_value = $request->coytypedtl_assumpt_value;
+            $data->coytypedtl_status = $request->coytypedtl_status;
             $data->coytypedtl_created_by = 1;
             $data->coytypedtl_created_date = date(now());
             $data->save();
         }else{
-            DB::table('kka_dab.mst_coytype_dtl')
-                ->where('coytypedtl_id', $request->coytypedtl_id )->where('coytypedtl_hdrid', $request->coytypedtl_hdrid) 
+            CompanyDetail::
+                where('coytypedtl_id', $request->coytypedtl_id )->where('coytypedtl_hdrid', $request->coytypedtl_hdrid) 
                 ->update([
                     'coytypedtl_assumpt_value' => $request->coytypedtl_assumpt_value,
                      'coytypedtl_status' => $request->coytypedtl_status,
@@ -78,15 +98,5 @@ class CompanyDetailController extends Controller
     {
         CompanyDetail::find($coytypedtl_id)->delete();
         return response()->json(['success'=>'Company Type deleted successfully.']);
-    }
-
-    public function detail($id)
-    {
-        $company = Company::where('coytypedtl_id', $id)->count();
-        if($company > 0){
-            return view('datamaster.company.detail');
-        } else {
-            return redirect()->to('/company');
-        }
     }
 }

@@ -17,14 +17,14 @@
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Company Type </label>
 
                                 <div class="col-sm-9">
-                                    <input type="text" id="coytypehdr_name" name="coytypehdr_name" placeholder="Username" class="col-xs-10 col-sm-5" />
+                                    <input type="text" class="form-control" id="coytypehdr_name" name="coytypehdr_name" placeholder="Enter Company Name" class="col-xs-10 col-sm-5" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
 
                                 <div class="col-sm-9">
-                                    <textarea id="coytypehdr_desc" name="coytypehdr_desc" class="form-control" id="form-field-8" placeholder="Default Text"></textarea>
+                                    <textarea id="coytypehdr_desc" name="coytypehdr_desc" class="form-control" id="form-field-8" placeholder="Enter Company Description"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">

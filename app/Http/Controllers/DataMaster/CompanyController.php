@@ -31,10 +31,20 @@ class CompanyController extends Controller
             return redirect()->to('/');
         }
 
+        return view('datamaster.company.companyindex');
+    }
+
+    public function search(Request $request){
         if($request->ajax())
         {
             $url = route('company.index');
-            $data = Company::get();
+
+            $query = Company::query();
+            if($request->name != ''){
+                $query->where('coytypehdr_name', 'LIKE',  "%$request->name%");
+            }
+            $data = $query->get();
+            
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -50,8 +60,6 @@ class CompanyController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-        return view('datamaster.company.index');
     }
 
     public function edit($coytypehdr_id)
@@ -71,8 +79,7 @@ class CompanyController extends Controller
             $data->coytypehdr_created_date = date(now());
             $data->save();
         }else{
-            DB::table('kka_dab.mst_coytype_hdr')
-                ->where('coytypehdr_id', $request->coytypehdr_id)
+            Company::where('coytypehdr_id', $request->coytypehdr_id)
                 ->update(['coytypehdr_name' => $request->coytypehdr_name,
                     'coytypehdr_desc' => $request->coytypehdr_desc,
                      'coytypehdr_status' => $request->coytypehdr_status,
@@ -85,33 +92,5 @@ class CompanyController extends Controller
     {
         Company::find($coytypehdr_id)->delete();
         return response()->json(['success'=>'Company Type deleted successfully.']);
-    }
-
-    public function detail($id) 
-    {
-        $company = Company::where('coytypehdr_id', $id)->count();
-        if($company > 0){
-            return view('datamaster.company.detail',  ['id' => $id]);
-        } else {
-            return redirect()->to('/company');
-        }
-    }
-
-    public function getdetail($id){
-        $data = CompanyDetail::where('coytypedtl_hdrid', $id)->get();
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->coytypehdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCompanyType">Edit</a>';
-                $btn = $btn." <a href='javascript:void(0)' data-toggle='tooltip'  data-id='$row->coytypehdr_id' data-original-title='Delete' class='btn btn-danger btn-sm deleteCompanyType'>Delete</a>";
-                return $btn;
-            })
-            ->addColumn('statusName', function($row){
-                $btn = $row->coytypehdr_status == 1 ? "Active" : "Inactive" ;
-                return $btn;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-        
     }
 }

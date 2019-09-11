@@ -31,7 +31,7 @@
                                             <span class="lbl"> Active</span>
                                         </label>
                                         <label>
-                                            <input name="coytypedtl_status" id="coytypedtl_statu_inactive" type="radio" class="ace" value="2" />
+                                            <input name="coytypedtl_status" id="coytypedtl_status_inactive" type="radio" class="ace" value="2" />
                                             <span class="lbl"> Inactive</span>
                                         </label>
                                     </div>
