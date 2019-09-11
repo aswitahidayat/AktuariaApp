@@ -45,12 +45,12 @@
                             <strong>Sub District</strong>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a data-toggle="tab" href="#village">
                             <i class="green ace-icon fa fa-globe bigger-120"></i>
                             <strong>Village</strong>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a data-toggle="tab" href="#zipcode">
                             <i class="green ace-icon fa fa-globe bigger-120"></i>
@@ -74,8 +74,7 @@
                     <!-- END TAB SUBDISTRICT-->
                     
                     <!-- BEGIN TAB VILLAGE-->
-                    @include('datamaster.region.village.index')
-                    
+
                     <!-- END TAB VILLAGE-->
                     <!-- BEGIN TAB ZIPCODE-->
                     @include('datamaster.region.zipcode.index')

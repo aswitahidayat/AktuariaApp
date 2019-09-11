@@ -156,17 +156,18 @@ $(function () {
 
     $('body').on('click', `.delete${module}`, function () {
         var id = $(this).data("id");
-        confirm("Are You sure want to delete !");
-        $.ajax({
-            type: "DELETE",
-            url: "{{ route('province.store') }}"+'/'+id,
-            success: function (data) {
-                table.draw();
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
-        });
+        if(confirm("Are You sure want to delete !")){
+            $.ajax({
+                type: "DELETE",
+                url: "{{ route('province.store') }}"+'/'+id,
+                success: function (data) {
+                    table.draw();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        }
     });
 });
 </script>

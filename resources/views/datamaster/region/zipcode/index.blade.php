@@ -34,12 +34,12 @@
 
                     </div>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="col-sm-4 control-label no-padding-right">Village Name:</label>
                     <div class="col-sm-8 pb-20">
                         <select class="form-control input-lg select2-single" style="width:100%;" id="search_zip_vill"></select>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="row">
@@ -64,7 +64,6 @@
                 <th>Province Name</th>
                 <th>District Name</th>
                 <th>Sub District Name</th>
-                <th>Village Name</th>
                 <th>Zip Code</th>
                 <th>Status</th>
                 <th width="103px">Actions</th>
@@ -95,7 +94,6 @@ $(function () {
         table = $(`#table${module}`).DataTable({
             processing: true,
             serverSide: true,
-            ordering: true,
             searching: false,
             ajax: {
                 url: "{{ route('searchzip') }}",
@@ -112,8 +110,7 @@ $(function () {
                 {name: 'prov_name', data: 'prov_name'},//
                 {name: 'dis_name', data: 'dis_name'},//  
                 {name: 'subdis_name', data: 'subdis_name'},          
-                {name: 'vill_name', data: 'vill_name'},//
-                {name: 'zip_code', data: 'zip_code'},//
+                {name: 'zipcode', data: 'zipcode'},//
                 {name: 'statusName', data: 'statusName'},//
                 {name: 'action', orderable: false, searchable: false, data: 'action'},
             ]
@@ -473,17 +470,18 @@ $(function () {
 
     $('body').on('click', `.delete${module}`, function () {
         var id = $(this).data("id");
-        confirm("Are You sure want to delete !");
-        $.ajax({
-            type: "DELETE",
-            url: "{{ route('zip.store') }}"+'/'+id,
-            success: function (data) {
-                table.draw();
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
-        });
+        if(confirm("Are You sure want to delete !")){
+            $.ajax({
+                type: "DELETE",
+                url: "{{ route('zip.store') }}"+'/'+id,
+                success: function (data) {
+                    table.draw();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        }
     });
 
     function getDistrictZip (val){

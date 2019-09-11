@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <form id="formZip" name="formZip">
-                    <input type="hidden" name="zip_id" id="zip_id">
+                    <input type="hidden" name="zipcode_id" id="zipcode_id">
                     <div class="form-group">
                         <label for="province-name" class="col-form-label bolder">Province Name:</label>
                         <div class="col-sm-12 p0 pb-20">
@@ -28,17 +28,17 @@
                         <select class="chosen-select form-control" id="zip_subdisid" name="zip_subdisid" 
                                 placeholder="Choose a District..." style="width:100%;"></select>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="recipient-name" class="col-form-label bolder">Village Name:</label>
                         <div class="col-sm-12 p0 pb-20">
                             <select class="chosen-select form-control"  id="zip_villid" name="zip_villid" 
                                 placeholder="Sub District..." style="width:100%;"></select>                         
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label bolder">Zip Code:</label>
                         <div class="col-sm-12 p0 pb-20">
-                            <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="Sub District...">                            
+                            <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Sub District...">                            
                         </div>
                     </div>
                     <div class="form-group">
