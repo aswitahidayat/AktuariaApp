@@ -12,5 +12,5 @@ class Company extends Model
     public $incrementing = true;
     public $timestamps = false;
 
-    protected $fillable = ['coytypehdr_name','coytypehdr_desc', 'coytypehdr_status', 'coytypehdr_created_by', 'coytypehdr_created_date'];
+    protected $fillable = ['coytypehdr_name','coytypehdr_status', 'coytypehdr_created_by', 'coytypehdr_created_date'];
 }

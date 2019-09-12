@@ -11,7 +11,7 @@ namespace App\Http\Controllers\DataMaster;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\CompanyDetail;
-
+use App\Models\CompanyDetailSub;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
@@ -86,8 +86,16 @@ class CompanyController extends Controller
 
     public function destroy($coytypehdr_id)
     {
-        Company::find($coytypehdr_id)->delete();
-        return response()->json(['success'=>'Company Type deleted successfully.']);
+        try{
+            $a =Company::find($coytypehdr_id)->delete();
+            if($a == true){
+                return response()->json(['success'=>'Company Type deleted successfully.']);
+            } else {
+                return response()->json('deleted fail.', 500);
+            }
+        } catch(\Illuminate\Database\QueryException $ex){
+            return response()->json($ex->getMessage(), 500);
+        }
     }
 
     public function getTemplate(){
@@ -97,42 +105,46 @@ class CompanyController extends Controller
     }
 
     function companyTransaction(Request $request){
-        // try{
-        //     DB::beginTransaction();
+        $exception = DB::transaction(function() use ($request) {
+            $dataDtl = [];
+            $dataDtlSub = [];
 
-
-        // insertGetId
-        // var_dump($request->header);
-        $q = Company::create([
-            'coytypehdr_name' => $request->header['coytypehdr_name'],
-            'coytypehdr_desc' => $request->header['coytypehdr_desc'],
-            'coytypehdr_status' => 1,
-            'coytypehdr_created_by' => 1,
-            'coytypehdr_created_date' => date(now())
-        ]);
+            $q = Company::create([
+                'coytypehdr_name' => $request->header['coytypehdr_name'],
+                'coytypehdr_desc' => $request->header['coytypehdr_desc'],
+                'coytypehdr_status' => 1,
+                'coytypehdr_created_by' => 1,
+                'coytypehdr_created_date' => date(now())
+            ]);
+            
+            if(!empty($request->detail)){
+                foreach ($request->detail as $key =>$value) {
+                    $cd = CompanyDetail::create([
+                        'coytypedtl_hdrid' => $q->coytypehdr_id,
+                        'coytypedtl_assumpt_sp' => $value['coytypedtl_assumpt_sp'],
+                        'coytypedtl_assumpt_code' => $value['coytypedtl_assumpt_code'],
+                        'coytypedtl_assumpt_value' => $value['value'],
+                        'coytypedtl_status' => 1,
+                        'coytypedtl_created_by' => 1,
+                        'coytypedtl_created_date' => date(now()),
+                    ]);
+    
+                    if($value['coytypedtl_assumpt_sp'] == 'P'){
+                        CompanyDetailSub::insert([
+                            'coytypedtlsub_dtlid' => $cd->coytypedtl_id,
+                            'coytypedtlsub_amt_min' => $value['min'],
+                            'coytypedtlsub_amt_max' => $value['max'],
+                            'coytypedtlsub_value' => $value['value'],
+                            'coytypedtlsub_created_by' => 1,
+                            'coytypedtlsub_created_date' => date(now())
+                        ]);
+                    }
         
-        $dataDtl = [];
-        // var_dump($request->detail);
-        foreach ($request->detail as $key =>$value) {
-            $dataTmp = [];
-            $dataTmp['coytypedtl_hdrid'] = $q->coytypehdr_id; 
-            $dataTmp['coytypedtl_assumpt_sp'] = $value['coytypedtl_assumpt_sp'];
-            $dataTmp['coytypedtl_assumpt_code'] = $value['coytypedtl_assumpt_code'];
-            $dataTmp['coytypedtl_assumpt_value'] = $value['data']['value'];
-            $dataTmp['coytypedtl_status'] = 1;
-            $dataTmp['coytypedtl_created_by'] = 1; 
-            $dataTmp['coytypedtl_created_date'] = date(now());
+                }
+            }
+        });
 
-            $dataDtl[] = $dataTmp;
-        }
+        return is_null($exception) ? response()->json(['success'=>'Company Type saved successfully.']) : $exception;
 
-        $varRetrun = CompanyDetail::insert($dataDtl);
-        return response()->json(['success'=>'Company Type saved successfully.']);
-
-        // DB::commit();
-        
-        // }catch(\Exception $e){
-        //     DB::rollback();
-        // }
     }
 }

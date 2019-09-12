@@ -63,6 +63,7 @@
             $('#coytypehdr_id').val('');
             $('#modelHeading'+module).html(`Create New  ${module}`);
             $(`#modal${module}`).modal('show');
+            $(`#assumption`).html('');
         });
 
         $('body').on('click', `.edit${module}`, function () {
@@ -153,8 +154,8 @@
                                             onchange="changeAssumption('${i}', '${ass.assump_templ_code}', this.value)" 
                                             id="form_assumption_${i}_${ass.assump_templ_code}_l"
                                             name="coytypedtl_assumpt_sp">
-                                            <option value="s" >Single</option>
-                                            <option value="p" >Progresive</option>
+                                            <option value="S" >Single</option>
+                                            <option value="P" >Progresive</option>
                                         </select>
                                     </div>
                                     <div class="col-xs-9" id="assumption_${i}_${ass.assump_templ_code}_div">
@@ -170,7 +171,6 @@
                     }
 
                     $(`#assumption`).html(provHtml);
-                    // $("#dis_provid").val(data.dis_provid);
                 },
                 error: function (data) {
                     console.log('Error:', data);
@@ -190,12 +190,12 @@
 
         function changeAssumption(key, code, val){
             varHtml= '';
-            if(val == 's'){
+            if(val == 'S'){
                 varHtml = `
                     <label class="control-label no-padding-right" for="form-field-1">&nbsp;</label> 
                     <input type="text" class="form-control" id="form_assumption_${key}_${code}_val"
                         class="col-xs-10 col-xs-5" required/>`;
-            } else if (val == 'p') {
+            } else if (val == 'P') {
                 varHtml = `
                     <div class="col-xs-4">
                         <label class="control-label no-padding-right" for="form-field-1">Min</label>
@@ -228,12 +228,9 @@
                     var obj ={
                         coytypedtl_assumpt_code: val.assump_templ_code,
                         coytypedtl_assumpt_sp: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_l`).value,
-                        data: {
-                            value: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_val`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_val`).value : 0,
-                            max: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_max`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_max`).value : 0,
-                            min: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_min`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_min`).value : 0,
-                            
-                        }
+                        value: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_val`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_val`).value : 0,
+                        max: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_max`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_max`).value : 0,
+                        min: document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_min`) ? document.getElementById(`form_assumption_${i}_${val.assump_templ_code}_min`).value : 0,
 
                     }
 
