@@ -26,177 +26,221 @@
                     </h1>
                 </div>
 
-                <div class="nav-search" id="nav-search">
-                    <span class="input-icon">
-                        <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
-                        <i class="ace-icon fa fa-search nav-search-icon"></i>
-                        <a href="#" data-toggle="modal" data-target="#AddAgentModal" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Agent</a>
-                    </span>
-                </div>
-                <div class="row" style="margin-top: 33px;">&nbsp;</div>
+                <form id="formSearchAgent" action="javascript:void(0);">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right">Agent Name:</label>
+                                <div class="col-sm-8 pb-20">
+                                    <input type="text" class="form-control" id="search_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8 pb-20">
+                                    <a href="#" id="createAgent" class="btn btn-info btn-sm"><i class="ace-icon fa fa-plus small"></i> Add Agent</a>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="ace-icon fa fa-search bigger-110"></i>Find</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
                 <div class="row">
-                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                    <table id="tableAgent" class="table table-striped table-bordered table-hover">
                         <thead>
                         <tr>
+                            <th width="13%">No</th>
+                            <th width="13%">Actions</th>
                             <th>Agent Name</th>
                             <th>Email</th>
                             <th width="15%">Status</th>
-                            <th width="13%">Actions</th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        @foreach($datas as $data)
-                        <tr>
-                            <td>
-                                {{$data->name}}
-                            </td>
-                            <td>
-                                {{$data->email}}
-                            </td>
-                            <td>
-                                @if($data->id == '1')
-                                    Active
-                                @else
-                                    Inactive
-                                @endif
-                            </td>
-                            <td>
-                                <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="blue" href="#">
-                                        <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                    </a>
-
-                                    <a class="green" href="#">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    </a>
-
-                                    <a class="red" href="#">
-                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                    </a>
-                                </div>
-
-                                <div class="hidden-md hidden-lg">
-                                    <div class="inline pos-rel">
-                                        <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                            <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                                        </button>
-
-                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                            <li>
-                                                <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
-																				<span class="blue">
-																					<i class="ace-icon fa fa-search-plus bigger-120"></i>
-																				</span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
-																				<span class="green">
-																					<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-																				</span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
-																				<span class="red">
-																					<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																				</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+            
             </div>
         </div>
     </div>
-    </div>
-    <div class="modal fade" id="AddAgentModal" tabindex="-1" role="dialog" aria-labelledby="AddAgentModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title blue lighter bigger bolder" id="AddAgentModalLabel"><i class="ace-icon fa fa-user-secret cyan"></i> | Register Agent</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="agent-name" class="col-form-label bolder">Agent Name:</label>
-                            <input type="text" class="form-control" id="agent-name">
-                        </div>
-                        <div class="form-group">
-                            <label for="agent-email" class="col-form-label bolder">Agent Email:</label>
-                            <input type="email" class="form-control" id="agent-email">
-                        </div>
-                        <div class="form-group">
-                            <label for="type-identity" class="col-form-label bolder">Type Identity:</label>
-                            <input type="text" class="form-control" id="type-identity">
-                        </div>
-                        <div class="form-group">
-                            <label for="identity-number" class="col-form-label bolder">Identity Number:</label>
-                            <input type="number" class="form-control" id="identity-number">
-                        </div>
-                        <div class="form-group">
-                            <label for="agent-phone" class="col-form-label bolder">Agent Phone:</label>
-                            <input type="number" class="form-control" id="agent-phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="birth-place" class="col-form-label bolder">Birth Place:</label>
-                            <input type="text" class="form-control" id="birth-place">
-                        </div>
-                        <div class="form-group">
-                            <label for="birth-date" class="col-form-label bolder">Birth Date:</label>
-                            <input type="date" class="form-control" id="birth-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="npwp" class="col-form-label bolder">NPWP Number:</label>
-                            <input type="number" class="form-control" id="npwp">
-                        </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label bolder">Status:</label>
-                            <div class="radio">
-                                <label>
-                                    <input name="form-field-radio" type="radio" class="ace" />
-                                    <span class="lbl"> Active</span>
-                                </label>
-                                <label>
-                                    <input name="form-field-radio" type="radio" class="ace" />
-                                    <span class="lbl"> Inactive</span>
-                                </label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
-                    <button type="button" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @section('page-script')
-        <script type="text/javascript">
-            $('#search').on('keyup',function(){
-                $value=$(this).val();
-                $.ajax({
-                    type : 'get',
-                    url : '{{URL::to('search')}}',
-                    data:{'search':$value},
-                    success:function(data){
-                        $('tbody').html(data);
-                    }
-                });
+    @include('transaction.agent.agentForm')
+
+    <script type="text/javascript">
+        var module = 'Agent';
+        var table = {};
+        var varresult = {};
+
+        $(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            fill_datatable();
+        });
+
+        function fill_datatable(name = ''){
+            table = $(`#table${module}`).DataTable({
+                processing: true,
+                serverSide: true,
+                searching: false,
+                ordering: false,
+                ajax: {
+                        url: "{{ route('searchagent') }}",
+                        type: "POST",
+                        data: {
+                            name: name
+                        }
+                    }, 
+                columns: [
+                    {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
+                    {name: 'action', orderable: false, searchable: false, data: 'action'},
+                    {name: 'regis_name', data: 'regis_name'},//
+                    {name: 'email', data: 'email'},//
+
+                    {name: 'statusName', data: 'statusName'},//
+                ]
+
+            });
+        }
+
+        $( `#formSearch${module}` ).submit(function() {
+            $(`#table${module}`).DataTable().destroy();
+            fill_datatable($("#search_name").val());
+        });
+
+        $('#search').on('keyup',function(){
+            $value=$(this).val();
+            $.ajax({
+                type : 'get',
+                url : '{{URL::to('search')}}',
+                data:{'search':$value},
+                success:function(data){
+                    $('tbody').html(data);
+                }
+            });
+        })
+
+        $(`#create${module}`).click(function () {
+            $(`#saveBtn${module}`).html("Save");
+            $(`#form${module}`).trigger("reset");
+            $('#coytypehdr_id').val('');
+            $('#modelHeading'+module).html(`Create New  ${module}`);
+            $(`#modal${module}`).modal('show');
+            $(`#assumption`).html('');
+            selectIdentity()
+        });
+
+        $( `#form${module}` ).submit(function( e ) {
+            $(`#saveBtn${module}`).html('Sending..');
+            $(`#saveBtn${module}`).attr("disabled", true);
+            
+            var dataall = $(`#form${module}`).serialize();
+
+            $.ajax({
+                data: dataall,
+                url: "{{ route('agent.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $(`#form${module}`).trigger("reset");
+                    $(`#modal${module}`).modal('hide');
+                    table.draw();
+                    $(`#saveBtn${module}`).html('Save');
+                    $(`#saveBtn${module}`).removeAttr("disabled");
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    $(`#saveBtn${module}`).html('Save');
+                    $(`#saveBtn${module}`).removeAttr("disabled");
+
+                }
+            });
+        });
+
+        $('body').on('click', `.edit${module}`, function () {
+            var id = $(this).data('id');
+            $.get("{{ route('agent.index') }}" +`/${id}/edit`, (data) => {
+                debugger;
+                $('#modelHeading'+module).html(`Edit ${module}`);
+                $(`#saveBtn${module}`).html("Edit");
+                $(`#modal${module}`).modal('show');
+                
+                $(`#agent_id`).val(`${data.id}`);
+                $(`#regis_id`).val(`${data.regis_id}`);
+                $(`#bizpart_id`).val(`${data.bizpart_id}`);
+
+                $(`#agent_name`).val(`${data.regis_name}`);
+                $(`#agent_email`).val(`${data.regis_email}`);
+                // $(`#type_identity`).val(`${data.regis_typeid}`);
+                $(`#identity_number`).val(`${data.regis_id_num}`);
+                $(`#agent_phone`).val(`${data.regis_hp}`);
+                $(`#agent_birth_place`).val(`${data.regis_birthplace}`);
+                $(`#agent_birth_date`).val(`${data.regis_birthdate}`);
+                $(`#npwp`).val(`${data.regis_npwp}`);
+
+                selectIdentity(data.regis_typeid);
+
+                if(data.user_status == 1){
+                    $("#agent_status_active").prop("checked", true);
+                } else {
+                    $("#agent_status_inactive").prop("checked", true);
+                }
             })
-        </script>
-        <script type="text/javascript">
-            $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-        </script>
-    @stop
+        });
+
+        $("#agent_email").blur(function() {
+            if($("#agent_email").val() != ""){
+                $.ajax({
+                    data: {
+                        email: $("#agent_email").val(),
+                    },
+                    url: "{{ route('emailchecker') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function (data) {
+                        if(!data.success){
+                            $( "#email_err" ).show();
+                            $("#agent_email").val('')
+                        } else {
+                            $( "#email_err" ).hide();
+                        }
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                        $(`#saveBtn${module}`).html('Save');
+                        $(`#saveBtn${module}`).removeAttr("disabled");
+
+                    }
+                });   
+            }
+        });
+
+        function selectIdentity(val){
+            $.ajax({
+                url: "{{ route('searchidentity') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function (datas) {
+                    let provHtml = '';
+                    $.each(datas.data, (key, identity) => {
+                        provHtml +=  `<option value="${identity.typeid_id}" >${identity.typeid_name}</option>`
+                    });
+                    $(`#type_identity`).html(provHtml);
+                    $("#type_identity").val(val);
+
+                    $(`#modal${module}`).modal('show');
+                    $('#type_identity').select2();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    $(`#modal${module}`).modal('show');
+                }
+            });
+        }
+    
+    </script>
 @endsection

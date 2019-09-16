@@ -16,8 +16,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $table = 'kka_dab.users';
+    public $timestamps = false;
+
     protected $fillable = [
-        'id', 'user_bizpartid', 'user_type','email','username','password','user_status','user_created_by','created_at','user_updated_by','updated_at'
+        'id', 'user_bizpartid', 'user_type','email','user_name','password','user_status','user_created_by','created_at','user_updated_by','updated_at'
     ];
 
     /**
