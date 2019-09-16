@@ -144,7 +144,6 @@ class AgentController extends Controller
             $q3 = User::create($dataUser);
         });
         return is_null($exception) ? response()->json(['success'=>'Agent saved successfully.']) : $exception;
-
     }
 
     function normalizeRegist(Request $request){
@@ -197,7 +196,7 @@ class AgentController extends Controller
 
         $result = [
             'user_bizpartid' => $bizpart_id,
-            'user_type' => 3,
+            'user_type' => 2,
             'user_name' => $request->agent_email,
             'email' => $request->agent_email,
             'password' => Hash::make('sehati'),

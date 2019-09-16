@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Aktuaria Login</title>
 
     <meta name="description" content="User login page" />
@@ -11,6 +12,8 @@
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/font-awesome/4.5.0/css/font-awesome.min.css')}}" />
+
+    
 
     <!-- text fonts -->
     <link rel="stylesheet" href="{{asset('assets/css/fonts.googleapis.com.css')}}" />
@@ -28,6 +31,11 @@
     <![endif]-->
 
     <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    
+    <!-- select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
 
     <!--[if lte IE 8]>
     <script src="{{asset('assets/js/html5shiv.min.js')}}"></script>
@@ -70,6 +78,9 @@
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
@@ -109,6 +120,8 @@
         });
 
     });
+
 </script>
+@yield('js')
 </body>
 </html>

@@ -13,14 +13,11 @@ class UserTypeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     public function index(Request $request)
     {
-        if(Auth::user()->user_type == '3') {
-            abort(404);
-        }
-
         return view('datamaster.usertype.usertypeindex');
     }
 

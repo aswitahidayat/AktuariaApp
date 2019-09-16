@@ -88,5 +88,3 @@
 
     @include('auth.register') 
 @endsection
-
-              

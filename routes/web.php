@@ -12,6 +12,13 @@
 */
 
 Route::get('/', 'SigninController@index')->name('/');
+Route::post('/pub/searchcompany','PublicController@searchCompany')->name("searchcompanypub");
+Route::post('/pub/searchIdentity','PublicController@searchIdentity')->name("searchIdentitypub");
+Route::post('/pub/searchProvinsi','PublicController@searchProvinsi')->name("searchprovincepub");
+Route::post('/pub/searchDistrict','PublicController@searchDistrict')->name("searchdistrictpub");
+Route::post('/pub/searchSubDistrict','PublicController@searchSubDistrict')->name("searchsubdistrictpub");
+Route::post('/pub/searchZip','PublicController@searchZip')->name("searchZipPub");
+Route::post('/pub/register','PublicController@register')->name("registerPub");
 
 Auth::routes();
 
@@ -49,6 +56,7 @@ Route::post('searchvillage','DataMaster\VillageController@getvillage')->name("se
 Route::resource('zip','DataMaster\ZipController');
 Route::post('searchzip','DataMaster\ZipController@getzip')->name("searchzip");
 
+Mortalita
 
 // Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
 
