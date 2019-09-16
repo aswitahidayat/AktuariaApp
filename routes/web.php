@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'SigninController@index')->name('/');
 
 Auth::routes();
 
@@ -27,6 +25,7 @@ Route::resource('identity','DataMaster\IdentityController');
 Route::post('searchidentity','DataMaster\IdentityController@search')->name("searchidentity");
 
 Route::resource('company','DataMaster\CompanyController');
+Route::post('/getcompanydtl','DataMaster\CompanyController@getCompanyDtl')->name("getcompanydtl");
 Route::post('/searchcompany','DataMaster\CompanyController@search')->name("searchcompany");
 
 Route::resource('detail','DataMaster\CompanyDetailController');
@@ -58,7 +57,9 @@ Route::post('/searchservice','DataMaster\OrderServiceController@search')->name("
 Route::resource('program','DataMaster\ProgramController');
 Route::get('/searchprogram','DataMaster\ProgramController@search');
 Route::resource('agent','Transaction\AgentController');
-Route::get('/searchagent','Transaction\AgentController@search');
+Route::post('/searchagent','Transaction\AgentController@search')->name("searchagent");
+Route::post('/emailchecker','Transaction\AgentController@emailChecker')->name("emailchecker");
+
 Route::resource('order','Transaction\OrderController');
 Route::get('/searchorder','Transaction\OrderController@search');
 Route::resource('vbayar','Transaction\VBayarController');
