@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             <th width="23px">No</th>
-                            <th width="180px">Actions</th>
+                            <th width="100px">Actions</th>
                             <th>Company Type Name</th>
                             <th>Status</th>
                         </tr>

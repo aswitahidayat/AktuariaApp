@@ -53,7 +53,7 @@
                                             id="jml_thn" placeholder="Enter Company Name" 
                                             class="col-xs-10 col-sm-5" value="0"/>
                                             <a href="#"" class="input-group-addon"><span id="jml_thn_proc" >
-                                                <i class="fa fa-search"></i></span>
+                                                <i class="fa fa-arrow-right"></i></span>
                                             </a>
                                     </div>
 

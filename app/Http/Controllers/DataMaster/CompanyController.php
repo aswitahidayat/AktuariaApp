@@ -49,8 +49,8 @@ class CompanyController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->coytypehdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCompanyType">Edit</a>';
-                    $btn = $btn." <a href='". route('company.index')."/detail/$row->coytypehdr_id' data-toggle='tooltip'  data-original-title='Detail' class='btn btn-warning btn-sm detailCompanyType'>Detail</a>";
-                    $btn = $btn." <a href='javascript:void(0)' data-toggle='tooltip'  data-id='$row->coytypehdr_id' data-original-title='Delete' class='btn btn-danger btn-sm deleteCompanyType'>Delete</a>";
+                    // $btn = $btn." <a href='". route('company.index')."/detail/$row->coytypehdr_id' data-toggle='tooltip'  data-original-title='Detail' class='btn btn-warning btn-sm detailCompanyType'>Detail</a>";
+                    // $btn = $btn." <a href='javascript:void(0)' data-toggle='tooltip'  data-id='$row->coytypehdr_id' data-original-title='Delete' class='btn btn-danger btn-sm deleteCompanyType'>Delete</a>";
                     return $btn;
                 })
                 ->addColumn('statusName', function($row){
@@ -68,20 +68,35 @@ class CompanyController extends Controller
         return response()->json($data);
     }
 
+    public function getCompanyDtl(Request $request)
+    {
+        $data = Company::query()
+            ->leftJoin('kka_dab.mst_coytype_dtl', 'coytypehdr_id', '=', 'kka_dab.mst_coytype_dtl.coytypedtl_hdrid')
+            ->leftJoin('kka_dab.mst_coytype_dtlsub', 'kka_dab.mst_coytype_dtl.coytypedtl_id', '=', 'kka_dab.mst_coytype_dtlsub.coytypedtlsub_dtlid')
+            ->where('coytypehdr_id', $request->coytypehdr_id)
+            ->get();
+            
+        return response()->json($data);
+    }
+
     public function store(Request $request)
     {
         if($request->coytypehdr_id == ''){
-            
-
-            $this->companyTransaction($request);
+            $response = $this->companyTransaction($request);
+            return is_null($response) ? response()->json(['success'=>'Company Type saved successfully.']) : $response;
         }else{
-            Company::where('coytypehdr_id', $request->coytypehdr_id)
-                ->update(['coytypehdr_name' => $request->coytypehdr_name,
-                    'coytypehdr_desc' => $request->coytypehdr_desc,
-                     'coytypehdr_status' => $request->coytypehdr_status,
-                     'coytypehdr_updated_date' => date(now())]);
+            try{
+                Company::where('coytypehdr_id', $request->coytypehdr_id)
+                    ->update(['coytypehdr_name' => $request->coytypehdr_name,
+                        'coytypehdr_desc' => $request->coytypehdr_desc,
+                        'coytypehdr_status' => $request->coytypehdr_status,
+                        'coytypehdr_updated_date' => date(now())]);
+
+                return response()->json(['success'=>'Company Type edited successfully.']);
+            } catch(\Illuminate\Database\QueryException $ex){
+                return response()->json($ex->getMessage(), 500);
+            }
         }
-        return response()->json(['success'=>'Company Type saved successfully.']);
     }
 
     public function destroy($coytypehdr_id)
