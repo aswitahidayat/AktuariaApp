@@ -63,5 +63,23 @@
 
             <b class="arrow"></b>
         </li>
+
+        <li class="">
+            <a href="{{route('mortalita.index')}}">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Setup Mortalita
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+
+        <li class="">
+            <a href="{{route('benefit.index')}}">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Setup Benefit
+            </a>
+
+            <b class="arrow"></b>
+        </li>
     </ul>
 </li>

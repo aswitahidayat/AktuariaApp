@@ -56,9 +56,13 @@ Route::post('searchvillage','DataMaster\VillageController@getvillage')->name("se
 Route::resource('zip','DataMaster\ZipController');
 Route::post('searchzip','DataMaster\ZipController@getzip')->name("searchzip");
 
-Mortalita
+Route::resource('mortalita','DataMaster\MortalitaController');
+Route::post('searchmortalita','DataMaster\MortalitaController@searchMortalita')->name("searchmortalita");
+Route::post('searchMortalitaDtl','DataMaster\MortalitaController@searchMortalitaDtl')->name("searchMortalitaDtl");
 
-// Route::get('/searchprovince','DataMaster\RegionController@searchProvince')->name('searchprovince');
+Route::resource('benefit','DataMaster\BenefitController');
+Route::post('searchbenefit','DataMaster\BenefitController@searchBenefit')->name("searchBenefit");
+Route::post('searchbenefitdtl','DataMaster\BenefitController@searchBenefitDtl')->name("searchBenefitDtl");
 
 Route::resource('service','DataMaster\OrderServiceController');
 Route::post('/searchservice','DataMaster\OrderServiceController@search')->name("searchservice");
