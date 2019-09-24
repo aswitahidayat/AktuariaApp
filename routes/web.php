@@ -65,8 +65,10 @@ Route::resource('benefit','DataMaster\BenefitController');
 Route::post('searchbenefit','DataMaster\BenefitController@searchBenefit')->name("searchBenefit");
 Route::post('searchbenefitdtl','DataMaster\BenefitController@searchBenefitDtl')->name("searchBenefitDtl");
 
-Route::resource('service','DataMaster\OrderServiceController');
-Route::post('/searchservice','DataMaster\OrderServiceController@search')->name("searchservice");
+Route::resource('service','DataMaster\ServiceController');
+Route::post('/searchservice','DataMaster\ServiceController@search')->name("searchservice");
+Route::post('/serviceDetail','DataMaster\ServiceController@serviceDetail')->name("servicedetail");
+
 Route::resource('program','DataMaster\ProgramController');
 Route::post('/searchprogram','DataMaster\ProgramController@search')->name("searchprogram");
 Route::resource('agent','Transaction\AgentController');
@@ -79,7 +81,10 @@ Route::post('/getAssumption','Transaction\OrderAssumptionController@getAssumptio
 Route::post('/setAssumption','Transaction\OrderAssumptionController@setAssumption')->name("setassumption");
 Route::post('/getProgressive','Transaction\OrderAssumptionController@getProgressive')->name("getprogressive");
 Route::post('/setProgressive','Transaction\OrderAssumptionController@setProgressive')->name("setprogressive");
+Route::post('/comfirmOrder','Transaction\OrderController@comfirmOrder')->name("comfirmorder");
 
+
+Route::resource('perhitungan','Transaction\PerhitunganController');
 
 Route::resource('vbayar','Transaction\VBayarController');
 Route::get('/searchvbayar','Transaction\VBayarController@search');

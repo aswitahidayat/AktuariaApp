@@ -16,6 +16,11 @@
         $( "#subModalOrderAssumption" ).on('hidden.bs.modal', function(){
             $('#modalOrderAssumption').modal('show');
         });
+
+        $('#ordhdr_service_hdr').change(function(){
+        
+            selectServiceDet()
+        })
     });
 
     function fill_datatable(name = ''){
@@ -48,6 +53,8 @@
         fill_datatable($("#search_name").val());
     });
     
+    //TODO celar upload file & Table
+    //TODO period count min 2
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
@@ -140,6 +147,34 @@
         });
     });
 
+    
+    $('body').on('click', `.comfirmOrder`, function () {
+        var id = $(this).data('id');
+        if(confirm("Are You sure want to comfirm !")){
+            $.ajax({
+                data: {
+                    ordhdr_id: id
+                },
+                url: "{{ route('comfirmorder') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    // $(`#form${module}`).trigger("reset");
+                    // $(`#modal${module}`).modal('hide');
+                    table.draw();
+                    // $(`#saveBtn${module}`).html('Save');
+                    // $(`#saveBtn${module}`).removeAttr("disabled");
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    // $(`#saveBtn${module}`).html('Save');
+                    // $(`#saveBtn${module}`).removeAttr("disabled");
+    
+                }
+            });
+        }
+    })
+
     $('#fileupload').change(function(){
         var input = this;
         var url = $(this).val();
@@ -161,7 +196,7 @@
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         }
 
-    });
+    });    
 
     $('#btnUpload').click(function(){
         $('#userUploadTbl').html('');
@@ -291,8 +326,38 @@
                     return {
                         results:  $.map(data.data, function (item) {
                             return {
-                            text: item.ordsrvhdr_name,
-                            id: item.ordsrvhdr_id
+                                text: item.ordsrvhdr_name,
+                                id: item.ordsrvhdr_id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    }
+
+    function selectServiceDet(){
+        $('#ordhdr_service_dtl').select2({
+            placeholder: 'Cari...',
+            dropdownParent: $(`#modal${module}`),
+            ajax: {
+                url: "{{ route('servicedetail') }}",
+                dataType: 'json',
+                delay: 250,
+                type: 'POST',
+                data: function (params, page){
+                    return{
+                        name: params.term,
+                        ordsrvhdr_id: $('#ordhdr_service_hdr').val()
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.ordsrvdtl_price,
+                                id: item.ordsrvdtl_id
                             }
                         })
                     };

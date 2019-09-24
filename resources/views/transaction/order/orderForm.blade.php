@@ -77,7 +77,9 @@
                             <div class="form-group">
                                 <label for="service-amount" class="col-sm-4 control-label no-padding-right bolder">Service Amount:</label>
                                 <div class="col-sm-8 pb-20">
-                                    <input type="number" class="form-control" id="ordhdr_amount" name="ordhdr_amount">
+                                    {{-- <input type="number" class="form-control" id="ordhdr_amount" name="ordhdr_amount"> --}}
+                                    <select class="chosen-select form-control" id="ordhdr_service_dtl" name="ordhdr_service_dtl" 
+                                        placeholder="Choose Service Amount..." style="width:100%;"></select>
                                 </div>
                             </div>
                         </div>

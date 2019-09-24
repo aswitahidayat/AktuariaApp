@@ -46,13 +46,14 @@ class OrderController extends Controller
             if($request->name != ''){
                 $query->where('ordhdr_ordnum', 'LIKE',  "%$request->name%");
             }
-            $data = $query->get();
+            $data = $query->orderBy('ordhdr_id')->get();
             
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
+                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
 
                     return $btn;
                 })
@@ -61,6 +62,7 @@ class OrderController extends Controller
         }
     }
 
+    //TODO Bizpartner
     public function store(Request $request)
     {
         $exception = DB::transaction(function() use ($request) {
@@ -71,6 +73,7 @@ class OrderController extends Controller
                     'ordhdr_ordnum' => $orderNum,
                     'ordhdr_program' => $request->ordhdr_program,
                     'ordhdr_service_hdr' => $request->ordhdr_service_hdr,
+                    'ordhdr_service_dtl' => $request->ordhdr_service_dtl,
                     'ordhdr_period_count' => $request->ordhdr_period_count,
                     'ordhdr_period_lastyear' => $request->ordhdr_period_lastyear,
                     'ordhdr_pension_age' => $request->ordhdr_pension_age,
@@ -95,6 +98,7 @@ class OrderController extends Controller
                     ->update(['ordhdr_ordnum' => $request->ordhdr_ordnum,
                         'ordhdr_program' => $request->ordhdr_program,
                         'ordhdr_service_hdr' => $request->ordhdr_service_hdr,
+                        'ordhdr_service_dtl' => $request->ordhdr_service_dtl,
                         'ordhdr_period_count' => $request->ordhdr_period_count,
                         'ordhdr_period_lastyear' => $request->ordhdr_period_lastyear,
                         'ordhdr_pension_age' => $request->ordhdr_pension_age,
@@ -170,5 +174,13 @@ class OrderController extends Controller
 
         }
 
+    }
+
+    public function comfirmOrder(Request $request)
+    {
+        Order::
+        where('ordhdr_id', $request->ordhdr_id)
+        ->update(['ordhdr_pay_status' => 'C',]);
+        return response()->json(['success'=>'Order comfirm successfully.']);
     }
 }
