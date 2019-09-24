@@ -15,11 +15,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $table = 'kka_dab.users';
+    protected $table = 'kka_dab.mst_user';
+    protected $primaryKey = 'user_id';
+
     public $timestamps = false;
 
     protected $fillable = [
-        'id', 'user_bizpartid', 'user_type','email','user_name','password','user_status','user_created_by','created_at','user_updated_by','updated_at'
+        'user_id', 'user_bizpartid', 'user_type','user_email','user_name','user_password','user_status','user_created_by','created_at','user_updated_by','updated_at'
     ];
 
     /**
@@ -39,4 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAuthPassword()
+    {
+        return $this->user_password;
+    }
+    
 }

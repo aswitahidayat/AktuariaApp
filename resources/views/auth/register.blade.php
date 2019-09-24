@@ -470,7 +470,7 @@
                 data: {
                     email: $("#usremail").val(),
                 },
-                url: "{{ route('emailchecker') }}",
+                url: "{{ route('emailcheckerPub') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
@@ -497,7 +497,7 @@
                 data: {
                     email: $("#usremail").val(),
                 },
-                url: "{{ route('emailchecker') }}",
+                url: "{{ route('emailcheckerPub') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {

@@ -183,7 +183,7 @@ $(function () {
             } else if(data.zip_status != 1){
                 $("#zip_status_inactive").prop("checked", true);
             }
-            // @Todo
+            // TODO Edit zip
             $("#zip_provid").val(data.dis_provid);
             $("#zip_disid").val(data.zip_disid);
             

@@ -8,6 +8,7 @@ use App\Models\Identity;
 use App\Models\District;
 use App\Models\SubDistrict;
 use App\Models\Zip;
+use App\User;
 
 use Illuminate\Http\Request;
 use DataTables;
@@ -225,5 +226,18 @@ class PublicController extends Controller
         ];
 
         return $result;
+    }
+
+    public function emailChecker(Request $request){
+        if(sizeof(User::where('user_email','=', $request->email)->get()) > 0) {
+            return response()->json([
+                'success'=>0,
+                'Message'=>'User email exists'
+            ]);
+        } 
+        return response()->json([
+            'success'=>1,
+            'Message'=>'Email available'
+        ]);
     }
 }

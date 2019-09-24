@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Shandy
- * Date: 4/22/2019
- * Time: 7:30 PM
- */
 
 namespace App\Http\Controllers\DataMaster;
 
@@ -111,12 +105,6 @@ class CompanyController extends Controller
         } catch(\Illuminate\Database\QueryException $ex){
             return response()->json($ex->getMessage(), 500);
         }
-    }
-
-    public function getTemplate(){
-        
-        $data = DB::table('kka_dab.mst_assumption_template')->get();
-        return response()->json($data);
     }
 
     function companyTransaction(Request $request){

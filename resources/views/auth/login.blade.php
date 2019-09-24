@@ -17,9 +17,9 @@
                         <fieldset>
                             <label class="block clearfix">
                                         <span class="block input-icon input-icon-right">
-                                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="user_email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                            @if ($errors->has('email'))
+                                            @if ($errors->has('user_email'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('email') }}</strong>
                                                 </span>
@@ -30,9 +30,9 @@
 
                             <label class="block clearfix">
                                         <span class="block input-icon input-icon-right">
-                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="user_password" placeholder="Password" required autocomplete="current-password">
 
-                                            @if ($errors->has('password'))
+                                            @if ($errors->has('user_password'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('password') }}</strong>
                                                 </span>

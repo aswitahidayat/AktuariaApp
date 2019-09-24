@@ -30,7 +30,7 @@ class AgentController extends Controller
     {
         $datas = User::paginate(10);
 
-        return view('transaction.agent.index', compact('datas'));
+        return view('transaction.agent.agentIndex', compact('datas'));
     }
 
     public function search(Request $request)
@@ -52,7 +52,7 @@ class AgentController extends Controller
     }
 
     public function emailChecker(Request $request){
-        if(sizeof(User::where('email','=', $request->email)->get()) > 0) {
+        if(sizeof(User::where('user_email','=', $request->email)->get()) > 0) {
             return response()->json([
                 'success'=>0,
                 'Message'=>'User email exists'

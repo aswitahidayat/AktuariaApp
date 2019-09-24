@@ -50,6 +50,33 @@ class ProgramController extends Controller
         return view('datamaster.program.index', compact('datas'));
     }
 
+    public function search(Request $request){
+        if($request->ajax())
+        {
+            $query = OrderProgram::query();
+
+            if($request->name != ''){
+                $query->where('ordprg_name', 'LIKE', "%$request->name%");
+            }
+
+            $data =  $query->orderBy('ordprg_id')->get();
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordprg_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrderProgram">Edit</a>';
+                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordprg_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteOrderProgram">Delete</a>';
+                    return $btn;
+                })
+                ->addColumn('statusName', function($row){
+                    $btn = $row->ordprg_status == 1 ? "Active" : "Inactive" ;
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }   
+    }
+
     public function edit($ordprg_id)
     {
         $program = OrderProgram::find($ordprg_id);
@@ -79,4 +106,5 @@ class ProgramController extends Controller
         OrderProgram::find($ordprg_id)->delete();
         return response()->json(['success'=>'Program deleted successfully.']);
     }
+    
 }
