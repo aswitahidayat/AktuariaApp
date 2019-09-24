@@ -35,67 +35,8 @@
     <!-- /.sidebar-shortcuts -->
 
     <ul class="nav nav-list">
-        <li class="">
-            <a href="{{url('/home')}}">
-                <i class="menu-icon fa fa-tachometer"></i>
-                <span class="menu-text"> Dashboard </span>
-            </a>
-
-            <b class="arrow"></b>
-        </li>
         
-        @if (Auth::user()->user_type != '3')
-            @include('layouts.navbars.dataMasterManu') 
-
-        
-        @endif
-        <li class="">
-            <a href="#" class="dropdown-toggle">
-                <i class="menu-icon fa fa-money"></i>
-                <span class="menu-text"> Transaction </span>
-
-                <b class="arrow fa fa-angle-down"></b>
-            </a>
-
-            <b class="arrow"></b>
-
-            <ul class="submenu">
-                <li class="">
-                    <a href="{{route('agent.index')}}">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        Register Agent
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-
-                <li class="">
-                    <a href="{{route('order.index')}}">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        Order / SPK
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-                <li class="">
-                    <a href="{{route('vbayar.index')}}">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        Verifikasi Pembayaran
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-
-                <li class="">
-                    <a href="">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        Perhitungan
-                    </a>
-
-                    <b class="arrow"></b>
-                </li>
-            </ul>
-        </li>
+        @include('layouts.navbars.menubar') 
 
     </ul><!-- /.nav-list -->
 
