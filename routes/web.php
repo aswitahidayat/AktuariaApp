@@ -19,6 +19,7 @@ Route::post('/pub/searchDistrict','PublicController@searchDistrict')->name("sear
 Route::post('/pub/searchSubDistrict','PublicController@searchSubDistrict')->name("searchsubdistrictpub");
 Route::post('/pub/searchZip','PublicController@searchZip')->name("searchZipPub");
 Route::post('/pub/register','PublicController@register')->name("registerPub");
+Route::post('/pub/emailchecker','PublicController@emailChecker')->name("emailcheckerPub");
 
 Auth::routes();
 
@@ -38,7 +39,7 @@ Route::post('/searchcompany','DataMaster\CompanyController@search')->name("searc
 Route::resource('detail','DataMaster\CompanyDetailController');
 Route::get('company/detail/{id}','DataMaster\CompanyDetailController@detail');
 Route::post('company/getdetail','DataMaster\CompanyDetailController@getDetail');
-Route::get('getTemplate', 'DataMaster\CompanyController@getTemplate')->name("getTemplate");
+Route::get('getTemplate', 'AssumptionController@getAssumptionTemplate')->name("getTemplate");
 // Route::resource('companydetail','DataMaster\CompanyDetailController');
 
 Route::resource('region','DataMaster\RegionController');
@@ -67,13 +68,19 @@ Route::post('searchbenefitdtl','DataMaster\BenefitController@searchBenefitDtl')-
 Route::resource('service','DataMaster\OrderServiceController');
 Route::post('/searchservice','DataMaster\OrderServiceController@search')->name("searchservice");
 Route::resource('program','DataMaster\ProgramController');
-Route::get('/searchprogram','DataMaster\ProgramController@search');
+Route::post('/searchprogram','DataMaster\ProgramController@search')->name("searchprogram");
 Route::resource('agent','Transaction\AgentController');
 Route::post('/searchagent','Transaction\AgentController@search')->name("searchagent");
 Route::post('/emailchecker','Transaction\AgentController@emailChecker')->name("emailchecker");
 
 Route::resource('order','Transaction\OrderController');
-Route::get('/searchorder','Transaction\OrderController@search');
+Route::post('searchorder','Transaction\OrderController@search')->name("searchorder");
+Route::post('/getAssumption','Transaction\OrderAssumptionController@getAssumption')->name("getassumption");
+Route::post('/setAssumption','Transaction\OrderAssumptionController@setAssumption')->name("setassumption");
+Route::post('/getProgressive','Transaction\OrderAssumptionController@getProgressive')->name("getprogressive");
+Route::post('/setProgressive','Transaction\OrderAssumptionController@setProgressive')->name("setprogressive");
+
+
 Route::resource('vbayar','Transaction\VBayarController');
 Route::get('/searchvbayar','Transaction\VBayarController@search');
 
