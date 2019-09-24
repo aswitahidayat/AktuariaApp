@@ -99,7 +99,7 @@
                     {data: 'DT_RowIndex', orderable: false, searchable: false, name: 'DT_RowIndex'},
                     {name: 'action', orderable: false, searchable: false, data: 'action'},
                     {name: 'regis_name', data: 'regis_name'},//
-                    {name: 'email', data: 'email'},//
+                    {name: 'user_email', data: 'user_email'},//
 
                     {name: 'statusName', data: 'statusName'},//
                 ]
