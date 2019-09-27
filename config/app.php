@@ -230,7 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         //add byme
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-
+        'Helper' => App\Helpers\Helper::class,
     ],
 
 ];

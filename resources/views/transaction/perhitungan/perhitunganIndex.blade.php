@@ -77,8 +77,8 @@
 
     @include('transaction.order.orderForm')
 
-    {{-- @include('transaction.order.orderAssumptionForm') --}}
+    @include('transaction.order.orderAssumptionForm')
     
-    @include('transaction.order.orderScript') 
+    @include('transaction.perhitungan.perhitunganScript') 
 
 @endsection

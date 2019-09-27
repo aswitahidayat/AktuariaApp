@@ -83,9 +83,13 @@ Route::post('/getProgressive','Transaction\OrderAssumptionController@getProgress
 Route::post('/setProgressive','Transaction\OrderAssumptionController@setProgressive')->name("setprogressive");
 Route::post('/comfirmOrder','Transaction\OrderController@comfirmOrder')->name("comfirmorder");
 
-
 Route::resource('perhitungan','Transaction\PerhitunganController');
+Route::post('searchperhitungan','Transaction\PerhitunganController@search')->name("searchperhitungan");
 
 Route::resource('vbayar','Transaction\VBayarController');
-Route::get('/searchvbayar','Transaction\VBayarController@search');
+Route::post('/searchvbayar','Transaction\VBayarController@search')->name("searchvbayar");
+Route::post('/verificationOrder','Transaction\VBayarController@verificationOrder')->name("verificationOrder");
+
+Route::get('/upload', 'UploadController@upload');
+Route::post('/upload/proses', 'UploadController@proses_upload');
 

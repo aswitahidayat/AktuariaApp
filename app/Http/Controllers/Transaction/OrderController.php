@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 use Redirect,Response;
+use Helper;
 
 class OrderController extends Controller
 {
@@ -30,35 +31,17 @@ class OrderController extends Controller
 
     public function index()
     {
-        return view('transaction.order.orderIndex');
+        return view('transaction.perhitungan.perhitunganIndex');
     }
 
     public function search(Request $request)
     {
         if($request->ajax())
         {
-            $url = route('company.index');
-
-            $query = Order::
-            leftJoin('kka_dab.mst_order_program', 'ordhdr_program', '=', 'kka_dab.mst_order_program.ordprg_id')
-            ;
-
-            if($request->name != ''){
-                $query->where('ordhdr_ordnum', 'LIKE',  "%$request->name%");
-            }
-            $data = $query->orderBy('ordhdr_id')->get();
-            
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
-                    $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
-
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            $b['data']= $this->orderList($request, 'pagging');
+            $b['recordsFiltered']= $this->orderList($request, 'count');
+            $b['recordsTotal']= $this->orderList($request, 'count');
+            return $b;
         }
     }
 
@@ -116,7 +99,7 @@ class OrderController extends Controller
 
     public function edit($ordhdr_id)
     {
-        $data = Order::find($ordhdr_id);
+        $data = $this->orderList(new Request,'edit', $ordhdr_id);
         return response()->json($data);
     }
 
@@ -178,9 +161,51 @@ class OrderController extends Controller
 
     public function comfirmOrder(Request $request)
     {
-        Order::
-        where('ordhdr_id', $request->ordhdr_id)
-        ->update(['ordhdr_pay_status' => 'C',]);
-        return response()->json(['success'=>'Order comfirm successfully.']);
+        $exception = DB::transaction(function() use ($request) {
+            // var_dump($request->file);
+            // $file = $request->file;
+            // $file = imagecreatefromstring($request->file);
+            // $file->move('order_upload', $request->num.'.jpg');
+            Order::
+            where('ordhdr_id', $request->id)
+            ->update(['ordhdr_pay_status' => 'C',]);
+            Helper::upload($request->file, 'order_upload', $request->num.'.jpg');
+    
+        });
+        return is_null($exception) ? response()->json(['success'=>'Order comfirm successfully.']) : $exception;
+    }
+
+    // TODO status payment + button
+    public function orderList(Request $request, $reqType ='', $param = ''){
+        $query = Order::
+            leftJoin('kka_dab.mst_order_program AS prog', 'ordhdr_program', '=', 'prog.ordprg_id')
+            ->leftJoin('kka_dab.mst_order_service_hdr AS serv', 'ordhdr_service_hdr', '=', 'serv.ordsrvhdr_id')
+            ->leftJoin('kka_dab.mst_order_service_dtl AS sdtl', 'ordhdr_service_dtl', '=', 'sdtl.ordsrvdtl_id');
+
+
+        if($reqType == 'pagging'){
+            if($request->start != ''){
+                $length = $request->length != '' ? $request->length : 10;
+                $query->skip($request->start)->take($length)->get();
+            }
+            $pag = $query->get();
+            foreach ($pag as $key =>$row) {
+                $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
+                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="comfirmOrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
+    
+                $pag[$key]->DT_RowIndex = ($key+ 1)+$request->start;
+                $pag[$key]->statusName = 'Active';
+                $pag[$key]->action = $btn;
+            }
+            return $pag;
+        } else if ($reqType == 'get'){
+            return $query->get();
+        } else if ($reqType == 'count'){
+            return $query->count();
+        } else if ($reqType == 'edit'){
+            return $query->where('ordhdr_id', $param)->first();
+        }
+        
     }
 }

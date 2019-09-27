@@ -7,7 +7,7 @@
             </div>
             <form id="formOrder" action="javascript:void(0);">
                 <div class="modal-body">
-                    <input type="hidden" class="form-control" id="ordhdr_id" name="ordhdr_id" required>
+                    <input type="hidden"  id="ordhdr_id" name="ordhdr_id">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">

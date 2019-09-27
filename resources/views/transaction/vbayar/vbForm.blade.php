@@ -1,45 +1,3 @@
-<div class="modal fade" id="modalOrderAssumption" tabindex="-1" role="dialog" aria-labelledby="AddOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title blue lighter bigger bolder" id="modelHeadingOrderAssumption"><i class="ace-icon fa fa-shopping-cart cyan"></i> | Order Assumption</h4>
-            </div>
-            {{-- <form id="formOrderAssumption" action="javascript:void(0);"> --}}
-                <div class="modal-body">
-                    <input type="hidden" class="form-control" required>
-                    <div id="assumption"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
-                    <button id="submitModal" type="submit" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
-                </div>
-            {{-- </form> --}}
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="subModalOrderAssumption" tabindex="-1" role="dialog" aria-labelledby="AddOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title blue lighter bigger bolder" id="subModelHeadingOrderAssumption"><i class="ace-icon fa fa-shopping-cart cyan"></i> | Assumption Progressive</h4>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" class="form-control" required>
-                <div id="subAssumption" class="pb-20"></div>
-                <button type="button" class="btn btn-secondary" onclick="addProgressive()">addProgressive</button>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
-                <button id="submitSubModal" type="submit" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="comfirmOrder" aria-labelledby="AddOrderModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <form id="formComfirmOrder" onsubmit="submitComfirmOrder()" action="javascript:void(0);">
@@ -50,7 +8,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <input type="hidden" class="form-control" id="com_ordhdr_id" name="com_ordhdr_id" />                        
+                        <input type="hidde" class="form-control" id="com_ordhdr_id" name="com_ordhdr_id" />                        
                         <div class="form-group">
                             <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Order Number:</label>
                             <div class="col-sm-8 pb-20">
@@ -114,10 +72,11 @@
                         <div class="form-group">
                             <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Bukti Bayar:</label>
                             <div class="col-sm-8 pb-20">
-                                <div class="custom-file">
+                                {{-- <div class="custom-file">
                                     <input type="file" class="custom-file-input" name="com_fileupload" id="com_fileupload" style="padding-left: 24px;" required>
                                     <label class="custom-file-label" for="customFile"></label>
-                                </div>
+                                </div> --}}
+                                <img id="vbImage" width="150px" src="">
                             </div>
                         </div>
                     </div>
@@ -125,7 +84,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
-                    <button id="submitSubModal" type="submit" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
+                    <button id="submitSubModal" type="submit" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Verifikasi</button>
                 </div>
             </div>
         </form>

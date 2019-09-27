@@ -31,7 +31,7 @@
             searching: false,
             ordering: false,
             ajax: {
-                    url: "{{ route('searchorder') }}",
+                    url: "{{ route('searchperhitungan') }}",
                     type: "POST",
                     data: {
                         name: name
