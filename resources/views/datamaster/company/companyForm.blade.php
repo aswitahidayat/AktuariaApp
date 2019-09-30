@@ -50,7 +50,7 @@
                                 <div class="col-sm-9">
                                     <div class="input-group">
                                         <input type="number" min="0" class="form-control" 
-                                            id="jml_thn" placeholder="Enter Company Name" 
+                                            id="coytypehdr_count_year" name="coytypehdr_count_year" placeholder="Enter Company Name" 
                                             class="col-xs-10 col-sm-5" value="0"/>
                                             <a href="#"" class="input-group-addon"><span id="jml_thn_proc" >
                                                 <i class="fa fa-arrow-right"></i></span>

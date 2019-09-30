@@ -9,7 +9,6 @@
     }
     
     function searchProgram(div, selected = ''){
-        debugger;
         $.ajax({
             url: "{{ route('searchprogram') }}",
             type: "POST",

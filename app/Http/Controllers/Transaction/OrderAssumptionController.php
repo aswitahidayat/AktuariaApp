@@ -74,7 +74,6 @@ class OrderAssumptionController extends Controller
         return response()->json($data);
     }
 
-    // TODO Edit detail type jadi progresive
     public function setProgressive(Request $request){
         $exception = DB::transaction(function() use ($request) {
             foreach ($request->dataProgressive as $key =>$prog) {

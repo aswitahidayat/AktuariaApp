@@ -164,7 +164,6 @@
         $('body').on('click', `.edit${module}`, function () {
             var id = $(this).data('id');
             $.get("{{ route('agent.index') }}" +`/${id}/edit`, (data) => {
-                debugger;
                 $('#modelHeading'+module).html(`Edit ${module}`);
                 $(`#saveBtn${module}`).html("Edit");
                 $(`#modal${module}`).modal('show');

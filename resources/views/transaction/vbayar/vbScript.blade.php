@@ -20,7 +20,7 @@
             searching: false,
             ordering: false,
             ajax: {
-                    url: "{{ route('searchvbayar') }}",
+                    url: "{{ route('searchverify') }}",
                     type: "POST",
                     data: {
                         name: name
@@ -32,7 +32,7 @@
                 {name: 'ordhdr_ordnum', data: 'ordhdr_ordnum'},//
                 {name: 'ordprg_name', data: 'ordprg_name'},//
                 {name: 'ordhdr_period_lastyear', data: 'ordhdr_period_lastyear'},//
-                {name: 'ordhdr_pay_status', data: 'ordhdr_pay_status'},//
+                {name: 'paymentStatusName', data: 'paymentStatusName'},//
             ]
 
         });
@@ -74,40 +74,15 @@
             type: "POST",
             dataType: 'json',
             success: function (data) {
-                // $(`#form${module}`).trigger("reset");
-                // $(`#modal${module}`).modal('hide');
                 $(`#comfirmOrder`).modal('hide');
                 table.draw();
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
             },
             error: function (data) {
                 $(`#modal${module}`).modal('hide');
                 console.log('Error:', data);
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
-
             }
         });
     })
-
-
-    function submitComfirmOrder(e){
-        var formData = new FormData(); // Currently empty
-        // formData.append('id', $('#com_ordhdr_id').val());
-        // formData.append('num', $('#com_ordhdr_ordnum').val());
-        // formData.append('file', $('#com_fileupload').prop('files')[0] );
-
-        // // var id = $('#com_ordhdr_id').val();
-        // // var num = $('#com_ordhdr_ordnum').val();
-        // // var file = $('#com_fileupload').prop('files')[0];
-        // debugger;
-
-        
-
-        // var
-        // var gambar = fileGambar
-    }
 
 
 </script>

@@ -34,7 +34,7 @@ class SubDistrictController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editSubDistrict">Edit</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
+                    // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
                     return $btn;
                 })
                 ->addColumn('statusName', function($row){
@@ -115,7 +115,7 @@ class SubDistrictController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editSubDistrict">Edit</a>';
-                $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
+                // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->subdis_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteSubDistrict">Delete</a>';
                 return $btn;
             })
             ->addColumn('statusName', function($row){

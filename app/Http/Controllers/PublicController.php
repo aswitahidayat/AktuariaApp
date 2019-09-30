@@ -6,13 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Identity;
 use App\Models\District;
+use App\Models\Province;
 use App\Models\SubDistrict;
 use App\Models\Zip;
 use App\User;
 
+use App\Models\Register\Regist;
+use App\Models\Register\Partner;
+
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
+use Illuminate\Support\Facades\Hash;
 
 class PublicController extends Controller
 {
@@ -49,14 +54,12 @@ class PublicController extends Controller
         if ($request->ajax()) {
             $output = "";
 
-            $query = DB::table('kka_dab.mst_province');
-
+            $query = Province::query()->orderBy('prov_id');
             if($request->name != ''){
                 $query->where('prov_name', 'LIKE', "%$request->name%");
             }
 
-            $data =  $query->orderBy('prov_id')->get();
-
+            $data =  $query->get();
             return response()->json($data);
         }
     }
@@ -161,7 +164,7 @@ class PublicController extends Controller
             'regis_coytype_hdr' => $request->comptype, 
             'regis_coy_npwp' => $request->compnpwp,
             'regis_coy_addr' => $request->compaddress, 
-            'regis_coy_zipcodeid' => $request->comppos,
+            'regis_coy_zipcode' => $request->comppos,
             'regis_coy_provid' => $request->compprov,
             'regis_coy_disid' => $request->compkota,
             'regis_coy_subdisid' => $request->compkec,
@@ -195,7 +198,7 @@ class PublicController extends Controller
             'bizpart_coytype_hdr' => $request->comptype, 
             'bizpart_coy_npwp' => $request->compnpwp,
             'bizpart_coy_addr' => $request->compaddress, 
-            'bizpart_coy_zipcodeid' => $request->comppos,
+            'bizpart_coy_zipcode' => $request->comppos,
             'bizpart_coy_provid' => $request->compprov, 
             'bizpart_coy_disid' => $request->compkota, 
             'bizpart_coy_subdisid' => $request->compkec,
@@ -217,12 +220,12 @@ class PublicController extends Controller
         $result = [
             'user_bizpartid' => $bizpart_id,
             'user_type' => 3,
-            'user_name' => $request->username,
-            'email' => $request->usremail,
-            'password' => Hash::make($request->usrpassword),
+            'user_name' => $request->usremail,
+            'user_email' => $request->usremail,
+            'user_password' => Hash::make($request->usrpassword),
             'user_status' => 1,
             'user_created_by' => 1,
-            'created_at' => $now
+            'user_created_date' => $now
         ];
 
         return $result;

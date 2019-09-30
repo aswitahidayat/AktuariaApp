@@ -229,7 +229,6 @@ $(function () {
         e.preventDefault();
         $(this).html('Sending..');
         var data = $(`#form${module}`).serialize();
-        debugger;
         $.ajax({
             data: $(`#form${module}`).serialize(),
             url: "{{ route('district.store') }}",

@@ -21,12 +21,12 @@
                                     
                             </label>
 
-                            <label class="block clearfix">
+                            {{-- <label class="block clearfix">
                                 <span class="block input-icon input-icon-right">
                                     <input id="username" name="username" type="text" class="form-control" placeholder="Username" />
                                     <i class="ace-icon fa fa-user"></i>
                                 </span>
-                            </label>
+                            </label> --}}
 
                             <label class="block clearfix">
                                 <span class="block input-icon input-icon-right">
@@ -242,7 +242,7 @@
                                 <span class="bigger-110">Reset</span>
                             </button>
 
-                            <button type="button" class="width-65 pull-right btn btn-sm btn-success">
+                            <button type="submit" class="width-65 pull-right btn btn-sm btn-success">
                                 <span class="bigger-110">Register</span>
 
                                 <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -374,6 +374,15 @@
         $("#compemail").blur(function() {
             checkEmailCom();
         });
+
+        $("#usrrepassword").blur(function() {
+            checkPassword();
+        });
+
+        $( `#formRegist` ).submit(function() {
+            submitFunction();
+        });
+
     });    
 
     function setKota(){
@@ -453,8 +462,8 @@
                     return {
                         results:  $.map(data, function (zip) {
                             return {
-                            text: zip.zipCode,
-                            id: zip.zipcode_id
+                            text: zip.zipcode,
+                            id: zip.zipcode
                             }
                         })
                     };
@@ -516,6 +525,35 @@
                 }
             });   
         }
+    }
+
+    function checkPassword(){
+        if( $("#usrpassword").val() !=  $("#usrrepassword").val()){            
+            $("#usrrepassword").val("")
+            $('#pass_err').show()
+        } else{
+            $('#pass_err').hide()
+        }
+    }
+
+    function submitFunction(){
+        $.ajax({
+            data:  $("#formRegist").serialize(),
+            url: "{{ route('registerPub') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                alert("Register Berhasil");
+                location.reload();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+                // $(`#saveBtn${module}`).html('Save');
+                // $(`#saveBtn${module}`).removeAttr("disabled");
+
+            }
+        }); 
+        
     }
     
 </script>

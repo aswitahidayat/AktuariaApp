@@ -104,12 +104,8 @@
         $(`#saveBtn${module}`).html('Sending..');
         $(`#saveBtn${module}`).attr("disabled", true);
         var data = {};
-        // var formdata = $(`#form${module}`).serializeArray();
-        // $(formdata).each(function(index, obj){
-        //     data[obj.name] = obj.value;
-        // });
+
         data.detail = normalize();
-        // debugger;
         $.ajax({
             data: $(`#form${module}`).serialize(),
             url: "{{ route('mortalita.store') }}",
@@ -184,16 +180,12 @@
     }
 
     function normalize(){
-        // let num = $("#jml_thn").val();
         var dataReturn = [];
         var varresult = $('.mortalita_detail');
 
         if(varresult.length > 0){
-            // debugger;
             $.each(varresult, function(index, val) {
-                // debugger;
                 if(!document.getElementById(`form_dtl_${index}_id`).value){
-                    // debugger;
                     var obj ={
                         mortalitadtl_agework: document.getElementById(`form_dtl_${index}_agework`) ? document.getElementById(`form_dtl_${index}_agework`).value : 0 ,
                         mortalitadtl_percentage: document.getElementById(`form_dtl_${index}_percentage`) ? document.getElementById(`form_dtl_${index}_percentage`).value : 0,

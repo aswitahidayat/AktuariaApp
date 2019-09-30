@@ -43,7 +43,6 @@
                 {name: 'ordhdr_ordnum', data: 'ordhdr_ordnum'},//
                 {name: 'ordprg_name', data: 'ordprg_name'},//
                 {name: 'ordhdr_period_lastyear', data: 'ordhdr_period_lastyear'},//
-                {name: 'ordhdr_pay_status', data: 'ordhdr_pay_status'},//
             ]
 
         });
@@ -54,8 +53,6 @@
         fill_datatable($("#search_name").val());
     });
     
-    //TODO celar upload file & Table
-    //TODO period count min 2
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
@@ -67,7 +64,6 @@
         searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
     });
 
-    //TODO Edit Table upload
     $('body').on('click', `.edit${module}`, function () {
         var id = $(this).data('id');
 
@@ -84,7 +80,6 @@
             if(data.ordhdr_pay_date){
                 data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
             }
-            debugger;
             $.each(data, (key,val) => {
                 $(`#${key}`).val(val);
             });
@@ -109,14 +104,12 @@
             },
             success: function (datas) {
                 let varHtml = ''
-                // modalOrderAssumption
                 
                 getTemplate(datas.assumtionData, datas.periodCount)
                 $(`#modalOrderAssumption`).modal('show')
             },
             error: function (data) {
                 console.log('Error:', data);
-                // $(`#modal${module}`).modal('show');
             }
         });
     });
@@ -150,19 +143,13 @@
 
         if (this.files && this.files[0]) {
             var myFile = this.files[0];
-            // fileGambar = this.files[0];
             var reader = new FileReader();
             
             reader.addEventListener('load', function (e) {
-                
-                // let csvdata = e.target.result; 
-                // var data = Papa.parse(csvdata, {header: true,});
-                
                 fileGambar = e.target.result;
             });
             
             var a = reader.readAsBinaryString(myFile);
-            debugger;
             var fileName = url.split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         }
@@ -182,7 +169,7 @@
             tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
             tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
             tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
-            tblHtml += `<td> ${item.Hp ? item.HP : '-'} </td>`;
+            tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
 
             tblHtml += `<td> ${item.Startdate ? item.Startdate : '-'} </td>`;
             tblHtml += `<td> ${item.Salery ? item.Salery : '-'} </td>`;
@@ -228,7 +215,6 @@
         });
         
         dataall.detail = fileData;
-        debugger;
 
         $.ajax({
             data: dataall,
@@ -383,11 +369,9 @@
                 })
 
                 $(`#subAssumption`).html(varHtml);
-                // $(`#ordhdr_id`).val(id);
             },
             error: function (data) {
                 console.log('Error:', data);
-                // $(`#modal${module}`).modal('show');
             }
         });
     }
@@ -520,11 +504,6 @@
         formData.append('num', $('#com_ordhdr_ordnum').val());
         formData.append('file', $('#com_fileupload').prop('files')[0] );
 
-        // var id = $('#com_ordhdr_id').val();
-        // var num = $('#com_ordhdr_ordnum').val();
-        // var file = $('#com_fileupload').prop('files')[0];
-        debugger;
-
         $.ajax({
             data: formData,
             url: "{{ route('comfirmorder') }}",
@@ -533,24 +512,14 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                // $(`#form${module}`).trigger("reset");
-                // $(`#modal${module}`).modal('hide');
                 $(`#comfirmOrder`).modal('hide');
                 table.draw();
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
             },
             error: function (data) {
                 $(`#modal${module}`).modal('hide');
                 console.log('Error:', data);
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
-
             }
         });
-
-        // var
-        // var gambar = fileGambar
     }
     
 </script>

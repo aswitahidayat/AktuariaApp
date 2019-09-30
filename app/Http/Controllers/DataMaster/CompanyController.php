@@ -126,6 +126,7 @@ class CompanyController extends Controller
                         'coytypedtl_hdrid' => $q->coytypehdr_id,
                         'coytypedtl_assumpt_sp' => $value['coytypedtl_assumpt_sp'],
                         'coytypedtl_assumpt_code' => $value['coytypedtl_assumpt_code'],
+                        'coytypehdr_count_year' => $value['coytypehdr_count_year'],
                         'coytypedtl_assumpt_value' => $value['value'],
                         'coytypedtl_status' => 1,
                         'coytypedtl_created_by' => 1,

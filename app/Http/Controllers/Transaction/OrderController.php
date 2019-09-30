@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Shandy
- * Date: 4/22/2019
- * Time: 7:30 PM
- */
 
 namespace App\Http\Controllers\Transaction;
 
@@ -26,12 +20,11 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('admin');
     }
 
     public function index()
     {
-        return view('transaction.perhitungan.perhitunganIndex');
+        return view('transaction.order.orderIndex');
     }
 
     public function search(Request $request)
@@ -45,7 +38,17 @@ class OrderController extends Controller
         }
     }
 
-    //TODO Bizpartner
+    public function searchVerify(Request $request)
+    {
+        if($request->ajax())
+        {
+            $b['data']= $this->orderList($request, 'pagging', 'varify');
+            $b['recordsFiltered']= $this->orderList($request, 'count');
+            $b['recordsTotal']= $this->orderList($request, 'count');
+            return $b;
+        }
+    }
+
     public function store(Request $request)
     {
         $exception = DB::transaction(function() use ($request) {
@@ -69,11 +72,12 @@ class OrderController extends Controller
                     'ordhdr_pay_status' => 'N',
         
                     'ordhdr_created_by' => Auth::user()->user_type,
+                    'ordhdr_bizpartid' => Auth::user()->user_bizpartid,
+
                     'ordhdr_created_date' => date(now()),
                 ]);
-                // $data->save();
 
-                $this->orderDetail($request->detail, $q->ordhdr_id, $q->ordhdr_ordnum);
+                $this->setOrderDetail($request->detail, $q->ordhdr_id, $q->ordhdr_ordnum);
                 $this->setAssumption($q->ordhdr_id, $q->ordhdr_ordnum, $q->ordhdr_period_count, $q->ordhdr_period_lastyear);
             }else{
                 Order::
@@ -89,7 +93,7 @@ class OrderController extends Controller
                         'ordhdr_amount' => $request->ordhdr_amount
                         ]);
 
-                $this->orderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
+                $this->setOrderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
             }
         });
 
@@ -103,7 +107,7 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
-    public function orderDetail($detail, $id, $num){
+    public function setOrderDetail($detail, $id, $num){
         foreach ($detail as $key =>$value) {
             $cd = OrderDtl::create([
                 'orddtl_hdrid' => $id,
@@ -162,10 +166,6 @@ class OrderController extends Controller
     public function comfirmOrder(Request $request)
     {
         $exception = DB::transaction(function() use ($request) {
-            // var_dump($request->file);
-            // $file = $request->file;
-            // $file = imagecreatefromstring($request->file);
-            // $file->move('order_upload', $request->num.'.jpg');
             Order::
             where('ordhdr_id', $request->id)
             ->update(['ordhdr_pay_status' => 'C',]);
@@ -175,13 +175,19 @@ class OrderController extends Controller
         return is_null($exception) ? response()->json(['success'=>'Order comfirm successfully.']) : $exception;
     }
 
-    // TODO status payment + button
     public function orderList(Request $request, $reqType ='', $param = ''){
         $query = Order::
             leftJoin('kka_dab.mst_order_program AS prog', 'ordhdr_program', '=', 'prog.ordprg_id')
             ->leftJoin('kka_dab.mst_order_service_hdr AS serv', 'ordhdr_service_hdr', '=', 'serv.ordsrvhdr_id')
             ->leftJoin('kka_dab.mst_order_service_dtl AS sdtl', 'ordhdr_service_dtl', '=', 'sdtl.ordsrvdtl_id');
+            
+        if($request->name != ''){
+            $query->where('ordhdr_ordnum', 'LIKE',"%$request->name%");
+        }
 
+        if($param == 'varify'){
+            $query->where('ordhdr_pay_status', 'N');
+        }
 
         if($reqType == 'pagging'){
             if($request->start != ''){
@@ -190,22 +196,64 @@ class OrderController extends Controller
             }
             $pag = $query->get();
             foreach ($pag as $key =>$row) {
-                $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
-                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
-                $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="comfirmOrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
-    
-                $pag[$key]->DT_RowIndex = ($key+ 1)+$request->start;
+                $pag[$key]->DT_RowIndex = ($key+ 1 + $request->start)+$request->start;
                 $pag[$key]->statusName = 'Active';
-                $pag[$key]->action = $btn;
+                $pag[$key]->action = $this->setActionButton($row, $param);
+                $pag[$key]->paymentStatusName = $this->paymentStatus($row);
+                
             }
             return $pag;
         } else if ($reqType == 'get'){
             return $query->get();
         } else if ($reqType == 'count'){
             return $query->count();
-        } else if ($reqType == 'edit'){
+        } else if ($reqType == 'edit'){            
             return $query->where('ordhdr_id', $param)->first();
         }
         
+    }
+
+    function setActionButton($row, $param){
+        $btn ='';
+        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
+        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"   class="edit btn btn-primary btn-sm editOrder">Lembar</a>';
+        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  class="edit btn btn-primary btn-sm editOrder">Buku</a>';
+
+        // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
+        if($row->ordhdr_pay_status == 'N'){
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="comfirmOrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
+        }
+        if($param == 'varify'){
+            $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="verifrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Verifikasi</a>';
+        }
+
+        return $btn;
+    }
+
+    function paymentStatus($row){
+        if($row->ordhdr_pay_status == 'P'){
+            return 'Paid';
+        } else if ($row->ordhdr_pay_status == 'C'){
+            return 'Confirm';
+        } else if ($row->ordhdr_pay_status == 'N'){
+            return 'New';
+        }
+    }
+
+    public function getOrderDetail(Request $request){
+        $data = OrderDtl::where('orddtl_hdrid', $request->ordhdr_id)
+        ->get(array(
+            'orddtl_npk as NPK',
+            'orddtl_name as Name',
+            'orddtl_sex as Gender',
+            'orddtl_birthdate as Birthdate',
+            'orddtl_ktp_num as KTP',
+            'orddtl_npwp_num as NPWP',
+            'orddtl_addr as Address',
+            'orddtl_hp as HP',
+            'orddtl_startdate as Startdate',
+            'orddtl_curr_sal as Salery',
+        ));
+        return response()->json($data);
     }
 }

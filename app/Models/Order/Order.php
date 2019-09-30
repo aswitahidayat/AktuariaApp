@@ -15,6 +15,6 @@ class Order extends Model
     protected $fillable = [
         'ordhdr_ordnum', 'ordhdr_program','ordhdr_service_hdr', 'ordhdr_period_count', 'ordhdr_period_lastyear',
         'ordhdr_pension_age','ordhdr_sal_increase', 'ordhdr_date', 'ordhdr_pay_date', 'ordhdr_amount',
-        'ordhdr_pay_status', 'ordhdr_created_by', 'ordhdr_created_date'
+        'ordhdr_pay_status', 'ordhdr_created_by', 'ordhdr_created_date', 'ordhdr_bizpartid',
     ];
 }

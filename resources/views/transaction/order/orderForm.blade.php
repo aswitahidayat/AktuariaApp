@@ -36,7 +36,7 @@
                                 <label for="identity-number" class="col-sm-4 control-label no-padding-right bolder">Period Count:</label>
                                 <div class="col-sm-8 pb-20">
                                     
-                                    <input type="number" class="form-control" id="ordhdr_period_count" name="ordhdr_period_count" required>
+                                    <input type="number" min="2" class="form-control" id="ordhdr_period_count" name="ordhdr_period_count" required>
                                 </div>
                             </div>
                             <div class="form-group">

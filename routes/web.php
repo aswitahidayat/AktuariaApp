@@ -77,6 +77,8 @@ Route::post('/emailchecker','Transaction\AgentController@emailChecker')->name("e
 
 Route::resource('order','Transaction\OrderController');
 Route::post('searchorder','Transaction\OrderController@search')->name("searchorder");
+Route::post('searchVerify','Transaction\OrderController@searchVerify')->name("searchverify");
+Route::post('/getOrderDetail','Transaction\OrderController@getOrderDetail')->name("getorderdetail");
 Route::post('/getAssumption','Transaction\OrderAssumptionController@getAssumption')->name("getassumption");
 Route::post('/setAssumption','Transaction\OrderAssumptionController@setAssumption')->name("setassumption");
 Route::post('/getProgressive','Transaction\OrderAssumptionController@getProgressive')->name("getprogressive");

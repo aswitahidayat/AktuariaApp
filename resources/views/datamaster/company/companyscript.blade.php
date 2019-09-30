@@ -108,7 +108,8 @@
                 coytypehdr_id: $("#coytypehdr_id").val(),
                 coytypehdr_name: $("#coytypehdr_name").val(),
                 coytypehdr_desc: $("#coytypehdr_desc").val(),
-                coytypehdr_status: $("#coytypehdr_status").val()
+                coytypehdr_status: $("#coytypehdr_status").val(),
+                coytypehdr_count_year: $("#coytypehdr_count_year".val())
             },
             detail: normalize(),
         }
@@ -148,7 +149,7 @@
             success: function (data) {
                 let provHtml = '';
                 varresult = data;
-                let num = vardata.length ? vardata.length/6 : $("#jml_thn").val();
+                let num = vardata.length ? vardata.length/6 : $("#coytypehdr_count_year").val();
                 for (i = 1; i <= num; i++) {
                     var countData = 0;
                     provHtml +=  `
@@ -259,7 +260,7 @@
     }
 
     function normalize(){
-        let num = $("#jml_thn").val();
+        let num = $("#coytypehdr_count_year").val();
         var dataReturn = [];
         for (i = 1; i <= num; i++) {
             $.each(varresult, function(index, val) {

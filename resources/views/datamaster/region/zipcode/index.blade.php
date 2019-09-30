@@ -205,7 +205,6 @@ $(function () {
                     getDistrictZip(data.subdis_disid);
                     getSubDistrictZip(data.subdis_id);
                     getVillageZip(data.zip_villid);
-                    debugger;
                 },
                 error: function (data) {
                     console.log('Error:', data);

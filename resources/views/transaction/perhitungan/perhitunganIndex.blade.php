@@ -62,7 +62,6 @@
                             <th>Nomor Order</th>
                             <th>Program</th>
                             <th>Last Year Period</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
 

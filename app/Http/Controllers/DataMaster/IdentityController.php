@@ -33,7 +33,7 @@ class IdentityController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->typeid_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editIdentity">Edit</a>';
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->typeid_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteIdentity">Delete</a>';
+                    // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->typeid_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteIdentity">Delete</a>';
                     return $btn;
                 })
                 ->addColumn('statusName', function($row){

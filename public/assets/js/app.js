@@ -91,18 +91,3 @@ function selectSearch(div = '', modal = '', route = '', mod = ''){
         }
     });
 }
-
-
-// function checkImage(image_url = ''){
-//     if(image_url != ''){
-//         $.get(image_url)
-//         .done(function() {
-//             debugger; 
-//             return image_url;
-//         }).fail(function() { 
-//             debugger;
-//             return "/noimageavailable.png";
-//         })
-//     }
-// }
-

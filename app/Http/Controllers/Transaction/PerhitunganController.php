@@ -39,13 +39,15 @@ class PerhitunganController extends Controller
         }
     }
 
-    // TODO status payment + button
     public function orderList(Request $request, $reqType ='', $param = ''){
         $query = Order::
             leftJoin('kka_dab.mst_order_program AS prog', 'ordhdr_program', '=', 'prog.ordprg_id')
             ->leftJoin('kka_dab.mst_order_service_hdr AS serv', 'ordhdr_service_hdr', '=', 'serv.ordsrvhdr_id')
             ->leftJoin('kka_dab.mst_order_service_dtl AS sdtl', 'ordhdr_service_dtl', '=', 'sdtl.ordsrvdtl_id');
 
+        if($request->name != ''){
+            $query->where('ordhdr_ordnum', 'LIKE',"%$request->name%");
+        }
 
         if($reqType == 'pagging'){
             if($request->start != ''){

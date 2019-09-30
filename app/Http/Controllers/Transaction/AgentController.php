@@ -176,7 +176,7 @@ class AgentController extends Controller
 
         $result = [
             'bizpart_regisid' => $regis_id,
-            'bizpart_num' => 3,
+            'bizpart_num' => $this->bizpartnum(),
             'bizpart_user_type' => 2,
             'bizpart_pic_email' => $request->agent_email,
             'bizpart_pic_name' => $request->agent_name,
@@ -206,5 +206,20 @@ class AgentController extends Controller
         ];
 
         return $result;
+    }
+
+    public function bizpartnum():?string 
+    {
+        $year= date("Y");
+        $count = 1;
+        $q = Partner::where('bizpart_num', 'LIKE', "%$year%")
+        ->where('user_type', 3)
+        ->orderBy('bizpart_id', 'desc')->first();
+        if(isset($q->ordhdr_ordnum)){
+            $var2 = str_replace($year.'AGN',"",$q->ordhdr_ordnum);
+            $count = str_pad( $var2+1, 5, "0", STR_PAD_LEFT );
+        }
+
+        return $year.'AGN'.$count;
     }
 }

@@ -3,6 +3,7 @@
     var table = {};
     var fileData = [];
     var fileGambar = '';
+
     $(function () {
         $.ajaxSetup({
             headers: {
@@ -43,7 +44,7 @@
                 {name: 'ordhdr_ordnum', data: 'ordhdr_ordnum'},//
                 {name: 'ordprg_name', data: 'ordprg_name'},//
                 {name: 'ordhdr_period_lastyear', data: 'ordhdr_period_lastyear'},//
-                {name: 'ordhdr_pay_status', data: 'ordhdr_pay_status'},//
+                {name: 'paymentStatusName', data: 'paymentStatusName'},//
             ]
 
         });
@@ -54,8 +55,6 @@
         fill_datatable($("#search_name").val());
     });
     
-    //TODO celar upload file & Table
-    //TODO period count min 2
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
@@ -63,11 +62,12 @@
         $('#modelHeading'+module).html(`Create New  ${module}`);
         $(`#modal${module}`).modal('show');
         $('#userUploadTbl').html('');
+        $('#ordhdr_service_dtl').html('');
+        
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
         searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
     });
 
-    //TODO Edit Table upload
     $('body').on('click', `.edit${module}`, function () {
         var id = $(this).data('id');
 
@@ -76,6 +76,7 @@
             $(`#subdis_provid`).html("");
             $('#modelHeading'+module).html(`Edit ${module}`);
             $(`#saveBtn${module}`).html("Edit");
+            $('#ordhdr_service_dtl').html('');
 
             if(data.ordhdr_date){
                 data.ordhdr_date = dateFormat(data.ordhdr_date)
@@ -84,9 +85,32 @@
             if(data.ordhdr_pay_date){
                 data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
             }
-            debugger;
+            
             $.each(data, (key,val) => {
                 $(`#${key}`).val(val);
+            });
+
+            // 
+            // debugger;
+
+            $.ajax({
+                url: "{{ route('getorderdetail') }}",
+                type: "POST",
+                data: {
+                    ordhdr_id: id
+                },
+                success: function (datas) {
+                    // let varHtml = ''
+                    // modalOrderAssumption
+                    
+                    // getTemplate(datas.assumtionData, datas.periodCount)
+                    // $(`#modalOrderAssumption`).modal('show')
+                    setTemplateTableUser(datas);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    // $(`#modal${module}`).modal('show');
+                }
             });
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
@@ -171,50 +195,8 @@
 
     $('#btnUpload').click(function(){
         $('#userUploadTbl').html('');
-        var tblHtml = '';
-        fileData.forEach(function(item, index){
-            tblHtml += '<tr>';
-            tblHtml += `<td> ${index + 1} </td>`;
-            tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
-            tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
-            tblHtml += `<td> ${item.Gender ? item.Gender : '-'} </td>`;
-            tblHtml += `<td> ${item.Birthdate ? item.Birthdate : '-'} </td>`;
-            tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
-            tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
-            tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
-            tblHtml += `<td> ${item.Hp ? item.HP : '-'} </td>`;
-
-            tblHtml += `<td> ${item.Startdate ? item.Startdate : '-'} </td>`;
-            tblHtml += `<td> ${item.Salery ? item.Salery : '-'} </td>`;
-
-            tblHtml += '</tr>';
-        });
-        var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>NPK</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Birthdate</th>
-                    <th>KTP</th>
-                    <th>NPWP</th>
-                    <th>Address</th>
-                    <th>HP</th>
-                    <th>Startdate</th>
-                    <th>Salery</th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                ${tblHtml}
-            </tbody>
-        </table>`;
-
-        $('#userUploadTbl').html(varHtml);
-
-        $('#tableUserUpload').DataTable();
+        setTemplateTableUser(fileData)
+        
     })
 
     $( `#form${module}` ).submit(function( e ) {
@@ -280,6 +262,54 @@
                 cache: true
             }
         });
+    }
+
+    function setTemplateTableUser(varData){
+        var tblHtml = '';
+
+        varData.forEach(function(item, index){
+            tblHtml += '<tr>';
+            tblHtml += `<td> ${index + 1} </td>`;
+            tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
+            tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
+            tblHtml += `<td> ${item.Gender ? item.Gender : '-'} </td>`;
+            tblHtml += `<td> ${item.Birthdate ? item.Birthdate : '-'} </td>`;
+            tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
+            tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
+            tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
+            tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
+
+            tblHtml += `<td> ${item.Startdate ? item.Startdate : '-'} </td>`;
+            tblHtml += `<td> ${item.Salery ? item.Salery : '-'} </td>`;
+
+            tblHtml += '</tr>';
+        });
+        var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NPK</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Birthdate</th>
+                    <th>KTP</th>
+                    <th>NPWP</th>
+                    <th>Address</th>
+                    <th>HP</th>
+                    <th>Startdate</th>
+                    <th>Salery</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                ${tblHtml}
+            </tbody>
+        </table>`;
+
+        $('#userUploadTbl').html(varHtml);
+
+        $('#tableUserUpload').DataTable();
     }
 
     function getTemplate(vardata ={}, periodeCount){
@@ -523,7 +553,7 @@
         // var id = $('#com_ordhdr_id').val();
         // var num = $('#com_ordhdr_ordnum').val();
         // var file = $('#com_fileupload').prop('files')[0];
-        debugger;
+        // debugger;
 
         $.ajax({
             data: formData,
