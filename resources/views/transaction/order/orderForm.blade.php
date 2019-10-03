@@ -45,6 +45,13 @@
                                     <input type="number" class="form-control" id="ordhdr_period_lastyear" name="ordhdr_period_lastyear" required>
                                 </div>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="birth-place" class="col-sm-4 control-label no-padding-right bolder">Min Age:</label>
+                                <div class="col-sm-8 pb-20">
+                                    <input type="number" class="form-control" id="ordhdr_work_age_min" name="ordhdr_work_age_min" required>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="birth-place" class="col-sm-4 control-label no-padding-right bolder">Pension Age:</label>
                                 <div class="col-sm-8 pb-20">
@@ -87,12 +94,12 @@
                     <hr>
                     <div class="row">
                         <label for="order-number" class="col-sm-2 control-label no-padding-right bolder">Upload Employe Data:</label>
-                        <div class="col-sm-8 pb-20">
+                        <div class="col-sm-8 pb-20" id="tombol_upload">
                             {{-- <input type="file" name="fileupload" id="fileupload" class="form-control-file" />
                             <button type="button" class="btn btn-secondary" id="btnUpload" >Upload</button> --}}
                             <div class="col-sm-8 pb-20">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="fileupload" id="fileupload" style="padding-left: 24px;" required>
+                                    <input type="file" class="custom-file-input" name="fileupload" id="fileupload" style="padding-left: 24px;" >
                                     <label class="custom-file-label" for="customFile"></label>
                                 </div>
                             </div>

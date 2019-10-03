@@ -87,10 +87,18 @@ Route::post('/comfirmOrder','Transaction\OrderController@comfirmOrder')->name("c
 
 Route::resource('perhitungan','Transaction\PerhitunganController');
 Route::post('searchperhitungan','Transaction\PerhitunganController@search')->name("searchperhitungan");
+Route::post('hitungOrder','Transaction\PerhitunganController@hitungOrder')->name("hitungorder");
+Route::post('getKaryawan','Transaction\PerhitunganController@getKaryawan')->name("getkaryawan");
+Route::post('getTahun','Transaction\PerhitunganController@getTahun')->name("gettahun");
+Route::post('cariHasil','Transaction\PerhitunganController@cariHasil')->name("carihasil");
+Route::post('cariHasilDtl','Transaction\PerhitunganController@cariHasilDtl')->name("carihasildtl");
 
 Route::resource('vbayar','Transaction\VBayarController');
 Route::post('/searchvbayar','Transaction\VBayarController@search')->name("searchvbayar");
 Route::post('/verificationOrder','Transaction\VBayarController@verificationOrder')->name("verificationOrder");
+
+Route::resource('setting','SettingController');
+Route::post('/changePassword','SettingController@changePassword')->name("changepassword");
 
 Route::get('/upload', 'UploadController@upload');
 Route::post('/upload/proses', 'UploadController@proses_upload');

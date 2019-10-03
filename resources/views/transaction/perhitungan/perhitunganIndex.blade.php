@@ -11,7 +11,7 @@
                 </li>
 
                 <li>
-                    <a href="#">Order / SPK</a>
+                    <a href="#">Perhitungan</a>
                 </li>
             </ul>
         </div>
@@ -22,7 +22,7 @@
                         Transaction
                     </small>
                     <i class="ace-icon fa fa-angle-double-right"></i>
-                    Order / SPK
+                    Perhitungan
                 </h1>
             </div>
 
@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label no-padding-right">Order Number:</label>
+                            <label class="col-sm-4 control-label no-padding-right">Perhitungan:</label>
                             <div class="col-sm-8 pb-20">
                                 <input type="text" class="form-control" id="search_name">
                             </div>
@@ -45,6 +45,7 @@
                 </div>
 
             </form>
+            <a class="pull-right" href="{{asset('template.csv')}}" >Template Upload Employe</a>
             {{-- <div class="nav-search" id="nav-search">
                 <span class="input-icon">
                     <input type="text" placeholder="Search ..." class="nav-search-input" id="search" name="search" autocomplete="off" />
@@ -62,6 +63,7 @@
                             <th>Nomor Order</th>
                             <th>Program</th>
                             <th>Last Year Period</th>
+                            <th>Staus</th>
                         </tr>
                     </thead>
 

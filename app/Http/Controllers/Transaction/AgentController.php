@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
+use App\Models\Register\Regist;
+use App\Models\Register\Partner;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
@@ -198,11 +200,11 @@ class AgentController extends Controller
             'user_bizpartid' => $bizpart_id,
             'user_type' => 2,
             'user_name' => $request->agent_email,
-            'email' => $request->agent_email,
-            'password' => Hash::make('sehati'),
+            'user_email' => $request->agent_email,
+            'user_password' => Hash::make('sehati'),
             'user_status' => 1,
             'user_created_by' => 1,
-            'created_at' => $now
+            'user_created_date' => $now
         ];
 
         return $result;
@@ -213,7 +215,7 @@ class AgentController extends Controller
         $year= date("Y");
         $count = 1;
         $q = Partner::where('bizpart_num', 'LIKE', "%$year%")
-        ->where('user_type', 3)
+        ->where('bizpart_user_type', 3)
         ->orderBy('bizpart_id', 'desc')->first();
         if(isset($q->ordhdr_ordnum)){
             $var2 = str_replace($year.'AGN',"",$q->ordhdr_ordnum);

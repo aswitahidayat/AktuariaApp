@@ -3,6 +3,8 @@
     var table = {};
     var fileData = [];
     var fileGambar = '';
+var selectId = 0;
+
     $(function () {
         $.ajaxSetup({
             headers: {
@@ -43,6 +45,7 @@
                 {name: 'ordhdr_ordnum', data: 'ordhdr_ordnum'},//
                 {name: 'ordprg_name', data: 'ordprg_name'},//
                 {name: 'ordhdr_period_lastyear', data: 'ordhdr_period_lastyear'},//
+                {name: 'paymentStatusName', data: 'paymentStatusName'},//
             ]
 
         });
@@ -57,9 +60,15 @@
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
         $('#coytypehdr_id').val('');
+        
+        $('#tombol_upload').show()
+        $('#fileupload').show()
+
         $('#modelHeading'+module).html(`Create New  ${module}`);
         $(`#modal${module}`).modal('show');
         $('#userUploadTbl').html('');
+        $('#ordhdr_service_dtl').html('');
+        $('#fileupload').val('');
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
         searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
     });
@@ -72,6 +81,10 @@
             $(`#subdis_provid`).html("");
             $('#modelHeading'+module).html(`Edit ${module}`);
             $(`#saveBtn${module}`).html("Edit");
+            $('#fileupload').val('');
+
+            $('#tombol_upload').hide()
+            $('#fileupload').hide()
 
             if(data.ordhdr_date){
                 data.ordhdr_date = dateFormat(data.ordhdr_date)
@@ -84,9 +97,33 @@
                 $(`#${key}`).val(val);
             });
 
+            $.ajax({
+                url: "{{ route('getorderdetail') }}",
+                type: "POST",
+                data: {
+                    ordhdr_id: id
+                },
+                success: function (datas) {
+                    // let varHtml = ''
+                    // modalOrderAssumption
+                    
+                    // getTemplate(datas.assumtionData, datas.periodCount)
+                    // $(`#modalOrderAssumption`).modal('show')
+                    setTemplateTableUser(datas);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    // $(`#modal${module}`).modal('show');
+                }
+            });
+
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
 
             searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+
+            //TODO
+            selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
 
             $(`#modal${module}`).modal('show');
 
@@ -125,7 +162,8 @@
             reader.addEventListener('load', function (e) {
                 
                 let csvdata = e.target.result; 
-                var data = Papa.parse(csvdata, {header: true,});
+                // var data = Papa.parse(csvdata, {header: true,});
+                data = csvFormatter(csvdata)
                 fileData = data.data;
             });
             
@@ -158,50 +196,7 @@
 
     $('#btnUpload').click(function(){
         $('#userUploadTbl').html('');
-        var tblHtml = '';
-        fileData.forEach(function(item, index){
-            tblHtml += '<tr>';
-            tblHtml += `<td> ${index + 1} </td>`;
-            tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
-            tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
-            tblHtml += `<td> ${item.Gender ? item.Gender : '-'} </td>`;
-            tblHtml += `<td> ${item.Birthdate ? item.Birthdate : '-'} </td>`;
-            tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
-            tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
-            tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
-            tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
-
-            tblHtml += `<td> ${item.Startdate ? item.Startdate : '-'} </td>`;
-            tblHtml += `<td> ${item.Salery ? item.Salery : '-'} </td>`;
-
-            tblHtml += '</tr>';
-        });
-        var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>NPK</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Birthdate</th>
-                    <th>KTP</th>
-                    <th>NPWP</th>
-                    <th>Address</th>
-                    <th>HP</th>
-                    <th>Startdate</th>
-                    <th>Salery</th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                ${tblHtml}
-            </tbody>
-        </table>`;
-
-        $('#userUploadTbl').html(varHtml);
-
-        $('#tableUserUpload').DataTable();
+        setTemplateTableUser(fileData)
     })
 
     $( `#form${module}` ).submit(function( e ) {
@@ -215,6 +210,12 @@
         });
         
         dataall.detail = fileData;
+        var sel = document.getElementById("ordhdr_service_dtl");
+        var price= sel.options[sel.selectedIndex].text;
+        price = formatCompCurrency(price)
+        dataall.ordhdr_amount = price
+
+        debugger;
 
         $.ajax({
             data: dataall,
@@ -237,35 +238,126 @@
         });
     });
 
+    function setTemplateTableUser(varData){
+        var tblHtml = '';
 
-    function selectServiceDet(){
-        $('#ordhdr_service_dtl').select2({
-            placeholder: 'Cari...',
-            dropdownParent: $(`#modal${module}`),
-            ajax: {
-                url: "{{ route('servicedetail') }}",
-                dataType: 'json',
-                delay: 250,
-                type: 'POST',
-                data: function (params, page){
-                    return{
-                        name: params.term,
-                        ordsrvhdr_id: $('#ordhdr_service_hdr').val()
-                    }
-                },
-                processResults: function (data) {
-                    return {
-                        results:  $.map(data, function (item) {
-                            return {
-                                text: item.ordsrvdtl_price,
-                                id: item.ordsrvdtl_id
-                            }
-                        })
-                    };
-                },
-                cache: true
-            }
+        varData.forEach(function(item, index){
+            tblHtml += '<tr>';
+            tblHtml += `<td> ${index + 1} </td>`;
+            tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
+            tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
+            tblHtml += `<td> ${item.Gender ? item.Gender.toUpperCase() : '-'} </td>`;
+            tblHtml += `<td> ${item.Birthdate ? formatHumanDate(item.Birthdate) : '-'} </td>`;
+            tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
+            tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
+            tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
+            tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
+
+            tblHtml += `<td> ${item.Startdate ? formatHumanDate(item.Startdate) : '-'} </td>`;
+            tblHtml += `<td> ${item.Salery ? formatHumanCurrency(item.Salery) : '-'} </td>`;
+
+            tblHtml += '</tr>';
         });
+        var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th width="100px">NPK</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Birthdate</th>
+                    <th>KTP</th>
+                    <th>NPWP</th>
+                    <th>Address</th>
+                    <th>HP</th>
+                    <th>Startdate</th>
+                    <th>Salery</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                ${tblHtml}
+            </tbody>
+        </table>`;
+
+        $('#userUploadTbl').html(varHtml);
+
+        // $('#tableUserUpload').DataTable({
+        //     scrollX: "100%",
+        //     scrolly: "100%",
+
+        //     columns: [
+        //         { data: 'first_name' },
+        //         { data: 'last_name' },
+        //         { data: 'updated_date' },
+        //         { data: 'registered_date' }
+        //     ],
+        // });
+
+        // $("#tableUserUpload").css({"width":"100%"});
+
+        // $(".table ").css({"width":"100%"});
+    }
+
+    function selectServiceDet(id, selected){
+        debugger;
+        if(selected){
+
+            var varid = id? id : $('#ordhdr_service_hdr').val();
+            $.ajax({
+                url: "{{ route('servicedetail') }}",
+                type: "POST",
+                dataType: 'json',
+                data:{
+                    ordsrvhdr_id: varid
+                },
+                success: function (datas) {
+                    let varHtml = '';
+                    $.each(datas, (key, item) => {
+                        let price = formatHumanCurrency(item.ordsrvdtl_price);
+                        varHtml +=  `<option value="${item.ordsrvdtl_id}" >${price}</option>`
+                    });
+                    $('#ordhdr_service_dtl').html(varHtml);
+                    $('#ordhdr_service_dtl').val(selected);
+                    // selectSearch(div, modal, 'searchservice', 'ordsrvhdr')
+    
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        } 
+
+            $('#ordhdr_service_dtl').select2({
+                placeholder: 'Cari...',
+                dropdownParent: $(`#modal${module}`),
+                ajax: {
+                    url: "{{ route('servicedetail') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    type: 'POST',
+                    data: function (params, page){
+                        return{
+                            name: params.term,
+                            ordsrvhdr_id: varid
+                        }
+                    },
+                    processResults: function (data) {
+                        return {
+                            results:  $.map(data, function (item) {
+                                return {
+                                    text: formatHumanCurrency(item.ordsrvdtl_price),
+                                    id: item.ordsrvdtl_id
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+        
+
     }
 
     function getTemplate(vardata ={}, periodeCount){
@@ -294,11 +386,29 @@
                 title = `<div class="form-group"><h2>Detail ${ass.ordass_periode}</h2></div>`;
                 periode = ass.ordass_periode
             }
-
-            provHtml +=  `
-                    ${title}
+            provHtml +=  `${title}`;
+            if(ass.mortarita_flag == 'Y'){
+                var idmor = `form_assumption_${ass.assump_templ_code}_val_${ass.ordass_id}`;
+                getMortarita(idmor);
+                provHtml += `
+                    <form class="form-assumption">
+                        <div class="form-group" style="display: flex;">
+                            <label class="control-label col-sm-2" for="form-field-1"> ${ass.assump_templ_desc}</label>
+                            <div class="col-sm-10">
+                                <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
+                                <input type="hidden" id="form_assumption_${ass.ordass_id}_sp" 
+                                    name="coytypedtl_assumpt_sp" value="S" />
+                                <select type="number" name="ordass_value" class="form-control" id="${idmor}"
+                                    class="col-xs-10 col-xs-5"  =${ass.ordass_value} >
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                `
+            } else {
+                provHtml +=  `
                     <div class="form-group" style="display: flex;">
-                        <label class="control-label col-sm-2" for="form-field-1"> ${ass.ordass_code}</label>
+                        <label class="control-label col-sm-2" for="form-field-1"> ${ass.assump_templ_desc}</label>
                         <div class="col-sm-10">
                             <form class="form-assumption">
                                 <div class="col-xs-3">
@@ -317,6 +427,7 @@
                         </div>
 
                     </div>`;
+            }
             countData++;
             
         });
@@ -439,6 +550,43 @@
         })
         
     }
+    function hitungOrder(orderid, ordernum){
+        if(confirm("Yakin mau hitung ?")){
+            $.ajax({
+                type: "POST",
+                data:{
+                    orderid: orderid,
+                    ordernum:ordernum,
+                },
+                url: "{{ route('hitungorder') }}",
+                success: function (data) {
+                    alert("Perhitungan berhasil");
+                    table.draw();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+        }
+    }
+
+    function getMortarita(id){
+        $.ajax({
+            url: "{{ route('searchmortalita') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                let letHtml = '';
+                $.each(data.data, (key, val) => {
+                    letHtml +=  `<option value="${val.mortalitahdr_id}" >${val.mortalitahdr_name}</option>`
+                });
+                $(`#${id}`).html(letHtml);
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
     
     $("#submitSubModal").click(function(){
         var dataReturn =[]
@@ -473,14 +621,14 @@
     $( `#submitModal` ).click(function( e ) {
         var dataReturn =[]
         $(".form-assumption").each(function(index, data){
-            if(data[1].value == "S"){    
+            if(data[1].value == "S"){
                 var dataObj = {}
                 dataObj[data[0].name] = data[0].value
                 dataObj[data[1].name] = data[1].value
                 dataObj[data[2].name] = data[2].value
                 dataReturn.push(dataObj);
             }
-        })        
+        })   
 
         $.ajax({
             url: "{{ route('setassumption') }}",
@@ -520,6 +668,145 @@
                 console.log('Error:', data);
             }
         });
+    }
+
+    function viewOrder(id){
+        // var varid = id;
+        // $('orderNumHasil').val(varid);
+        $('#orderHasil').modal('show');
+        selectId = id;
+        getKaryawan(id);
+        getTahun(id);
+        // $(`#orderHasilHdr`).html();
+        setHasilTabel();
+    }
+
+    function getKaryawan(id){
+        $.ajax({
+            url: "{{ route('getkaryawan') }}",
+            type: "POST",
+            data: {
+                ordhdr_id: id
+            },
+            success: function (datas) {
+                let letHtml = '';
+                letHtml +=  `<option value="" >Semua</option>`
+                $.each(datas, (key, val) => {
+                    letHtml +=  `<option value="${val.orddtl_id}" >${val.orddtl_name}</option>`
+                });
+
+                $(`#search_hasil_karyawan`).html(letHtml);
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        })
+    }
+
+    function getTahun(id){
+        
+        $.ajax({
+            url: "{{ route('gettahun') }}",
+            type: "POST",
+            data: {
+                ordhdr_id: id
+            },
+            success: function (datas) {
+                let letHtml = '';
+                letHtml +=  `<option value="" >Semua</option>`
+                $.each(datas, (key, val) => {
+                    letHtml +=  `<option value="${val.ordass_periode}" >${val.ordass_periode}</option>`
+                });
+
+                $(`#search_hasil_tahun`).html(letHtml);
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        })
+    }
+
+    function formCariHasil(){
+        var formData = new FormData(); // Currently empty
+        formData.append('ordchdr_orddtlid', $('#search_hasil_karyawan').val());
+        formData.append('ordchdr_periode', $('#search_hasil_tahun').val());
+        formData.append('orddtl_hdrid', selectId);
+
+        $.ajax({
+            data: formData,
+            url: "{{ route('carihasil') }}",
+            type: "POST",
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $(`#orderHasilHdr`).html()
+                setHasilTabel(data)
+                table.draw()
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
+
+    function hasilDtl(id){        
+        $.ajax({
+            data: {
+                ordcdtl_ordchdrid: id,
+            },
+            url: "{{ route('carihasildtl') }}",
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                $(`#orderHasilHdr`).html()
+                setHasilTabelDtl(data)
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    }
+
+    function setHasilTabel(datas){
+        if(datas){
+
+            let letHtml = ''; 
+            $.each(datas, (key, val) => {
+                letHtml +=`<tr onclick="hasilDtl(${val.ordchdr_id})">`
+                letHtml +=  `<td>${val.ordchdr_ordnum}</td>`
+                letHtml +=  `<td>${val.orddtl_name}</td>`
+                letHtml +=  `<td>${val.ordchdr_periode}</td>`
+                letHtml +=  `<td>${val.orddtl_sex}</td>`
+                
+                letHtml +=`</tr>`
+            });
+    
+            $('#orderHasilHdr').html(letHtml)
+        } else (
+            $('#orderHasilHdr').html('')
+        )
+    }
+
+    function setHasilTabelDtl(datas){
+        if(datas){
+
+            let letHtml = ''; 
+            $.each(datas, (key, val) => {
+                letHtml +=`<tr>`
+                letHtml +=  `<td>${val.ordcdtl_age}</td>`
+                letHtml +=  `<td>${val.ordcdtl_seq}</td>`
+                letHtml +=  `<td>${val.ordcdtl_past_serv}</td>`
+                letHtml +=  `<td>${val.ordcdtl_future_serv}</td>`
+                letHtml +=  `<td>${val.ordcdtl_salary}</td>`
+                
+                letHtml +=`</tr>`
+            });
+    
+            $('#orderHasilDtl').html(letHtml)
+        } else (
+            $('#orderHasilDtl').html('')
+        )
     }
     
 </script>

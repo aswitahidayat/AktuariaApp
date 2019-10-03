@@ -32,16 +32,17 @@ class OrderAssumptionController extends Controller
 
     public function getAssumption(Request $request){
         $qry = Order::query()
-            ->leftJoin('kka_dab.trn_order_dtl AS dtl', 'ordhdr_id', '=', 'dtl.orddtl_hdrid')
+            // ->leftJoin('kka_dab.trn_order_dtl AS dtl', 'ordhdr_id', '=', 'dtl.orddtl_hdrid')
             ->leftJoin('kka_dab.trn_order_assumption AS ass', 'ordhdr_id', '=', 'ass.ordass_hdrid')
+            ->leftJoin('kka_dab.mst_assumption_template AS ast', 'ordass_code', '=', 'ast.assump_templ_code')
 
-            ->where('orddtl_hdrid', $request->ordhdr_id)
+            ->where('ordhdr_id', $request->ordhdr_id)
             ->orderBy('ass.ordass_id')
             ;
         $array =  $qry->get();
         $count = count($array);
         
-        if($count > 1){
+        if($count > 1){ 
             $data = (object) [
                 'assumtionData' => $array,
                 'periodCount' =>  isset($array[0]->ordhdr_period_count) ? $array[0]->ordhdr_period_count : 2,
@@ -69,6 +70,7 @@ class OrderAssumptionController extends Controller
     
     public function getProgressive(Request $request){
         $data = OrderProgressive::query()
+
                     ->where('ordpro_assid', $request->ordpro_assid)
                     ->get();
         return response()->json($data);

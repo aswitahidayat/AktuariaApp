@@ -42,6 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getEmailAttribute() {
+        return $this->attributes['user_email'];
+    }
+
+    public function setEmailAttribute($value) {
+        $this->attributes['user_email'] = $value;
+    }
+
     public function getAuthPassword()
     {
         return $this->user_password;

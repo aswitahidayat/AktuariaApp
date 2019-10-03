@@ -1,6 +1,14 @@
 @extends('layouts.public')
 
 @section('content')
+<?php 
+try {
+    DB::connection()->getPdo();
+} catch (\Exception $e) {
+    die("Could not connect to the database.  Please check your configuration. error:" . $e );
+}
+// phpinfo()
+?>
     <div class="login-container">
         <div id="login-box" class="login-box visible widget-box no-border">
             <div class="widget-body">
@@ -30,7 +38,7 @@
 
                             <label class="block clearfix">
                                         <span class="block input-icon input-icon-right">
-                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="user_password" placeholder="Password" required autocomplete="current-password">
+                                            <input id="password" type="password" class="form-control{{ $errors->has('user_password') ? ' is-invalid' : '' }}" name="user_password" placeholder="Password" required autocomplete="current-password">
 
                                             @if ($errors->has('user_password'))
                                                 <span class="invalid-feedback" role="alert">

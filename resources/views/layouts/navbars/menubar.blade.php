@@ -6,7 +6,7 @@
 
     <b class="arrow"></b>
 </li>
-@if (Auth::user()->user_type != '3')
+@if (Auth::user()->user_type == '1')
 
     <li class="">
         <a href="#" class="dropdown-toggle">
@@ -106,6 +106,9 @@
     <b class="arrow"></b>
 
     <ul class="submenu">
+
+        @if (Auth::user()->user_type == '1')
+
         <li class="">
             <a href="{{route('agent.index')}}">
                 <i class="menu-icon fa fa-caret-right"></i>
@@ -114,7 +117,9 @@
 
             <b class="arrow"></b>
         </li>
+        @endif
 
+        @if (Auth::user()->user_type == '1' || Auth::user()->user_type == '3')
         <li class="">
             <a href="{{route('order.index')}}">
                 <i class="menu-icon fa fa-caret-right"></i>
@@ -123,6 +128,9 @@
 
             <b class="arrow"></b>
         </li>
+        @endif
+
+        @if (Auth::user()->user_type == '1')
         <li class="">
             <a href="{{route('vbayar.index')}}">
                 <i class="menu-icon fa fa-caret-right"></i>
@@ -131,7 +139,9 @@
 
             <b class="arrow"></b>
         </li>
+        @endif
 
+        @if (Auth::user()->user_type == '1' || Auth::user()->user_type == '2')
         <li class="">
             <a href="{{route('perhitungan.index')}}">
                 <i class="menu-icon fa fa-caret-right"></i>
@@ -140,5 +150,7 @@
 
             <b class="arrow"></b>
         </li>
+        @endif
+        
     </ul>
 </li>

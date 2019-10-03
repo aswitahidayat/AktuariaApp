@@ -473,32 +473,32 @@
         });
     }
 
-    function checkEmail(){
-        if($("#usremail").val() != ""){
-            $.ajax({
-                data: {
-                    email: $("#usremail").val(),
-                },
-                url: "{{ route('emailcheckerPub') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    if(!data.success){
-                        $( "#email_err" ).show();
-                        $("#usremail").val('')
-                    } else {
-                        $( "#email_err" ).hide();
-                    }
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                    $(`#saveBtn${module}`).html('Save');
-                    $(`#saveBtn${module}`).removeAttr("disabled");
+    // function checkEmail(){
+    //     if($("#usremail").val() != ""){
+    //         $.ajax({
+    //             data: {
+    //                 email: $("#usremail").val(),
+    //             },
+    //             url: "{{ route('emailcheckerPub') }}",
+    //             type: "POST",
+    //             dataType: 'json',
+    //             success: function (data) {
+    //                 if(!data.success){
+    //                     $( "#email_err" ).show();
+    //                     $("#usremail").val('')
+    //                 } else {
+    //                     $( "#email_err" ).hide();
+    //                 }
+    //             },
+    //             error: function (data) {
+    //                 console.log('Error:', data);
+    //                 $(`#saveBtn${module}`).html('Save');
+    //                 $(`#saveBtn${module}`).removeAttr("disabled");
 
-                }
-            });   
-        }
-    }
+    //             }
+    //         });   
+    //     }
+    // }
 
     function checkEmailCom(){
         if($("#usremail").val() != ""){

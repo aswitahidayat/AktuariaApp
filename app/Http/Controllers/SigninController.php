@@ -30,8 +30,10 @@ class SigninController extends Controller
             'password' => 'required',
         ]);*/
 
-        $user = $request->input('email');
-        $pass = $request->input('password');
+        $user = $request->input('user_email');
+        $pass = $request->input('user_password');
+        // var_dump(Hash::make('sehati'));die;
+
 
         $users = DB::table('kka_dab.mst_user')->where(['user_email'=> $user])->first();
 
@@ -40,7 +42,7 @@ class SigninController extends Controller
             return redirect('/')->with('failed','Login gagal');
 
         } else
-            //var_dump(Hash::check($pass, $users->user_password));die;
+            // var_dump(Hash::check($pass, $users->user_password));die;
             if($users->user_email == $user AND Hash::check($pass, $users->user_password) ){
 
                 Session::put('login', 'Selamat anda berhasil login');

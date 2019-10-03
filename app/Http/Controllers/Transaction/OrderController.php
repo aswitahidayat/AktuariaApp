@@ -62,16 +62,19 @@ class OrderController extends Controller
                     'ordhdr_service_dtl' => $request->ordhdr_service_dtl,
                     'ordhdr_period_count' => $request->ordhdr_period_count,
                     'ordhdr_period_lastyear' => $request->ordhdr_period_lastyear,
+
+                    'ordhdr_work_age_min' => $request->ordhdr_work_age_min,
                     'ordhdr_pension_age' => $request->ordhdr_pension_age,
                     'ordhdr_sal_increase' => $request->ordhdr_sal_increase,
                     
                     'ordhdr_date' => $request->ordhdr_date,
                     'ordhdr_pay_date' => $request->ordhdr_pay_date,
                     'ordhdr_amount' => $request->ordhdr_amount,
+                    'ordhdr_pay_amt' => $request->ordhdr_amount,
         
                     'ordhdr_pay_status' => 'N',
-        
-                    'ordhdr_created_by' => Auth::user()->user_type,
+                    'ordhdr_by' => Auth::user()->user_id,
+                    'ordhdr_created_by' => Auth::user()->user_id,
                     'ordhdr_bizpartid' => Auth::user()->user_bizpartid,
 
                     'ordhdr_created_date' => date(now()),
@@ -82,7 +85,9 @@ class OrderController extends Controller
             }else{
                 Order::
                     where('ordhdr_id', $request->ordhdr_id)
-                    ->update(['ordhdr_ordnum' => $request->ordhdr_ordnum,
+                    ->update([
+                    'ordhdr_amount' => $request->ordhdr_amount,
+                    'ordhdr_pay_amt' => $request->ordhdr_amount,
                         'ordhdr_program' => $request->ordhdr_program,
                         'ordhdr_service_hdr' => $request->ordhdr_service_hdr,
                         'ordhdr_service_dtl' => $request->ordhdr_service_dtl,
@@ -90,10 +95,12 @@ class OrderController extends Controller
                         'ordhdr_period_lastyear' => $request->ordhdr_period_lastyear,
                         'ordhdr_pension_age' => $request->ordhdr_pension_age,
                         'ordhdr_date' => $request->ordhdr_date,
-                        'ordhdr_amount' => $request->ordhdr_amount
+                        'ordhdr_amount' => $request->ordhdr_amount,
+                        'ordhdr_work_age_min' => $request->ordhdr_work_age_min,
+
                         ]);
 
-                $this->setOrderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
+                // $this->setOrderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
             }
         });
 
@@ -215,12 +222,15 @@ class OrderController extends Controller
 
     function setActionButton($row, $param){
         $btn ='';
-        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
-        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"   class="edit btn btn-primary btn-sm editOrder">Lembar</a>';
-        $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  class="edit btn btn-primary btn-sm editOrder">Buku</a>';
+        
+        if($row->ordhdr_pay_status == 'P'){
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"   class="edit btn btn-primary btn-sm editOrder">Lembar</a>';
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  class="edit btn btn-primary btn-sm editOrder">Buku</a>';
+        }
 
         // $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
         if($row->ordhdr_pay_status == 'N'){
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
             $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="comfirmOrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
         }
         if($param == 'varify'){

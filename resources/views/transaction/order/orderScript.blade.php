@@ -63,6 +63,7 @@
         $(`#modal${module}`).modal('show');
         $('#userUploadTbl').html('');
         $('#ordhdr_service_dtl').html('');
+        $('#fileupload').val('');
         
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
         searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
@@ -77,6 +78,7 @@
             $('#modelHeading'+module).html(`Edit ${module}`);
             $(`#saveBtn${module}`).html("Edit");
             $('#ordhdr_service_dtl').html('');
+            $('#fileupload').val('');
 
             if(data.ordhdr_date){
                 data.ordhdr_date = dateFormat(data.ordhdr_date)
@@ -156,7 +158,9 @@
             reader.addEventListener('load', function (e) {
                 
                 let csvdata = e.target.result; 
-                var data = Papa.parse(csvdata, {header: true,});
+                // var data = Papa.parse(csvdata, {header: true,});
+                var data =csvFormatter(csvdata)
+                debugger;
                 fileData = data.data;
             });
             
@@ -272,15 +276,15 @@
             tblHtml += `<td> ${index + 1} </td>`;
             tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
             tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
-            tblHtml += `<td> ${item.Gender ? item.Gender : '-'} </td>`;
-            tblHtml += `<td> ${item.Birthdate ? item.Birthdate : '-'} </td>`;
+            tblHtml += `<td> ${item.Gender ? item.Gender.toUpperCase() : '-'} </td>`;
+            tblHtml += `<td> ${item.Birthdate ? formatHumanDate(item.Birthdate) : '-'} </td>`;
             tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
             tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
             tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
             tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
 
             tblHtml += `<td> ${item.Startdate ? item.Startdate : '-'} </td>`;
-            tblHtml += `<td> ${item.Salery ? item.Salery : '-'} </td>`;
+            tblHtml += `<td> ${item.Salery ? formatHumanCurrency(item.Salery) : '-'} </td>`;
 
             tblHtml += '</tr>';
         });
@@ -309,7 +313,7 @@
 
         $('#userUploadTbl').html(varHtml);
 
-        $('#tableUserUpload').DataTable();
+        // $('#tableUserUpload').DataTable();
     }
 
     function getTemplate(vardata ={}, periodeCount){
@@ -339,28 +343,33 @@
                 periode = ass.ordass_periode
             }
 
-            provHtml +=  `
-                    ${title}
-                    <div class="form-group" style="display: flex;">
-                        <label class="control-label col-sm-2" for="form-field-1"> ${ass.ordass_code}</label>
-                        <div class="col-sm-10">
-                            <form class="form-assumption">
-                                <div class="col-xs-3">
-                                    <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
-                                    <select class="form-control select2-single" style="width:100%;" 
-                                        onchange="changeAssumption('${ass.ordass_id}', this.value)" 
-                                        id="form_assumption_${ass.ordass_id}_sp"
-                                        name="coytypedtl_assumpt_sp">
-                                        ${opsi}
-                                    </select>
-                                </div>
-                                <div class="col-xs-9" id="form_assumption_${ass.ordass_id}_div">
-                                    ${input}
-                                </div>
-                            </form>
-                        </div>
+            if(ass.mortarita_flag == 'Y'){
 
-                    </div>`;
+            } else {    
+                provHtml +=  `
+                        ${title}
+                        <div class="form-group" style="display: flex;">
+                            <label class="control-label col-sm-2" for="form-field-1"> ${ass.assump_templ_desc}</label>
+                            <div class="col-sm-10">
+                                <form class="form-assumption">
+                                    <div class="col-xs-3">
+                                        <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
+                                        <select class="form-control select2-single" style="width:100%;" 
+                                            onchange="changeAssumption('${ass.ordass_id}', this.value)" 
+                                            id="form_assumption_${ass.ordass_id}_sp"
+                                            name="coytypedtl_assumpt_sp">
+                                            ${opsi}
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-9" id="form_assumption_${ass.ordass_id}_div">
+                                        ${input}
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>`;
+            }
+            
             countData++;
             
         });

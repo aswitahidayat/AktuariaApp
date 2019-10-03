@@ -131,3 +131,68 @@
         </form>
     </div>
 </div>
+
+<div class="modal fade" id="orderHasil" aria-labelledby="AddOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title blue lighter bigger bolder" id="">Hasil Hitung</h4>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="formCariHasil()" action="javascript:void(0);">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right">Karyawan:</label>
+                                <div class="col-sm-8 pb-20">
+                                    <select class="chosen-select form-control" id="search_hasil_karyawan" name="search_hasil_karyawan" 
+                                    placeholder="" style="width:100%;"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right">Tahun:</label>
+                                <div class="col-sm-8 pb-20">
+                                    <select class="chosen-select form-control" id="search_hasil_tahun" name="search_hasil_tahun" 
+                                    placeholder="" style="width:100%;"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-4 col-sm-8 pb-20">
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="ace-icon fa fa-search bigger-110"></i>Find</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-striped table-bordered table-hover">
+                    <tr>
+                        <td>No Order</td>
+                        <td>Nama</td>
+                        <td>Tahun</td>
+                        <td>Gender</td>
+                    </tr>
+                    <tbody id="orderHasilHdr">
+
+                    </tbody>
+
+                </table>
+
+                <table class="table table-striped table-bordered table-hover">
+                    <tr>
+                        <td>Masa Kerja Tahun</td>
+                        <td>Pesangaon</td>
+                        <td>Past Serv</td>
+                        <td>Future Serv</td>
+                        <td>Salary</td>
+                    </tr>
+                    <tbody id="orderHasilDtl"></tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>    
