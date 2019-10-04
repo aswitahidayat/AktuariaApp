@@ -165,29 +165,125 @@
                         </div>
                     </div>
                 </form>
-                <table class="table table-striped table-bordered table-hover">
-                    <tr>
-                        <td>No Order</td>
-                        <td>Nama</td>
-                        <td>Tahun</td>
-                        <td>Gender</td>
-                    </tr>
-                    <tbody id="orderHasilHdr">
+                <div style="overflow-x:auto;" class="mb-20">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td rowspan="2">No</td>
+                                <td rowspan="2">NIK</td>
+                                <td rowspan="2">Name</td>
+                                <td rowspan="2">Sex</td>
+                                <td rowspan="2">Work</td>
+                                <td rowspan="2">Salary at Valuation Date</td>
+                                <td rowspan="2">Salary at Pension Date</td>
+                                <td rowspan="2">Age At Valuation Date</td>
+                                <td colspan="3">Basis-10</td>
+                                <td colspan="4">Faktor Imbalan Saat</td>
+                                <td rowspan="2">Faktor Kenaikan Gaji</td>
+                                <td colspan="4">Expected Benefit at</td>
+                                <td colspan="4">Tingkat Peluang Kejadiannya</td>
+                                <td rowspan="2">Tingkat Diskonto</td>
+                                <td rowspan="2">Imbalan per unit masakerja</td>
+                                <td rowspan="2">Nilai Kini Kewajiban</td>
+                                <td rowspan="2">BS Valuasi</td>
+                            </tr>
+                            <tr>
+                                <td>Past Service</td>
+                                <td>Future Service</td>
+                                <td>Total Service</td>
+        
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Berhenti (Undur Diri)</td>
+                                <td>Pensiun Haritua</td>
+                                
+                                <td>Death</td>
+                                <td>Total Permanent Disability</td>
+                                <td>Resign</td>
+                                <td>Pension</td>
+        
+                                <td>Karena Meninggal</td>
+                                <td>Karena Menderita Cacad</td>
+                                <td>Karena Berhenti</td>
+                                <td>Karena Pensiun</td>
+                            </tr>
+                        </thead>
+                        <tbody id="orderHasilHdr">
+    
+                        </tbody>
+    
+                    </table>
+                </div>
 
-                    </tbody>
-
-                </table>
-
-                <table class="table table-striped table-bordered table-hover">
-                    <tr>
-                        <td>Masa Kerja Tahun</td>
-                        <td>Pesangaon</td>
-                        <td>Past Serv</td>
-                        <td>Future Serv</td>
-                        <td>Salary</td>
-                    </tr>
-                    <tbody id="orderHasilDtl"></tbody>
-                </table>
+                <div style="overflow-x:auto;" class="mb-20">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td rowspan="2">No. urut</td>
+                                <td rowspan="2">usia peserta</td>
+                                <td rowspan="2">masakerja lampau</td>
+                                <td rowspan="2">masakerja mendatang</td>
+                                
+                                <td colspan="5">faktor imbalan saat terjadi (due date)</td>
+                                
+                                <td rowspan="2">faktor kenaikan gaji</td>
+                                <td colspan="5">besar imbalan (expected benefit amount) yang diterima, karena</td>
+                                
+                                <td colspan="4">Tingkat peluang kejadiannya</td>
+                                
+                                <td colspan="5">Total Nilai Kini Kewajiban (PVDBO)</td>
+                                
+                                <td colspan="5">Biaya jasa kini</td>
+                                
+                                <td colspan="5">Nilai Kini Kewajiban (PBO)</td>
+                                <td rowspan="2">Jumlah</td>
+                                <td rowspan="2">Potensi BS</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>total masa kerja</td>
+                                <td>meninggal dunia</td>
+                                <td>menderita cacad</td>
+                                <td>undur diri (berhenti)</td>	
+                                <td>pensiun normal</td>
+                                
+                                <td>gaji sebulan</td>
+                                <td>meninggal dunia</td>
+                                <td>menderita cacad</td>
+                                <td>undur diri (berhenti)</td>
+                                <td>pensiun haritua</td>
+                                
+                                <td>meninggal dunia</td>	
+                                <td>menderita cacad</td>
+                                <td>berhenti (undur diri)</td>
+                                <td>pensiun haritua</td>
+                                
+                                <td>Tingkat Diskonto</td>
+                                <td>meninggal dunia</td>
+                                <td>menderita cacad</td>
+                                <td>berhenti (undur diri)</td>	
+                                <td>karena pensiun</td>
+                                
+                                <td>Jumlah TNKK</td>
+                                <td>meninggal dunia</td>
+                                <td>menderita cacad</td>
+                                <td>berhenti (undur diri)</td>	
+                                <td>karena pensiun</td>
+                                
+                                <td>(Imbalan per unit masakerja)</td>
+                                <td>meninggal dunia</td>
+                                <td>menderita cacad</td>
+                                <td>berhenti (undur diri)</td>	
+                                <td>karena pensiun</td>
+                            </tr>
+                        </thead>
+                        <tbody id="orderHasilDtl">
+                            <tr>
+                                <td colspan="100%">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
             <div class="modal-footer">

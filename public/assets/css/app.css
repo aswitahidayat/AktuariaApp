@@ -9,6 +9,10 @@
     padding-bottom: 20px;
 }
 
+.mb-20{
+  margin-bottom: 20px;
+}
+
 /* .dataTables_wrapper .row:first-child{
     background-color: rgba(255, 255, 255, 0) !important;
 } */

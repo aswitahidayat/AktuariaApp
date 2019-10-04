@@ -677,8 +677,8 @@ var selectId = 0;
         selectId = id;
         getKaryawan(id);
         getTahun(id);
-        // $(`#orderHasilHdr`).html();
         setHasilTabel();
+        setHasilTabelDtl()
     }
 
     function getKaryawan(id){
@@ -774,17 +774,42 @@ var selectId = 0;
             let letHtml = ''; 
             $.each(datas, (key, val) => {
                 letHtml +=`<tr onclick="hasilDtl(${val.ordchdr_id})">`
-                letHtml +=  `<td>${val.ordchdr_ordnum}</td>`
+                letHtml +=  `<td>${key + 1}</td>`
+                letHtml +=  `<td>${val.orddtl_npk}</td>`
                 letHtml +=  `<td>${val.orddtl_name}</td>`
-                letHtml +=  `<td>${val.ordchdr_periode}</td>`
                 letHtml +=  `<td>${val.orddtl_sex}</td>`
-                
+                letHtml +=  `<td>${formatHumanDate(val.orddtl_startdate)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.orddtl_curr_sal)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_pension_sal)}</td>`
+                letHtml +=  `<td>${val.ordchdr_age_val}</td>`                
+                letHtml +=  `<td>${val.ordchdr_past_srv}</td>`
+                letHtml +=  `<td>${val.ordchdr_future_srv}</td>`
+                letHtml +=  `<td>${val.ordchdr_total_srv}</td>`
+                letHtml +=  `<td>${val.ordchdr_factor_m}</td>`
+                letHtml +=  `<td>${val.ordchdr_factor_d}</td>`
+                letHtml +=  `<td>${val.ordchdr_factor_w}</td>`
+                letHtml +=  `<td>${val.ordchdr_factor_r}</td>`
+                letHtml +=  `<td>${val.ordchdr_factor_increase}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_amt_ben_m)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_amt_ben_d)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_amt_ben_w)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_amt_ben_r)}</td>`
+                letHtml +=  `<td>${val.ordchdr_prob_m}</td>`
+                letHtml +=  `<td>${val.ordchdr_prob_d}</td>`
+                letHtml +=  `<td>${val.ordchdr_prob_w}</td>`
+                letHtml +=  `<td>${val.ordchdr_prob_r}</td>`
+                letHtml +=  `<td>${val.ordchdr_diskonto}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_svc_sum)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_pbo_sum)}</td>`
+                letHtml +=  `<td>${(val.ordchdr_age_val - val.ordchdr_age_work).toFixed(2)}</td>`
                 letHtml +=`</tr>`
             });
     
             $('#orderHasilHdr').html(letHtml)
         } else (
-            $('#orderHasilHdr').html('')
+            $('#orderHasilHdr').html(`<tr>
+                    <td colspan="100%">-</td>
+                </tr>`)
         )
     }
 
@@ -794,11 +819,42 @@ var selectId = 0;
             let letHtml = ''; 
             $.each(datas, (key, val) => {
                 letHtml +=`<tr>`
+                letHtml +=  `<td>${key + 1}</td>`
                 letHtml +=  `<td>${val.ordcdtl_age}</td>`
-                letHtml +=  `<td>${val.ordcdtl_seq}</td>`
                 letHtml +=  `<td>${val.ordcdtl_past_serv}</td>`
                 letHtml +=  `<td>${val.ordcdtl_future_serv}</td>`
-                letHtml +=  `<td>${val.ordcdtl_salary}</td>`
+                letHtml +=  `<td>${val.ordcdtl_past_serv + val.ordcdtl_future_serv}</td>`
+                letHtml +=  `<td>${val.ordcdtl_factor_ben_m}</td>`
+                letHtml +=  `<td>${val.ordcdtl_factor_ben_d}</td>`
+                letHtml +=  `<td>${val.ordcdtl_factor_ben_w}</td>`
+                letHtml +=  `<td>${val.ordcdtl_factor_ben_r}</td>`
+                letHtml +=  `<td>${val.ordcdtl_factor_increase}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_salary)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_amt_ben_m)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_amt_ben_d)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_amt_ben_w)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_amt_ben_r)}</td>`
+                letHtml +=  `<td>${val.ordcdtl_prob_m}</td>`
+                letHtml +=  `<td>${val.ordcdtl_prob_d}</td>`
+                letHtml +=  `<td>${val.ordcdtl_prob_w}</td>`
+                letHtml +=  `<td>${val.ordcdtl_prob_r}</td>`
+                letHtml +=  `<td>${val.ordcdtl_diskonto}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pvdbo_m)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pvdbo_d)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pvdbo_w)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pvdbo_r)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pvdbo_sum)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_svc_m)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_svc_d)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_svc_w)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_svc_r)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_svc_sum)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pbo_m)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pbo_d)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pbo_w)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pbo_r)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_pbo_sum)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordcdtl_salary)}</td>`
                 
                 letHtml +=`</tr>`
             });

@@ -26,6 +26,7 @@ function formatHumanDate(date) {
 }
 
 function formatHumanCurrency(cur){
+    cur = cur ? cur : 0
 	return (parseInt(cur)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');  // 12,345.67
 }
 function formatCompCurrency(cur){
