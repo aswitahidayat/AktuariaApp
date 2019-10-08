@@ -78,6 +78,8 @@
 
     @include('transaction.order.orderForm')
 
+    @include('transaction.order.orderView')
+
     @include('transaction.order.orderAssumptionForm')
     
     @include('transaction.perhitungan.perhitunganScript') 

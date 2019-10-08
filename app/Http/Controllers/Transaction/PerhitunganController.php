@@ -64,10 +64,12 @@ class PerhitunganController extends Controller
                     $btn .= " <a href='javascript:void(0)'  onclick='hitungOrder(\"$row->ordhdr_id\", \"$row->ordhdr_ordnum\")' class='assumption btn btn-primary btn-sm'>Hitung</a>";    
                 } 
                 if ($row->ordhdr_pay_status == 'C'){
-                    $btn = "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")'  class='edit btn btn-primary btn-sm'>View</a>";
+                    $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")'  class='edit btn btn-primary btn-sm'>View</a>";
+                    $btn .= ' <span data-toggle="tooltip" data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionView">Assumption View</span>';
                 }
                 if ($row->ordhdr_pay_status == 'P'){
-                    $btn = "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")' class='edit btn btn-primary btn-sm'>View</a>";
+                    $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")' class='edit btn btn-primary btn-sm'>View</a>";
+                    $btn .= ' <span data-toggle="tooltip" data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionView">Assumption View</span>';
                 }
                 $pag[$key]->DT_RowIndex = ($key+ 1)+$request->start;
                 $pag[$key]->statusName = 'Active';

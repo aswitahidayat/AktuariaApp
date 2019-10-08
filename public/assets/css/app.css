@@ -13,6 +13,19 @@
   margin-bottom: 20px;
 }
 
+.grabbing {
+  cursor: -webkit-grabbing; 
+  cursor: grabbing;
+}
+
+.center-tr tr td{
+  text-align: center;
+}
+
+.padding-cell{
+  padding: 8px 40px 0 40px !important;
+}
+
 /* .dataTables_wrapper .row:first-child{
     background-color: rgba(255, 255, 255, 0) !important;
 } */

@@ -41,7 +41,7 @@ class AgentController extends Controller
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editAgent">Edit</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->user_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editAgent">Edit</a>';
                     // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->vill_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteVillage">Delete</a>';
                     return $btn;
                 })
@@ -152,7 +152,7 @@ class AgentController extends Controller
         $now = date(now());
 
         $result = [
-            'regis_num' => 3,
+            'regis_num' => $this->regnum(),
             'regis_activate_by' => 1,
             'regis_activate_date' => $now,
             'regis_user_type' => 2,
@@ -212,16 +212,31 @@ class AgentController extends Controller
 
     public function bizpartnum():?string 
     {
+        $str = "AGN";
         $year= date("Y");
-        $count = 1;
+        $count = str_pad( 1, 5, "0", STR_PAD_LEFT );
         $q = Partner::where('bizpart_num', 'LIKE', "%$year%")
-        ->where('bizpart_user_type', 3)
         ->orderBy('bizpart_id', 'desc')->first();
-        if(isset($q->ordhdr_ordnum)){
-            $var2 = str_replace($year.'AGN',"",$q->ordhdr_ordnum);
+        if(isset($q->bizpart_num)){
+            $var2 = str_replace($year.$str,"",$q->bizpart_num);
             $count = str_pad( $var2+1, 5, "0", STR_PAD_LEFT );
         }
 
-        return $year.'AGN'.$count;
+        return $year.$str.$count;
+    }
+
+    public function regnum():?string 
+    {
+        $str = "REG";
+        $year= date("Y");
+        $count = str_pad( 1, 5, "0", STR_PAD_LEFT );
+        $q = DB::table('kka_dab.trn_regis')->where('regis_num', 'LIKE', "%$year%")
+        ->orderBy('regis_id', 'desc')->first();
+        if(isset($q->regis_num)){
+            $var2 = str_replace($year.$str,"",$q->regis_num);
+            $count = str_pad( $var2+1, 5, "0", STR_PAD_LEFT );
+        }
+
+        return $year.$str.$count;
     }
 }

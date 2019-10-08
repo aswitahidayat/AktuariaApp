@@ -3,7 +3,8 @@
     var table = {};
     var fileData = [];
     var fileGambar = '';
-var selectId = 0;
+    var selectId = 0;
+    var detailId = 0;
 
     $(function () {
         $.ajaxSetup({
@@ -75,64 +76,20 @@ var selectId = 0;
 
     $('body').on('click', `.edit${module}`, function () {
         var id = $(this).data('id');
-
-        $.get("{{ route('order.index') }}" +`/${id}/edit`, (data) => {
-            $(`#form${module}`).trigger("reset");
-            $(`#subdis_provid`).html("");
-            $('#modelHeading'+module).html(`Edit ${module}`);
-            $(`#saveBtn${module}`).html("Edit");
-            $('#fileupload').val('');
-
-            $('#tombol_upload').hide()
-            $('#fileupload').hide()
-
-            if(data.ordhdr_date){
-                data.ordhdr_date = dateFormat(data.ordhdr_date)
-            }
-
-            if(data.ordhdr_pay_date){
-                data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
-            }
-            $.each(data, (key,val) => {
-                $(`#${key}`).val(val);
-            });
-
-            $.ajax({
-                url: "{{ route('getorderdetail') }}",
-                type: "POST",
-                data: {
-                    ordhdr_id: id
-                },
-                success: function (datas) {
-                    // let varHtml = ''
-                    // modalOrderAssumption
-                    
-                    // getTemplate(datas.assumtionData, datas.periodCount)
-                    // $(`#modalOrderAssumption`).modal('show')
-                    setTemplateTableUser(datas);
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                    // $(`#modal${module}`).modal('show');
-                }
-            });
-
-            searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
-
-            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-
-            //TODO
-            selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
-
-            $(`#modal${module}`).modal('show');
-
-        })
+        getDataAssumtion(id);
     });
 
     $('body').on('click', `.assumption${module}`, function () {
         var id = $(this).data('id');
+        assumtionData(id)
+    });
 
+    $('body').on('click', '.assumptionView', function () {
+        var id = $(this).data("id");
+        assumtionData(id, true)
+    });
+
+    function assumtionData(id, disable = false){
         $.ajax({
             url: "{{ route('getassumption') }}",
             type: "POST",
@@ -142,14 +99,14 @@ var selectId = 0;
             success: function (datas) {
                 let varHtml = ''
                 
-                getTemplate(datas.assumtionData, datas.periodCount)
+                getTemplate(datas.assumtionData, datas.periodCount, disable)
                 $(`#modalOrderAssumption`).modal('show')
             },
             error: function (data) {
                 console.log('Error:', data);
             }
         });
-    });
+    }
 
     $('#fileupload').change(function(){
         var input = this;
@@ -238,6 +195,117 @@ var selectId = 0;
         });
     });
 
+    function getDataAssumtion(id, disable = false){
+        $.get("{{ route('order.index') }}" +`/${id}/edit`, (data) => {
+            $(`#form${module}`).trigger("reset");
+            $(`#subdis_provid`).html("");
+            $('#modelHeading'+module).html(`Edit ${module}`);
+            $(`#saveBtn${module}`).html("Edit") 
+                
+            $('#fileupload').val('');
+
+            $('#tombol_upload').hide()
+            $('#fileupload').hide()
+
+            if(data.ordhdr_date){
+                data.ordhdr_date = dateFormat(data.ordhdr_date)
+            }
+
+            if(data.ordhdr_pay_date){
+                data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
+            }
+            $.each(data, (key,val) => {
+                $(`#${key}`).val(val);
+                $(`#${key}`).prop("disabled", disable)
+            });
+
+            $.ajax({
+                url: "{{ route('getorderdetail') }}",
+                type: "POST",
+                data: {
+                    ordhdr_id: id
+                },
+                success: function (datas) {
+                    // let varHtml = ''
+                    // modalOrderAssumption
+                    
+                    // getTemplate(datas.assumtionData, datas.periodCount)
+                    // $(`#modalOrderAssumption`).modal('show')
+                    setTemplateTableUser(datas);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    // $(`#modal${module}`).modal('show');
+                }
+            });
+
+            searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
+
+            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+
+            //TODO
+            selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
+
+            $(`#modal${module}`).modal('show');
+
+        })
+    }
+
+    function getDataOrderDisable(id){
+        $.get("{{ route('order.index') }}" +`/${id}/edit`, (data) => {
+            $(`#form${module}`).trigger("reset");
+            $(`#subdis_provid`).html("");
+            $('#modelHeading'+module).html(`Edit ${module}`);
+                
+            $('#fileupload').val('');
+
+            $('#tombol_upload').hide()
+            $('#fileupload').hide()
+
+            if(data.ordhdr_date){
+                data.ordhdr_date = dateFormat(data.ordhdr_date)
+            }
+
+            if(data.ordhdr_pay_date){
+                data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
+            }
+            $.each(data, (key,val) => {
+                $(`#view_${key}`).html(val);
+            });
+
+            $.ajax({
+                url: "{{ route('getorderdetail') }}",
+                type: "POST",
+                data: {
+                    ordhdr_id: id
+                },
+                success: function (datas) {
+                    // let varHtml = ''
+                    // modalOrderAssumption
+                    
+                    // getTemplate(datas.assumtionData, datas.periodCount)
+                    // $(`#modalOrderAssumption`).modal('show')
+                    setTemplateTableUser(datas);
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    // $(`#modal${module}`).modal('show');
+                }
+            });
+
+            //searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
+
+            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+
+            //TODO
+            selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
+            debugger
+            $(`#viewOrder`).modal('show');
+
+        })
+    }
     function setTemplateTableUser(varData){
         var tblHtml = '';
 
@@ -360,8 +428,10 @@ var selectId = 0;
 
     }
 
-    function getTemplate(vardata ={}, periodeCount){
-        $(`#assumption`).html('');            
+    function getTemplate(vardata ={}, periodeCount, disable){
+        debugger
+        $(`#assumption`).html('');
+        disable = disable ? 'disabled' : ''
         let provHtml = '';
                 
         var countData = 0;
@@ -374,12 +444,12 @@ var selectId = 0;
             if(ass.ordass_sp == 'P'){
                 opsi =`<option value="S" >Single</option>
                             <option value="P" selected>Progresive</option>`;
-                input = `<input type="button" name="ordass_value" class="btn btn-secondary btn-sm" value="Edit Progresive" onclick="showSubModal('${ass.ordass_id}')"/>`
+                input = `<input type="button" name="ordass_value" class="btn btn-secondary btn-sm" value="Edit Progresive" onclick="showSubModal('${ass.ordass_id}')" ${disable}/>`
             } else {
                 opsi =`<option value="S" selected>Single</option>
                             <option value="P" >Progresive</option>`;
                 input = `<input type="number" name="ordass_value" class="form-control" id="form_assumption_${ass.assump_templ_code}_val"
-                                class="col-xs-10 col-xs-5" value=${ass.ordass_value} required/>`
+                                class="col-xs-10 col-xs-5" value=${ass.ordass_value} required ${disable}/>`
             }
 
             if (periode != ass.ordass_periode){
@@ -397,9 +467,9 @@ var selectId = 0;
                             <div class="col-sm-10">
                                 <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
                                 <input type="hidden" id="form_assumption_${ass.ordass_id}_sp" 
-                                    name="coytypedtl_assumpt_sp" value="S" />
+                                    name="coytypedtl_assumpt_sp" value="S" ${disable}/>
                                 <select type="number" name="ordass_value" class="form-control" id="${idmor}"
-                                    class="col-xs-10 col-xs-5"  =${ass.ordass_value} >
+                                    class="col-xs-10 col-xs-5"  value=${ass.ordass_value} ${disable}>
                                 </select>
                             </div>
                         </div>
@@ -412,11 +482,11 @@ var selectId = 0;
                         <div class="col-sm-10">
                             <form class="form-assumption">
                                 <div class="col-xs-3">
-                                    <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
+                                    <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" ${disable}/>
                                     <select class="form-control select2-single" style="width:100%;" 
                                         onchange="changeAssumption('${ass.ordass_id}', this.value)" 
                                         id="form_assumption_${ass.ordass_id}_sp"
-                                        name="coytypedtl_assumpt_sp">
+                                        name="coytypedtl_assumpt_sp" ${disable}>
                                         ${opsi}
                                     </select>
                                 </div>
@@ -431,6 +501,8 @@ var selectId = 0;
             countData++;
             
         });
+        
+        $("#submitModal").prop("disabled", disable);
         
         $(`#assumption`).html(provHtml);
     }
@@ -750,10 +822,11 @@ var selectId = 0;
         });
     }
 
-    function hasilDtl(id){        
+    function hasilDtl(id){
+        detailId = id
         $.ajax({
             data: {
-                ordcdtl_ordchdrid: id,
+                ordcdtl_ordchdrid: detailId,
             },
             url: "{{ route('carihasildtl') }}",
             type: "POST",
@@ -773,7 +846,7 @@ var selectId = 0;
 
             let letHtml = ''; 
             $.each(datas, (key, val) => {
-                letHtml +=`<tr onclick="hasilDtl(${val.ordchdr_id})">`
+                letHtml +=`<tr class="grabbing" onclick="hasilDtl(${val.ordchdr_id})">`
                 letHtml +=  `<td>${key + 1}</td>`
                 letHtml +=  `<td>${val.orddtl_npk}</td>`
                 letHtml +=  `<td>${val.orddtl_name}</td>`
@@ -861,7 +934,7 @@ var selectId = 0;
     
             $('#orderHasilDtl').html(letHtml)
         } else (
-            $('#orderHasilDtl').html('')
+            $('#orderHasilDtl').html(`<tr><td colspan="100%">-</td></tr>`)
         )
     }
     

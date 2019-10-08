@@ -167,13 +167,13 @@
                 </form>
                 <div style="overflow-x:auto;" class="mb-20">
                     <table class="table table-striped table-bordered table-hover">
-                        <thead>
+                        <thead class="center-tr">
                             <tr>
                                 <td rowspan="2">No</td>
                                 <td rowspan="2">NIK</td>
                                 <td rowspan="2">Name</td>
-                                <td rowspan="2">Sex</td>
-                                <td rowspan="2">Work</td>
+                                <td rowspan="2" >Sex</td>
+                                <td rowspan="2" class="padding-cell">Work</td>
                                 <td rowspan="2">Salary at Valuation Date</td>
                                 <td rowspan="2">Salary at Pension Date</td>
                                 <td rowspan="2">Age At Valuation Date</td>
@@ -217,64 +217,53 @@
 
                 <div style="overflow-x:auto;" class="mb-20">
                     <table class="table table-striped table-bordered table-hover">
-                        <thead>
+                        <thead class="center-tr">
                             <tr>
                                 <td rowspan="2">No. urut</td>
-                                <td rowspan="2">usia peserta</td>
-                                <td rowspan="2">masakerja lampau</td>
-                                <td rowspan="2">masakerja mendatang</td>
-                                
-                                <td colspan="5">faktor imbalan saat terjadi (due date)</td>
-                                
-                                <td rowspan="2">faktor kenaikan gaji</td>
-                                <td colspan="5">besar imbalan (expected benefit amount) yang diterima, karena</td>
-                                
-                                <td colspan="4">Tingkat peluang kejadiannya</td>
-                                
+                                <td rowspan="2">Usia Peserta</td>
+                                <td rowspan="2">Masakerja Lampau</td>
+                                <td rowspan="2">Masakerja Mendatang</td>
+                                <td colspan="5">Faktor Imbalan Saat Terjadi (due date)</td>
+                                <td rowspan="2">Faktor Kenaikan Gaji</td>
+                                <td colspan="5">Besar Imbalan (expected benefit amount) yang diterima, karena</td>
+                                <td colspan="4">Tingkat Peluang Kejadiannya</td>
                                 <td colspan="5">Total Nilai Kini Kewajiban (PVDBO)</td>
-                                
-                                <td colspan="5">Biaya jasa kini</td>
-                                
+                                <td colspan="5">Biaya Jasa kini</td>
                                 <td colspan="5">Nilai Kini Kewajiban (PBO)</td>
                                 <td rowspan="2">Jumlah</td>
                                 <td rowspan="2">Potensi BS</td>
                             </tr>
                             
                             <tr>
-                                <td>total masa kerja</td>
-                                <td>meninggal dunia</td>
-                                <td>menderita cacad</td>
-                                <td>undur diri (berhenti)</td>	
-                                <td>pensiun normal</td>
-                                
-                                <td>gaji sebulan</td>
-                                <td>meninggal dunia</td>
-                                <td>menderita cacad</td>
-                                <td>undur diri (berhenti)</td>
-                                <td>pensiun haritua</td>
-                                
-                                <td>meninggal dunia</td>	
-                                <td>menderita cacad</td>
-                                <td>berhenti (undur diri)</td>
-                                <td>pensiun haritua</td>
-                                
+                                <td>Total Masa Kerja</td>
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Undur Diri (berhenti)</td>	
+                                <td>Pensiun Normal</td>
+                                <td>Gaji Sebulan</td>
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Undur Diri (berhenti)</td>
+                                <td>Pensiun Haritua</td>
+                                <td>Meninggal Dunia</td>	
+                                <td>Menderita Cacad</td>
+                                <td>Berhenti (Undur Diri)</td>
+                                <td>Pensiun Haritua</td>
                                 <td>Tingkat Diskonto</td>
-                                <td>meninggal dunia</td>
-                                <td>menderita cacad</td>
-                                <td>berhenti (undur diri)</td>	
-                                <td>karena pensiun</td>
-                                
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Berhenti (Undur Diri)</td>	
+                                <td>Karena Pensiun</td>
                                 <td>Jumlah TNKK</td>
-                                <td>meninggal dunia</td>
-                                <td>menderita cacad</td>
-                                <td>berhenti (undur diri)</td>	
-                                <td>karena pensiun</td>
-                                
-                                <td>(Imbalan per unit masakerja)</td>
-                                <td>meninggal dunia</td>
-                                <td>menderita cacad</td>
-                                <td>berhenti (undur diri)</td>	
-                                <td>karena pensiun</td>
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Berhenti (Undur Diri)</td>	
+                                <td>Karena Pensiun</td>
+                                <td>(Imbalan per unit Masakerja)</td>
+                                <td>Meninggal Dunia</td>
+                                <td>Menderita Cacad</td>
+                                <td>Berhenti (Undur Diri)</td>	
+                                <td>Karena Pensiun</td>
                             </tr>
                         </thead>
                         <tbody id="orderHasilDtl">
