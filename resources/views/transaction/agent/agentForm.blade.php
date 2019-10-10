@@ -6,7 +6,7 @@
                     <h4 class="modal-title blue lighter bigger bolder" id="modelHeadingAgent"><i class="ace-icon fa fa-user-secret cyan"></i> | Register Agent</h4>
                 </div>
                 <form id="formAgent" action="javascript:void(0);">
-                        <input type="hidden" class="form-control" name="agent_id" id="agent_id" >
+                        <input type="hidden" class="form-control" name="user_id" id="user_id" >
                         <input type="hidden" class="form-control" name="regis_id" id="regis_id" >
                         <input type="hidden" class="form-control" name="bizpart_id" id="bizpart_id" >
 

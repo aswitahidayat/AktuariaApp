@@ -41,7 +41,7 @@ class AgentController extends Controller
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->user_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editAgent">Edit</a>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->regis_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editAgent">Edit</a>';
                     // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->vill_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteVillage">Delete</a>';
                     return $btn;
                 })
@@ -68,22 +68,20 @@ class AgentController extends Controller
 
     public function edit($id)
     {
-        $data  = $this->agent( New Request(), 'edit', $id);
-            
+        // $data  = Regist::find($id);
+        $data = $this->agent(new Request, 'edit', $id);
         return response()->json($data);
+
+        // $utype = User::find($id);
+        // return response()->json($utype);
     }
 
     public function store(Request $request)
     {
-        if($request->id == ''){
+        if($request->user_id == ''){
             $response = $this->agentTransaction($request);
         }else{
-            
-            Identity::
-                where('typeid_id', $request->typeid_id)
-                ->update(['typeid_name' => $request->typeid_name,
-                    'typeid_desc' => $request->typeid_desc,
-                    'typeid_status' => $request->typeid_status]);
+            $response = $this->agentEditTransaction($request);            
         }
         return $response;
     }
@@ -96,6 +94,8 @@ class AgentController extends Controller
         if($request->name != ''){
             $query->where('regis_name', 'LIKE', "%$request->name%");
         }
+
+        $query->where('user_type', "2");
 
         if($reqType == 'pagging'){
             $length = $request->length != '' ? $request->length : 10;
@@ -115,7 +115,7 @@ class AgentController extends Controller
         } else if ($reqType == 'count'){
             return $query->count();
         } else if ($reqType == 'edit'){
-            return $query->where('id', $param)->first();
+            return $query->where('regis_id', $param)->first();
         }
     }
 
@@ -136,27 +136,27 @@ class AgentController extends Controller
 
     function agentEditTransaction(Request $request){
         $exception = DB::transaction(function() use ($request) {
-            $dataRegist = $this->normalizeRegist($request);
-            $q1 = Regist::create($dataRegist);
+            $dataRegist = $this->normalizeRegist($request, true);
+            $q1 = Regist::where('regis_id', $request->regis_id)->update($dataRegist);
 
-            $dataPartner = $this->normalizePartner($request, $q1->regis_id);
-            $q2 = Partner::create($dataPartner);
+            $dataPartner = $this->normalizePartner($request, '', true);
+            $q2 = Partner::where('bizpart_id', $request->bizpart_id)->update($dataPartner);
 
-            $dataUser = $this->normalizeUser($request, $q2->bizpart_id);
-            $q3 = User::create($dataUser);
+            $dataUser = $this->normalizeUser($request, '', true);
+            $q3 = User::where('user_id', $request->user_id)->update($dataUser);
         });
         return is_null($exception) ? response()->json(['success'=>'Agent saved successfully.']) : $exception;
     }
 
-    function normalizeRegist(Request $request){
+    function normalizeRegist(Request $request, $isEdit = ''){
         $now = date(now());
 
         $result = [
-            'regis_num' => $this->regnum(),
-            'regis_activate_by' => 1,
-            'regis_activate_date' => $now,
-            'regis_user_type' => 2,
-            'regis_date' => $now,
+            // 'regis_num' => $this->regnum(),
+            // 'regis_activate_by' => 1,
+            // 'regis_activate_date' => $now,
+            // 'regis_user_type' => 2,
+            // 'regis_date' => $now,
             'regis_email' => $request->agent_email,
             'regis_name' => $request->agent_name,
             'regis_typeid' => $request->type_identity,
@@ -166,46 +166,79 @@ class AgentController extends Controller
             'regis_birthplace' => $request->agent_birth_place,
             'regis_birthdate' => $request->agent_birth_date,
             'regis_npwp' => $request->npwp,
-            'regis_created_by' => 1,
-            'regis_created_date' => $now,
+            // 'regis_created_by' => 1,
+            // 'regis_created_date' => $now,
         ];
+
+        if($isEdit == ''){
+            $result['regis_num'] = $this->regnum();
+            $result['regis_activate_by'] = 1;
+            $result['regis_activate_date'] = $now;
+            $result['regis_user_type'] = 2;
+            $result['regis_date'] = $now;
+            $result['regis_created_by'] = 1;
+            $result['regis_created_date'] = $now;
+        }
 
         return $result;
     }
 
-    function normalizePartner(Request $request, $regis_id){
+    function normalizePartner(Request $request, $regis_id, $isEdit = ''){
         $now = date(now());
 
         $result = [
-            'bizpart_regisid' => $regis_id,
-            'bizpart_num' => $this->bizpartnum(),
-            'bizpart_user_type' => 2,
+            // 'bizpart_regisid' => $regis_id,
+            // 'bizpart_num' => $this->bizpartnum(),
+            // 'bizpart_user_type' => 2,
             'bizpart_pic_email' => $request->agent_email,
             'bizpart_pic_name' => $request->agent_name,
             'bizpart_pic_hp' => $request->agent_phone,
             'bizpart_pic_birthplace' => $request->agent_birth_place,
             'bizpart_pic_birthdate' => $request->agent_birth_date,
             'bizpart_pic_npwp' => $request->npwp,
-            'bizpart_created_by' => 1,
-            'bizpart_created_date' => $now,
+
+            'bizpart_pic_typeid' => $request->type_identity,
+            'bizpart_pic_idnum' => $request->identity_number,
+            
+            // 'bizpart_created_by' => 1,
+            // 'bizpart_created_date' => $now,
         ];
+
+        if($isEdit == ''){
+            $result['bizpart_regisid'] = $regis_id;
+            $result['bizpart_num'] = $this->bizpartnum();
+            $result['bizpart_user_type'] = 2;
+
+            $result['bizpart_created_by'] = 1;
+            $result['bizpart_created_date'] = $now;
+        }
 
         return $result;
     }
 
-    function normalizeUser(Request $request, $bizpart_id){
+    function normalizeUser(Request $request, $bizpart_id, $isEdit = ''){
         $now = date(now());
 
         $result = [
-            'user_bizpartid' => $bizpart_id,
-            'user_type' => 2,
+            // 'user_bizpartid' => $bizpart_id,
+            // 'user_type' => 2,
             'user_name' => $request->agent_email,
             'user_email' => $request->agent_email,
-            'user_password' => Hash::make('sehati'),
-            'user_status' => 1,
-            'user_created_by' => 1,
-            'user_created_date' => $now
+            // 'user_password' => Hash::make('sehati'),
+            // 'user_status' => 1,
+            // 'user_created_by' => 1,
+            // 'user_created_date' => $now
         ];
+
+        if($isEdit == ''){
+            $result['user_bizpartid'] = $bizpart_id;
+            $result['user_type'] = 2;
+            $result['user_password'] = Hash::make('sehati');
+            $result['user_status'] = 1;
+
+            $result['user_created_by'] = 1;
+            $result['user_created_date'] = $now;
+        }
 
         return $result;
     }

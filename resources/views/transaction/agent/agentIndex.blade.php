@@ -168,7 +168,7 @@
                 $(`#saveBtn${module}`).html("Edit");
                 $(`#modal${module}`).modal('show');
                 
-                $(`#agent_id`).val(`${data.id}`);
+                $(`#user_id`).val(`${data.user_id}`);
                 $(`#regis_id`).val(`${data.regis_id}`);
                 $(`#bizpart_id`).val(`${data.bizpart_id}`);
 
