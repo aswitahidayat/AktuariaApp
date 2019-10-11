@@ -370,9 +370,9 @@
 
     function selectServiceDet(id, selected){
         debugger;
+        var varid = id? id : $('#ordhdr_service_hdr').val();
         if(selected){
 
-            var varid = id? id : $('#ordhdr_service_hdr').val();
             $.ajax({
                 url: "{{ route('servicedetail') }}",
                 type: "POST",

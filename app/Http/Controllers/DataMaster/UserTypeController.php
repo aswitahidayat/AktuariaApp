@@ -28,6 +28,10 @@ class UserTypeController extends Controller
         if($request->name != ''){
             $query->where('usertype_name', 'LIKE',  "%$request->name%");
         }
+
+        $length = $request->length != '' ? $request->length : 10;
+        $query->skip($request->start)->take($length)->get();
+
         $data = $query->orderBy('usertype_id')->get();
 
         return Datatables::of($data)

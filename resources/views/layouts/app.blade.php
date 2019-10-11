@@ -279,6 +279,10 @@
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>
 </div><!-- /.main-container -->
+
+<div id="modalLoading" class="loading">
+    <span class="fa fa-spinner fa-spin fa-3x"></span>
+</div>
 <!-- basic scripts -->
 
 @include('layouts.form') 

@@ -3,6 +3,30 @@ $(function () {
     $("img").on("error", function () {
         $(this).attr("src", "/noimageavailable.png");
     });
+
+    $.extend( true, $.fn.dataTable.defaults, {
+        searching: false,
+        ordering: false,
+        bLengthChange: true,
+        info: false,
+        processing: true,
+        serverSide: true,
+        preDrawCallback: ( settings ) => {             
+            $('#modalLoading').fadeIn(300);
+        },
+        drawCallback: ( settings ) => {
+            $('#modalLoading').fadeOut(300);
+        }
+    });
+
+    jQuery.ajaxSetup({
+    beforeSend: function() {
+        $('#modalLoading').fadeIn(300);
+    },
+    complete: function(){
+        $('#modalLoading').fadeOut(300);
+    },
+    });
 })
 
 function dateFormat(varDate = ''){

@@ -11,19 +11,13 @@
         //show data
         function fill_datatable(name = '') {
             table = $(`#table${module}`).DataTable({
-                bLengthChange: true,
-                    info: false,
-                    processing: true,
-                    serverSide: true,
-                    ordering: false,
-                    searching: false,
                 ajax: {
-                        url: "{{ route('searchusertype') }}",
-                        type: "POST",
-                        data: {
-                            name: name
-                        }
-                    }, 
+                    url: "{{ route('searchusertype') }}",
+                    type: "POST",
+                    data: {
+                        name: name
+                    }
+                }, 
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {name: 'action', orderable: false, searchable: false,data: 'action'},

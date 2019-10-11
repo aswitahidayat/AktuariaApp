@@ -89,10 +89,6 @@ class ZipController extends Controller
         if($request->name != ''){
             $query->where('subdis_name', 'LIKE', "%$request->name%");
         }
-
-        // if($request->limit != ''){
-        //     $query->skip(0)->take(10);
-        // }
         
         if($reqType == 'pagging'){
             $length = $request->length != '' ? $request->length : 10;

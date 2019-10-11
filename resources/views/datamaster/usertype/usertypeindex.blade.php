@@ -49,12 +49,12 @@
         <br>
         <table id="tableUserType" class="table table-striped table-bordered" style="width:100%">
             <thead>
-            <tr>
-                <th width="23px">No</th>
-                <th width="103px">Action</th>
-                <th>User Type Name</th>
-                <th>Status</th>
-            </tr>
+                <tr>
+                    <th width="23px">No</th>
+                    <th width="103px">Action</th>
+                    <th>User Type Name</th>
+                    <th>Status</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>

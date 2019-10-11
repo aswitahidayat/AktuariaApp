@@ -43,7 +43,13 @@ class PerhitunganController extends Controller
         $query = Order::
             leftJoin('kka_dab.mst_order_program AS prog', 'ordhdr_program', '=', 'prog.ordprg_id')
             ->leftJoin('kka_dab.mst_order_service_hdr AS serv', 'ordhdr_service_hdr', '=', 'serv.ordsrvhdr_id')
-            ->leftJoin('kka_dab.mst_order_service_dtl AS sdtl', 'ordhdr_service_dtl', '=', 'sdtl.ordsrvdtl_id');
+            ->leftJoin('kka_dab.mst_order_service_dtl AS sdtl', 'ordhdr_service_dtl', '=', 'sdtl.ordsrvdtl_id')
+            
+            ->select('*',
+                DB::raw("(select count(*) from kka_dab.trn_order_assumption AS b
+                    where b.ordass_hdrid = ordhdr_id and b.ordass_code = 'TMO'
+                    and b.ordass_value <> 0) as ass_status")
+            );
 
         if($request->name != ''){
             $query->where('ordhdr_ordnum', 'LIKE',"%$request->name%");
@@ -61,7 +67,9 @@ class PerhitunganController extends Controller
                 if($row->ordhdr_pay_status == 'N'){
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
                     $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionOrder">Assumption</a>';
-                    $btn .= " <a href='javascript:void(0)'  onclick='hitungOrder(\"$row->ordhdr_id\", \"$row->ordhdr_ordnum\")' class='assumption btn btn-primary btn-sm'>Hitung</a>";    
+                    if($row->ass_status > 0){
+                        $btn .= " <a href='javascript:void(0)'  onclick='hitungOrder(\"$row->ordhdr_id\", \"$row->ordhdr_ordnum\")' class='assumption btn btn-primary btn-sm'>Hitung</a>";    
+                    }
                 } 
                 if ($row->ordhdr_pay_status == 'C'){
                     $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")'  class='edit btn btn-primary btn-sm'>View</a>";
