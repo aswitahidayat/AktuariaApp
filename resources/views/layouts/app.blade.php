@@ -280,7 +280,7 @@
     </a>
 </div><!-- /.main-container -->
 
-<div id="modalLoading" class="loading">
+<div id="modalLoading" class="loading" style="display:none">
     <span class="fa fa-spinner fa-spin fa-3x"></span>
 </div>
 <!-- basic scripts -->
@@ -330,6 +330,25 @@
 <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
 
 <!-- inline scripts related to this page -->
+
+<script>
+    /*
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: "get",
+        url: "{{ route('menu.index') }}",
+        success: function (data) {
+            //table.draw();
+            debugger;
+        },
+        error: function (data) {
+            //console.log('Error:', data);
+        }
+    });
+    */
+</script>
 
 @yield('js')
 </body>

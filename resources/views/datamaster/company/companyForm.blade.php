@@ -45,7 +45,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Jumlah tahun hitung  </label>
                                 <div class="col-sm-9">
                                     <div class="input-group">
@@ -60,7 +60,7 @@
                                 </div>
                             </div> 
                             <div id="assumption">
-                            </div>
+                            </div> --}}
                             
                         </div>
                     </div>

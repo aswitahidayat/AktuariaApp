@@ -82,6 +82,7 @@
                 $("#coytypehdr_status_inactive").prop("checked", true);
             }
 
+            /*
             $.ajax({
                 data: {
                     coytypehdr_id: id
@@ -96,6 +97,7 @@
                     console.log('Error:', data);;
                 }
             });
+            */
         })
     });
 

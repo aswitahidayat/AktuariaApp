@@ -53,9 +53,19 @@ class ServiceController extends Controller
         return response()->json($program);
     }
 
+    public function getDetail(Request $request)
+    {
+        $program = ServiceDetail::find($request->ordsrvdtl_id);
+        return response()->json($program);
+    }
+
     public function store(Request $request)
     {
         $exception = DB::transaction(function() use ($request) {
+            if($request->ordsrvhdr_status == 1){
+                Service::where('ordsrvhdr_status', 1)
+                ->update(['ordsrvhdr_status' => 2]);
+            }
             if($request->ordsrvhdr_id == ''){
                 $q= Service::create([
                         'ordsrvhdr_name' => $request->ordsrvhdr_name,
@@ -64,15 +74,18 @@ class ServiceController extends Controller
                         'ordsrvhdr_created_by' => 1,
                         'ordsrvhdr_created_date' => date(now()),
                 ]);
-                $this->setDetail($request->detail, $q->ordsrvhdr_id);
+                if(isset($request->detail)){
+                    $this->setDetail($request->detail, $q->ordsrvhdr_id);
+                }
             }else{
                 Service::
                     where('ordsrvhdr_id', $request->ordsrvhdr_id)
                     ->update(['ordsrvhdr_name' => $request->ordsrvhdr_name,
                         'ordsrvhdr_desc' => $request->ordsrvhdr_desc,
                         'ordsrvhdr_status' => $request->ordsrvhdr_status]);
-                        
-                $this->setDetail($request->detail);
+                if(isset($request->detail)){
+                    $this->setDetail($request->detail, $request->ordsrvhdr_id);
+                }
 
             }
 
@@ -82,7 +95,21 @@ class ServiceController extends Controller
     }
     
     public function serviceDetail(Request $request){
-        $data = ServiceDetail::where('ordsrvdtl_hdrid', $request->ordsrvhdr_id)->get();
+        // $data = ServiceDetail::where('ordsrvdtl_hdrid', $request->ordsrvhdr_id)->get();
+        // return response()->json($data);
+
+        // $data = ServiceDetail::where('ordsrvdtl_hdrid', $request->ordsrvhdr_id)->get();
+
+        $query =Service::leftJoin('kka_dab.mst_order_service_dtl AS dtl', 'ordsrvhdr_id', '=', 'dtl.ordsrvdtl_hdrid');
+        $query->where('ordsrvhdr_status', 1);
+        $query->whereDate('ordsrvdtl_startdate','<=', date(now()));
+        $query->whereRaw('(
+            case
+                when ordsrvdtl_enddate isnull THEN ordsrvdtl_enddate isnull
+                when ordsrvdtl_enddate notnull THEN now() < ordsrvdtl_enddate 
+            END
+        )');
+        $data= $query->get();
         return response()->json($data);
     }
 
@@ -91,9 +118,10 @@ class ServiceController extends Controller
             if($value['ordsrvdtl_id'] == ''){
                 ServiceDetail::create([
                     'ordsrvdtl_hdrid' => $id,
-                    'ordsrvdtl_price' => !empty($value['ordsrvdtl_price'])?$value['ordsrvdtl_price']:'',
-                    'ordsrvdtl_startdate' => !empty($value['ordsrvdtl_startdate'])?$value['ordsrvdtl_startdate']:'',
-                    'ordsrvdtl_enddate' => !empty($value['ordsrvdtl_enddate'])?$value['ordsrvdtl_enddate']:'',
+                    'ordsrvdtl_price' => !empty($value['ordsrvdtl_price'])?$value['ordsrvdtl_price']:0,
+                    'ordsrvdtl_startdate' => !empty($value['ordsrvdtl_startdate'])?$value['ordsrvdtl_startdate']:null,
+                    'ordsrvdtl_enddate' => !empty($value['ordsrvdtl_enddate'])?$value['ordsrvdtl_enddate']:null,
+                    'ordsrvdtl_desc' => !empty($value['ordsrvdtl_desc'])?$value['ordsrvdtl_desc']: '',
                     'ordsrvdtl_created_by' => '1',
     
                     'orddtl_created_by' => 1,
@@ -101,14 +129,14 @@ class ServiceController extends Controller
                 ]);
             } else {
                 ServiceDetail::
-                where('ordsrvhdr_id', $value['ordsrvhdr_id'] )
+                where('ordsrvdtl_id', $value['ordsrvdtl_id'] )
                 ->update([
-                    'ordsrvdtl_price' => !empty($value['ordsrvdtl_price'])?$value['ordsrvdtl_price']:'',
-                    'ordsrvdtl_startdate' => !empty($value['ordsrvdtl_startdate'])?$value['ordsrvdtl_startdate']:'',
-                    'ordsrvdtl_enddate' => !empty($value['ordsrvdtl_enddate'])?$value['ordsrvdtl_enddate']:'',
+                    'ordsrvdtl_price' => !empty($value['ordsrvdtl_price'])?$value['ordsrvdtl_price']:0,
+                    'ordsrvdtl_startdate' => !empty($value['ordsrvdtl_startdate'])?$value['ordsrvdtl_startdate']: null,
+                    'ordsrvdtl_enddate' => !empty($value['ordsrvdtl_enddate'])?$value['ordsrvdtl_enddate']: null,
+                    'ordsrvdtl_desc' => !empty($value['ordsrvdtl_desc'])?$value['ordsrvdtl_desc']: '',
                     'ordsrvdtl_created_by' => '1',
     
-                    'orddtl_created_by' => 1,
                     'ordsrvdtl_created_date' => date(now())
                      ]);
             }

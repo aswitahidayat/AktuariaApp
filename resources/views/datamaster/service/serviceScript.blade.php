@@ -73,6 +73,7 @@
             })
         });
 
+        /*
         $(`#saveBtn${module}`).click( function(e) {
             e.preventDefault();
             $(this).html('Sending..');
@@ -100,41 +101,77 @@
                     $(`#saveBtn${module}`).html('Save Changes');
                 }
             });
-        });
-        $( `#form${module}` ).submit(function( e ) {
+        });*/
 
+        $( `#form${module}` ).submit(function( e ) {
+            
+            e.preventDefault();
+            // $(this).html('Sending..');
+            $(`#saveBtn${module}`).html('Sending..');
+
+            // var data = $(`#form${module}`).serialize();
+            var formdata = $(`#form${module}`).serializeArray();
+            var dataall = {};
+            $(formdata ).each(function(index, obj){
+                dataall[obj.name] = obj.value;
+            });
+            
+            dataall.detail = getFormDetail();
+
+            debugger;
+            $.ajax({
+                data: dataall,
+                url: "{{ route('service.store') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $(`#form${module}`).trigger("reset");
+                    $(`#modal${module}`).modal('hide');
+                    table.draw();
+                    $(`#saveBtn${module}`).html('Save Changes');
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                    $(`#saveBtn${module}`).html('Save Changes');
+                }
+            });
         });
       
     });
 
     function addServiceDtl(varData = [{}]){
         let varHtml = '';
-        var id =  $(`#ordsrvhdr_id`).val();
+        //var id =  $(`#ordsrvhdr_id`).val();
         varData.forEach(function(item, index) {
             var price = item.ordsrvdtl_price  ||  0
             var startDate = item.ordsrvdtl_startdate  ||  ''
             var endDate = item.ordsrvdtl_enddate  ||  ''
             var id = item.ordsrvdtl_id || ''
+            var desc = item.ordsrvdtl_desc || ''
             
             varHtml +=  `
-                <form class="service_form pb-20" style="display: flex;" >
+                <div class="service_form pb-20" style="display: flex;" >
                         <input type="hidden" min="0" class="form-control" name="ordsrvdtl_id" value="${id}" />
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                         <label class="control-label no-padding-right" for="form-field-1">Price</label>
                         <input type="number" min="0" class="form-control" name="ordsrvdtl_price"
                         class="col-xs-10 col-xs-5" required value="${price}"/>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                         <label class="control-label no-padding-right" for="form-field-1">Start Date</label>
-                        <input type="date" class="form-control" name="ordsrvdtl_startdate"
-                        class="col-xs-10 col-xs-5" required value="${startDate}"/>
+                        <input type="date" class="form-control" name="ordsrvdtl_startdate" required value="${startDate}"/>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-3">
                         <label class="control-label no-padding-right" for="form-field-1">End Date</label>
                         <input type="date" class="form-control" name="ordsrvdtl_enddate"
-                        class="col-xs-10 col-xs-5" required value="${endDate}" />
+                        class="col-xs-10 col-xs-5" value="${endDate}" />
                     </div>
-                </form>`;
+
+                    <div class="col-xs-3">
+                        <label class="control-label no-padding-right" for="form-field-1">Desc</label>
+                        <input type="text" class="form-control" name="ordsrvdtl_desc" value="${desc}" required />
+                    </div>
+                </div>`;
         });
 
 
@@ -166,14 +203,20 @@
 
     function getFormDetail(){
         var dataReturn =[]
-        $(".service_form").each(function(index, data){
-            var dataObj = {}
-            dataObj[data[0].name] = data[0].value
-            dataObj[data[1].name] = data[1].value
-            dataObj[data[2].name] = data[2].value
-            dataObj[data[3].name] = data[3].value
-            dataReturn.push(dataObj);
-        })
+        var myEle = document.getElementsByClassName("service_form");
+        if(myEle.length > 0){
+            $(".service_form").each(function(index, data){
+                //data.find('input:text, input:password, input:file, select, textarea')
+                debugger;
+                var dataObj = {}
+                dataObj[data.getElementsByTagName('input')[0].name] = data.getElementsByTagName('input')[0].value
+                dataObj[data.getElementsByTagName('input')[1].name] = data.getElementsByTagName('input')[1].value
+                dataObj[data.getElementsByTagName('input')[2].name] = data.getElementsByTagName('input')[2].value
+                dataObj[data.getElementsByTagName('input')[3].name] = data.getElementsByTagName('input')[3].value
+                dataObj[data.getElementsByTagName('input')[4].name] = data.getElementsByTagName('input')[4].value
+                dataReturn.push(dataObj);
+            })
+        }
         return dataReturn;
     }
 </script>

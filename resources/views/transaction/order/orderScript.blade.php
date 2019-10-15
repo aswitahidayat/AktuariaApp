@@ -19,10 +19,12 @@
             $('#modalOrderAssumption').modal('show');
         });
 
+        /*
         $('#ordhdr_service_hdr').change(function(){
         
             selectServiceDet()
-        })
+        })*/
+        selectServiceDet()
     });
 
     function fill_datatable(name = ''){
@@ -66,7 +68,8 @@
         $('#fileupload').val('');
         
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
-        searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
+        // searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
+        selectServiceDet()
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -117,7 +120,8 @@
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
 
-            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+        selectServiceDet()
 
             $(`#modal${module}`).modal('show');
 
@@ -249,8 +253,7 @@
                 type: 'POST',
                 data: function (params, page){
                     return{
-                        name: params.term,
-                        ordsrvhdr_id: $('#ordhdr_service_hdr').val()
+                        name: params.term
                     }
                 },
                 processResults: function (data) {

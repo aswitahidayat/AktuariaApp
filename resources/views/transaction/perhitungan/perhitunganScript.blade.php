@@ -21,9 +21,14 @@
             $('#modalOrderAssumption').modal('show');
         });
 
-        $('#ordhdr_service_hdr').change(function(){
+        //$('#ordhdr_service_hdr').change(function(){
         
-            selectServiceDet()
+        //})
+
+        
+        selectServiceDet()
+        $('#ordhdr_service_dtl').change(function(){
+            setService();
         })
     });
 
@@ -71,7 +76,7 @@
         $('#ordhdr_service_dtl').html('');
         $('#fileupload').val('');
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
-        searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
+        //searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -241,8 +246,8 @@
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
 
-            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-            searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
+            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
 
             //TODO
             selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
@@ -369,8 +374,6 @@
     }
 
     function selectServiceDet(id, selected){
-        debugger;
-        var varid = id? id : $('#ordhdr_service_hdr').val();
         if(selected){
 
             $.ajax({
@@ -384,7 +387,7 @@
                     let varHtml = '';
                     $.each(datas, (key, item) => {
                         let price = formatHumanCurrency(item.ordsrvdtl_price);
-                        varHtml +=  `<option value="${item.ordsrvdtl_id}" >${price}</option>`
+                        varHtml +=  `<option value="${item.ordsrvdtl_id}" >${item.ordsrvdtl_desc}</option>`
                     });
                     $('#ordhdr_service_dtl').html(varHtml);
                     $('#ordhdr_service_dtl').val(selected);
@@ -407,15 +410,14 @@
                     type: 'POST',
                     data: function (params, page){
                         return{
-                            name: params.term,
-                            ordsrvhdr_id: varid
+                            name: params.term
                         }
                     },
                     processResults: function (data) {
                         return {
                             results:  $.map(data, function (item) {
                                 return {
-                                    text: formatHumanCurrency(item.ordsrvdtl_price),
+                                    text: item.ordsrvdtl_desc,
                                     id: item.ordsrvdtl_id
                                 }
                             })
@@ -426,6 +428,37 @@
             });
         
 
+    }
+
+    function setService(){
+        $.ajax({
+            url: "{{ route('getdetail') }}",
+            type: "POST",
+            dataType: 'json',
+            data:{
+                ordsrvdtl_id: $('#ordhdr_service_dtl').val()
+            },
+            success: function (datas) {
+                var curency = formatHumanCurrency(datas.ordsrvdtl_price);
+                /*
+                let varHtml = '';
+                $.each(datas, (key, item) => {
+                    let price = formatHumanCurrency(item.ordsrvdtl_price);
+                    varHtml +=  `<option value="${item.ordsrvdtl_id}" >${price}</option>`
+                });
+                $('#ordhdr_service_dtl').html(varHtml);
+                $('#ordhdr_service_dtl').val(selected);
+                */
+                // selectSearch(div, modal, 'searchservice', 'ordsrvhdr')
+
+                $('#ordhdr_service_hdr').val(datas.ordsrvdtl_hdrid);
+                $('#service_hdr_view').html(curency);
+
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
     }
 
     function getTemplate(vardata ={}, periodeCount, disable){
@@ -683,6 +716,7 @@
                 alert("Progresive berhasil disimpan");
                 $('#modalOrderAssumption').modal('show');
                 $(`#subModalOrderAssumption`).modal('hide');
+                table.draw();
             },
             error: function (data) {
                 console.log(data)
@@ -711,6 +745,7 @@
             success: function (datas) {
                 alert("Assumption berhasil disimpan");
                 $('#modalOrderAssumption').modal('hide');
+                table.draw();
             },
             error: function (data) {
                 console.log(data)

@@ -23,7 +23,7 @@
             <li class="">
                 <a href="{{url('usertype')}}">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <span class="menu-text">Setup User</span>
+                    <span class="menu-text">Setup User Type</span>
                 </a>
 
                 <b class="arrow"></b>
@@ -41,7 +41,7 @@
             <li class="">
                 <a href="{{route('company.index')}}">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    Setup Company
+                    Setup Company Type
                 </a>
 
                 <b class="arrow"></b>

@@ -13,7 +13,7 @@ class ServiceDetail extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'ordsrvdtl_hdrid', 'ordsrvdtl_price', 'ordsrvdtl_startdate', 'ordsrvdtl_enddate',
+        'ordsrvdtl_hdrid', 'ordsrvdtl_price', 'ordsrvdtl_startdate', 'ordsrvdtl_enddate', 'ordsrvdtl_desc',
         'ordsrvdtl_created_by', 'ordsrvdtl_created_date', 'ordsrvdtl_updated_by', 'ordsrvdtl_updated_date'
     ];
 }

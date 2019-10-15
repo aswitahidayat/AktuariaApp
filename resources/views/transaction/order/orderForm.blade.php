@@ -27,9 +27,12 @@
                             <div class="form-group">
                                 <label for="type-identity" class="col-sm-4 control-label no-padding-right bolder">Service:</label>
                                 <div class="col-sm-8 pb-20">
-                                    <select class="chosen-select form-control" id="ordhdr_service_hdr" name="ordhdr_service_hdr" 
-                                        placeholder="Choose a Program..." style="width:100%;"></select>
-                                    {{-- <input type="number" class="form-control" id="ordhdr_service_hdr" name="ordhdr_service_hdr" required> --}}
+                                    {{-- <select class="chosen-select form-control" id="ordhdr_service_hdr" name="ordhdr_service_hdr" 
+                                        placeholder="Choose a Program..." style="width:100%;"></select> --}}
+
+                                    <input type="hidden"  id="ordhdr_service_hdr" name="ordhdr_id">
+                                    <select class="chosen-select form-control" id="ordhdr_service_dtl" name="ordhdr_service_dtl" 
+                                        placeholder="Choose Service Amount..." style="width:100%;" required></select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -85,8 +88,8 @@
                                 <label for="service-amount" class="col-sm-4 control-label no-padding-right bolder">Service Amount:</label>
                                 <div class="col-sm-8 pb-20">
                                     {{-- <input type="number" class="form-control" id="ordhdr_amount" name="ordhdr_amount"> --}}
-                                    <select class="chosen-select form-control" id="ordhdr_service_dtl" name="ordhdr_service_dtl" 
-                                        placeholder="Choose Service Amount..." style="width:100%;" required></select>
+                                    <label id="service_hdr_view" > </label>
+                                    
                                 </div>
                             </div>
                         </div>

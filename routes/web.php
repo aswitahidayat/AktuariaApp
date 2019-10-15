@@ -68,6 +68,7 @@ Route::post('searchbenefitdtl','DataMaster\BenefitController@searchBenefitDtl')-
 Route::resource('service','DataMaster\ServiceController');
 Route::post('/searchservice','DataMaster\ServiceController@search')->name("searchservice");
 Route::post('/serviceDetail','DataMaster\ServiceController@serviceDetail')->name("servicedetail");
+Route::post('/getDetail','DataMaster\ServiceController@getDetail')->name("getdetail");
 
 Route::resource('program','DataMaster\ProgramController');
 Route::post('/searchprogram','DataMaster\ProgramController@search')->name("searchprogram");
@@ -102,4 +103,6 @@ Route::post('/changePassword','SettingController@changePassword')->name("changep
 
 Route::get('/upload', 'UploadController@upload');
 Route::post('/upload/proses', 'UploadController@proses_upload');
+
+Route::resource('menu','MenuController');
 
