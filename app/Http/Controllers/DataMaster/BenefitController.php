@@ -34,8 +34,10 @@ class BenefitController extends Controller {
             if($request->name != ''){
                 $query->where('benhdr_desc', 'LIKE',  "%$request->name%");
             }
-            $data = $query->get();
-            
+
+            $length = $request->length != '' ? $request->length : 10;
+            $data = $query->skip($request->start)->take($length)->get();
+                        
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
@@ -48,8 +50,7 @@ class BenefitController extends Controller {
     }
 
     public function searchBenefitDtl(Request $request){
-        if($request->ajax())
-        {
+        if($request->ajax()) {
             $url = route('company.index');
 
             $query = BenefitDtl::query();
@@ -64,7 +65,7 @@ class BenefitController extends Controller {
 
     public function edit($benhdr_id)
     {
-        $data = Benefit::find($benhdr_id);
+        $data = Benefit::detail($benhdr_id);
         return response()->json($data);
     }
 
@@ -79,20 +80,11 @@ class BenefitController extends Controller {
 
     function benTransaction(Request $request){
         $exception = DB::transaction(function() use ($request) {
-            $q = Benefit::create([
-                'benhdr_desc' => $request->benhdr_desc,
-                'benhdr_start_date' => $request->benhdr_start_date,
-                'benhdr_end_date' => $request->benhdr_end_date,
-                'benhdr_created_by' => 1,
-                'benhdr_created_date' => date(now())
-            ]);
-
-            if($request->benhdr_agework > 0){
-
-                $this->benDtl(
-                    $request->benhdr_agework, $q->benhdr_id, 
-                    $request->bendtl_appreciation, $request->bendtl_split);
-            };
+            $q = Benefit::createData($request);
+            
+            if(sizeof($request->detail) > 0){
+                $this->benDtl($request->detail, $q->benhdr_id);
+            }
         });
 
         return is_null($exception) ? response()->json(['success'=>'Company Type saved successfully.']) : $exception;
@@ -101,19 +93,9 @@ class BenefitController extends Controller {
 
     function benEditTransaction(Request $request){
         $exception = DB::transaction(function() use ($request) {
-            Benefit::where('benhdr_id', $request->benhdr_id)
-                ->update(['benhdr_desc' => $request->benhdr_desc,
-                    'benhdr_updated_date' => date(now())
-                ]);
-            
-            $tempCountDtl = BenefitDtl::where('bendtl_hdrid',$request->benhdr_id)->count();
-            
-            if($tempCountDtl != ($request->benhdr_agework + 1)){
-                BenefitDtl::where('bendtl_hdrid', $request->benhdr_id)->delete();
-                $this->benDtl(
-                    $request->benhdr_agework, $request->benhdr_id,
-                    $request->bendtl_appreciation, $request->bendtl_split
-                );
+            Benefit::editData($request);
+            if(sizeof($request->detail) > 0){
+                $this->benDtl($request->detail, $request->benhdr_id);
             }
 
         });
@@ -121,26 +103,31 @@ class BenefitController extends Controller {
         return is_null($exception) ? response()->json(['success'=>'Company Type edited successfully.']) : $exception;
     }
 
-    function benDtl($number, $id, $bendtl_appreciation, $bendtl_split){
+    function benDtl($detail, $benhdr_id){
         $cd = [];
-        $agework = $number;
-        for ($x = 0; $x <= $agework; $x++) {
-            $agework_month = $x > 0 ? (12*($x-1))+1 : 0;
-            $bendtl_severance = $x<10 ? $x : '9';
-
-            $cd[]= [
-                'bendtl_hdrid' => $id,
-                'bendtl_agework_year' => $x,
-                'bendtl_agework_month' => $agework_month,
-                'bendtl_severance' => $bendtl_severance,
-                'bendtl_appreciation' => $bendtl_appreciation,
-                'bendtl_split' => $bendtl_split,
-                'bendtl_created_by' => 1,
-                'bendtl_created_date' => date(now()),
-            ];
+        foreach ($detail as $key =>$value) {
+            if($value['bendtl_id'] == ''){
+                BenefitDtl::create([
+                    'bendtl_hdrid' => $benhdr_id,
+                    'bendtl_agework_year' => $value['bendtl_agework_year'],
+                    'bendtl_severance' => $value['bendtl_severance'],
+                    'bendtl_appreciation' => $value['bendtl_appreciation'],
+                    'bendtl_split' => $value['bendtl_split'],
+                    'bendtl_created_by' => 1,
+                    'bendtl_created_date' => date(now()),
+                ]);
+            } else {
+                BenefitDtl::
+                where('bendtl_id', $value['bendtl_id'] )
+                ->update([
+                    'bendtl_agework_year' => $value['bendtl_agework_year'],
+                    'bendtl_severance' => $value['bendtl_severance'],
+                    'bendtl_appreciation' => $value['bendtl_appreciation'],
+                    'bendtl_split' => $value['bendtl_split'],
+                ]);
+            }
         }
 
-        BenefitDtl::insert($cd);
     }
 
 }

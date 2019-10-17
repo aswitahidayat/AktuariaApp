@@ -12,11 +12,16 @@ class BenefitDtl extends Model
     public $incrementing = true;
     public $timestamps = false;
 
+    public function benedit()
+    {
+        return $this->belongsTo('App\Models\Benefit\Benefit');
+    }
+
     protected $fillable = [
         'bendtl_hdrid', 
         'bendtl_agework_year', 'bendtl_agework_month',
         'bendtl_severance', 'bendtl_appreciation', 'bendtl_split',
-        'benhdr_created_by', 'benhdr_created_date',
-        'benhdr_updated_by', 'benhdr_updated_date'
+        'bendtl_created_by', 'bendtl_created_date',
+        'bendtl_updated_by', 'bendtl_updated_date'
     ];
 }

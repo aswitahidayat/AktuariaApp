@@ -61,8 +61,9 @@
         $(`#form${module}`).trigger("reset");
         $('#coytypehdr_id').val('');
         $('#modelHeading'+module).html(`Create New  ${module}`);
-        $(`#modal${module}`).modal('show');
         $(`#benefitDtl`).html('');
+        $("#agework").val(0);
+        $(`#modal${module}`).modal('show');
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -75,42 +76,24 @@
             $.each(data, (key,val) => {
                 $(`#${key}`).val(val);
             });
-
-
-            $.ajax({
-                data: {
-                    bendtl_hdrid: id
-                },
-                url: "{{ route('searchBenefitDtl') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    if(data){
-                        if(data.length > 0){
-                            $(`#benhdr_agework`).val(data.length -1)
-                            $(`#bendtl_appreciation`).val(data[0].bendtl_appreciation)
-                            $(`#bendtl_split`).val(data[0].bendtl_split)
-                        }
-                    }
-                },
-                error: function (data) {
-                    console.log('Error:', data);;
-                }
-            });
+            data.detailCount ? $("#agework").val(data.detailCount) :  $("#agework").val(0);
+            getTemplate(data.detail)
         })
     });
 
-    $( `#form${module}` ).submit(function( e ) {
+    $(`#form${module}` ).submit(function( e ) {
         $(`#saveBtn${module}`).html('Sending..');
         $(`#saveBtn${module}`).attr("disabled", true);
+        
         var data = {};
-        // var formdata = $(`#form${module}`).serializeArray();
-        // $(formdata).each(function(index, obj){
-        //     data[obj.name] = obj.value;
-        // });
+        var formdata = $(`#form${module}`).serializeArray();
+        $(formdata).each(function(index, obj){
+            data[obj.name] = obj.value;
+        });
         data.detail = normalize();
+        
         $.ajax({
-            data: $(`#form${module}`).serialize(),
+            data: data,
             url: "{{ route('benefit.store') }}",
             type: "POST",
             dataType: 'json',
@@ -128,78 +111,119 @@
 
             }
         });
+        
     });
 
+    function normalize(){
+        var dataReturn = [];
+        
+        var myEle = document.getElementsByClassName("benefit_detail");
+        if(myEle.length > 0){
+            for (let data of myEle){
+                var dataObj = {}
+                dataObj[data.getElementsByTagName('input')[0].name] = data.getElementsByTagName('input')[0].value
+                dataObj[data.getElementsByTagName('input')[1].name] = data.getElementsByTagName('input')[1].value
+                dataObj[data.getElementsByTagName('input')[2].name] = data.getElementsByTagName('input')[2].value
+                dataObj[data.getElementsByTagName('input')[3].name] = data.getElementsByTagName('input')[3].value
+                dataObj[data.getElementsByTagName('input')[4].name] = data.getElementsByTagName('input')[4].value
+
+                dataReturn.push(dataObj);
+            }
+        }
+        return dataReturn
+    }
     
-    $( "#benefitAddDtl" ).click(function() {
+    
+
+    $( "#jml_thn_proc" ).click(function() {
         getTemplate()
     });
 
     function getTemplate(vardata ={}){
-        var i =$('#benefitDtl .benefit_detail').length ? $('#benefitDtl .benefit_detail').length : 0;
-        var varId = vardata.bendtl_id ? vardata.bendtl_id : '';
-        var varAgework = vardata.bendtl_agework ? vardata.bendtl_agework : '';
-        var varPercentage = vardata.bendtl_percentage ? vardata.bendtl_percentage : 0;
+        $(`#benefitdtl`).html('');            
+        let provHtml = '';
+        let num = vardata.length ? vardata.length : $("#agework").val();
+        var countData = 0;
 
-        var varHtml = `
-        <div class="form-group">
-            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Detail ${i+1} </label>
-            <div class="col-sm-9">
-        
-                <div id="benefit_detail_${i}" class="benefit_detail form-group">
-                    <div class="col-xs-6">
-                            <input type="hidden" class="form-control" id="form_dtl_${i}_id"
-                        class="col-xs-10 col-xs-5" value="${varId}" required/>
+        for (i = 1; i <= num; i++) {
+            var agework = vardata[countData] ? vardata[countData].bendtl_agework_year : countData
+            var bendtl_id = vardata[countData] ? vardata[countData].bendtl_id : ''
+            var bendtl_severance = vardata[countData] ? vardata[countData].bendtl_severance : 0
+            var bendtl_appreciation = vardata[countData] ? vardata[countData].bendtl_appreciation : 0
+            var bendtl_split = vardata[countData] ? vardata[countData].bendtl_split : 0
+            var bendtl_withdraw = vardata[countData] ? vardata[countData].bendtl_withdraw : ''
+            var bendtl_pension = vardata[countData] ? vardata[countData].bendtl_pension : ''
+            var bendtl_death = vardata[countData] ? vardata[countData].bendtl_death : ''
+            var bendtl_disability = vardata[countData] ? vardata[countData].bendtl_disability  : ''
+            var bendtl_increase_reward = vardata[countData] ? vardata[countData].bendtl_increase_reward  : ''
+            var bendtl_agework_reward = vardata[countData] ? vardata[countData].bendtl_agework_reward  : ''
 
-                        <label class="control-label no-padding-right" for="form-field-1">Agework</label>
-                        <input type="text" class="form-control" id="form_dtl_${i}_agework"
-                        class="col-xs-10 col-xs-5" value="${varAgework}" required/>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="control-label no-padding-right" for="form-field-1">Percentage</label>
-                        <input type="number" min="0" class="form-control" id="form_dtl_${i}_percentage"
-                        class="col-xs-10 col-xs-5" value="${varPercentage}" required/>
+            var a =  `
+                <div class="form-group">
+                    <div class="">
+                        <label class="control-label no-padding-right" for="form-field-1">Agework ${agework}:</label>
                     </div>
                 </div>
-            </div>
-        </div>`;
+                <div class="form-group">
+                    <div class="benefit_detail">
+                        <div class="col-xs-4">
+                            <input type="hidden" name="bendtl_id" id="bendtl_id" value="${bendtl_id}" />
+                            <input type="hidden" name="bendtl_agework_year" id="bendtl_agework_year" value="${agework}" />
+                            
+                            <label class="control-label no-padding-right" for="form-field-1">Benefit Severance</label>
+                            <input type="text" class="form-control" id="bendtl_severance" name="bendtl_severance"
+                                class="col-xs-10 col-xs-5" value=${bendtl_severance} required/>
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label no-padding-right" for="form-field-1">Benefit Appreciation</label> 
+                            <input type="text" class="form-control" id="bendtl_appreciation" name ="bendtl_appreciation"
+                                class="col-xs-10 col-xs-5" value=${bendtl_appreciation} required/>
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label no-padding-right" for="form-field-1">Benefit Split</label> 
+                            <input type="text" class="form-control" id="bendtl_split" name="bendtl_split"
+                                class="col-xs-10 col-xs-5" value=${bendtl_split} required/>
+                        </div>
+                    </div>
+                </div><hr>`;
+                
+                provHtml +=  `
+                    <tr class="benefit_detail">
+                        <td>
+                            <input type="hidden" name="bendtl_id" id="bendtl_id" value="${bendtl_id}" />
+                            <input type="hidden" name="bendtl_agework_year" id="bendtl_agework_year" value="${agework}" />
+                            ${countData + 1}
+                        </td>
+                        <td >
+                            ${agework} Tahun
+                        </td>
+                        <td>
+                            <input type="numbber" class="form-control" id="bendtl_severance" name="bendtl_severance"
+                                class="col-xs-10 col-xs-5" value=${bendtl_severance} required/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" id="bendtl_appreciation" name ="bendtl_appreciation"
+                                class="col-xs-10 col-xs-5" value=${bendtl_appreciation} required/>
+                        </td>
+                        <td style="">
+                            <div class="col-xs-10">
+                                <input type="text" class="form-control" id="bendtl_split" name="bendtl_split"
+                                    class="col-xs-10 col-xs-5" value=${bendtl_split} required/> 
+                            </div>
+                            <div class="col-xs-2"> % </div>
+                        </td>
+                        <td> ${bendtl_withdraw} </td>
+                        <td> ${bendtl_pension} </td>
+                        <td> ${bendtl_increase_reward} </td>
+                        <td> ${bendtl_agework_reward} </td>
+                        <td> ${bendtl_death} </td>
+                        <td> ${bendtl_disability} </td>
 
-        $(`#benefitDtl`).append(varHtml);
-    }
-
-    function dataSetter(vardata){
-
-        $.each(vardata, (key,val) => {
-            if(val.coytypedtl_assumpt_sp.toUpperCase()  == "P" ){
-                var setData ={
-                    value:val.coytypedtlsub_value ? val.coytypedtlsub_value : 0,
-                    min: val.coytypedtlsub_amt_min ? val.coytypedtlsub_amt_min : 0,
-                    max: val.coytypedtlsub_amt_max ? val.coytypedtlsub_amt_max : 0,
-                }
-                changeAssumption(Math.ceil((key+1)/6), val.coytypedtl_assumpt_code, 'P', setData);
-
-            }
-        });
-    }
-
-    function normalize(){
-        var dataReturn = [];
-        var varresult = $('.benefit_detail');
-
-        if(varresult.length > 0){
-            $.each(varresult, function(index, val) {
-                if(!document.getElementById(`form_dtl_${index}_id`).value){
-                    var obj ={
-                        bendtl_agework: document.getElementById(`form_dtl_${index}_agework`) ? document.getElementById(`form_dtl_${index}_agework`).value : 0 ,
-                        bendtl_percentage: document.getElementById(`form_dtl_${index}_percentage`) ? document.getElementById(`form_dtl_${index}_percentage`).value : 0,
-                    }
-
-                    dataReturn.push(obj);
-                }
-            });
+                    </tr>`
+                countData++;
         }
-
-        return dataReturn
+        
+        $(`#benefitDtl`).html(provHtml);
     }
         
 </script>
