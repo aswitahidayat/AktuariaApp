@@ -15,6 +15,9 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+define('PHPWORD_BASE_DIR', realpath(__DIR__));
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

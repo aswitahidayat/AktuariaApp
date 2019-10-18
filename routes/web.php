@@ -104,5 +104,9 @@ Route::post('/changePassword','SettingController@changePassword')->name("changep
 Route::get('/upload', 'UploadController@upload');
 Route::post('/upload/proses', 'UploadController@proses_upload');
 
+Route::get('/test', 'Util\WordController@proses_word')->name("word");
+Route::get('/testpdf', 'Util\WordController@process_pdf')->name("word");
+
+
 Route::resource('menu','MenuController');
 
