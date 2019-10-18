@@ -73,43 +73,11 @@
             })
         });
 
-        /*
-        $(`#saveBtn${module}`).click( function(e) {
-            e.preventDefault();
-            $(this).html('Sending..');
-            // var data = $(`#form${module}`).serialize();
-            var formdata = $(`#form${module}`).serializeArray();
-            var dataall = {};
-            $(formdata ).each(function(index, obj){
-                dataall[obj.name] = obj.value;
-            });
-            
-            dataall.detail = getFormDetail();
-            $.ajax({
-                data: dataall,
-                url: "{{ route('service.store') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    $(`#form${module}`).trigger("reset");
-                    $(`#modal${module}`).modal('hide');
-                    table.draw();
-                    $(`#saveBtn${module}`).html('Save Changes');
-                },
-                error: function (data) {
-                    console.log('Error:', data);
-                    $(`#saveBtn${module}`).html('Save Changes');
-                }
-            });
-        });*/
-
         $( `#form${module}` ).submit(function( e ) {
             
             e.preventDefault();
-            // $(this).html('Sending..');
             $(`#saveBtn${module}`).html('Sending..');
 
-            // var data = $(`#form${module}`).serialize();
             var formdata = $(`#form${module}`).serializeArray();
             var dataall = {};
             $(formdata ).each(function(index, obj){
@@ -118,7 +86,6 @@
             
             dataall.detail = getFormDetail();
 
-            debugger;
             $.ajax({
                 data: dataall,
                 url: "{{ route('service.store') }}",
@@ -141,7 +108,6 @@
 
     function addServiceDtl(varData = [{}]){
         let varHtml = '';
-        //var id =  $(`#ordsrvhdr_id`).val();
         varData.forEach(function(item, index) {
             var price = item.ordsrvdtl_price  ||  0
             var startDate = item.ordsrvdtl_startdate  ||  ''
@@ -206,8 +172,6 @@
         var myEle = document.getElementsByClassName("service_form");
         if(myEle.length > 0){
             $(".service_form").each(function(index, data){
-                //data.find('input:text, input:password, input:file, select, textarea')
-                debugger;
                 var dataObj = {}
                 dataObj[data.getElementsByTagName('input')[0].name] = data.getElementsByTagName('input')[0].value
                 dataObj[data.getElementsByTagName('input')[1].name] = data.getElementsByTagName('input')[1].value

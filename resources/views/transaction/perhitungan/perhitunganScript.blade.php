@@ -14,17 +14,10 @@
         });
 
         fill_datatable();
-        // selectProgram();
-        // selectService();
 
         $( "#subModalOrderAssumption" ).on('hidden.bs.modal', function(){
             $('#modalOrderAssumption').modal('show');
         });
-
-        //$('#ordhdr_service_hdr').change(function(){
-        
-        //})
-
         
         selectServiceDet()
         $('#ordhdr_service_dtl').change(function(){
@@ -76,7 +69,6 @@
         $('#ordhdr_service_dtl').html('');
         $('#fileupload').val('');
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
-        //searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -124,7 +116,6 @@
             reader.addEventListener('load', function (e) {
                 
                 let csvdata = e.target.result; 
-                // var data = Papa.parse(csvdata, {header: true,});
                 data = csvFormatter(csvdata)
                 fileData = data.data;
             });
@@ -176,8 +167,6 @@
         var price= sel.options[sel.selectedIndex].text;
         price = formatCompCurrency(price)
         dataall.ordhdr_amount = price
-
-        debugger;
 
         $.ajax({
             data: dataall,
@@ -231,25 +220,14 @@
                     ordhdr_id: id
                 },
                 success: function (datas) {
-                    // let varHtml = ''
-                    // modalOrderAssumption
-                    
-                    // getTemplate(datas.assumtionData, datas.periodCount)
-                    // $(`#modalOrderAssumption`).modal('show')
                     setTemplateTableUser(datas);
                 },
                 error: function (data) {
                     console.log('Error:', data);
-                    // $(`#modal${module}`).modal('show');
                 }
             });
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
-
-            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-
-            //TODO
             selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
 
             $(`#modal${module}`).modal('show');
@@ -286,27 +264,14 @@
                     ordhdr_id: id
                 },
                 success: function (datas) {
-                    // let varHtml = ''
-                    // modalOrderAssumption
-                    
-                    // getTemplate(datas.assumtionData, datas.periodCount)
-                    // $(`#modalOrderAssumption`).modal('show')
                     setTemplateTableUser(datas);
                 },
                 error: function (data) {
                     console.log('Error:', data);
-                    // $(`#modal${module}`).modal('show');
                 }
             });
 
-            //searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
-
-            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-
-            //TODO
             selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
-            debugger
             $(`#viewOrder`).modal('show');
 
         })
@@ -355,22 +320,6 @@
         </table>`;
 
         $('#userUploadTbl').html(varHtml);
-
-        // $('#tableUserUpload').DataTable({
-        //     scrollX: "100%",
-        //     scrolly: "100%",
-
-        //     columns: [
-        //         { data: 'first_name' },
-        //         { data: 'last_name' },
-        //         { data: 'updated_date' },
-        //         { data: 'registered_date' }
-        //     ],
-        // });
-
-        // $("#tableUserUpload").css({"width":"100%"});
-
-        // $(".table ").css({"width":"100%"});
     }
 
     function selectServiceDet(id, selected){
@@ -390,7 +339,6 @@
                     });
                     $('#ordhdr_service_dtl').html(varHtml);
                     $('#ordhdr_service_dtl').val(selected);
-                    // selectSearch(div, modal, 'searchservice', 'ordsrvhdr')
                     setService();
                 },
                 error: function (data) {
@@ -438,17 +386,6 @@
             },
             success: function (datas) {
                 var curency = formatHumanCurrency(datas.ordsrvdtl_price);
-                /*
-                let varHtml = '';
-                $.each(datas, (key, item) => {
-                    let price = formatHumanCurrency(item.ordsrvdtl_price);
-                    varHtml +=  `<option value="${item.ordsrvdtl_id}" >${price}</option>`
-                });
-                $('#ordhdr_service_dtl').html(varHtml);
-                $('#ordhdr_service_dtl').val(selected);
-                */
-                // selectSearch(div, modal, 'searchservice', 'ordsrvhdr')
-
                 $('#ordhdr_service_hdr').val(datas.ordsrvdtl_hdrid);
                 $('#service_hdr_view').html(curency);
 
@@ -460,7 +397,6 @@
     }
 
     function getTemplate(vardata ={}, periodeCount, disable){
-        debugger
         $(`#assumption`).html('');
         var setdisable = disable ? 'disabled' : ''
         let provHtml = '';
@@ -554,7 +490,6 @@
             success: function (datas) {
                 let varHtml = '';
                 setdisable = disable ? 'disabled' : ''
-                debugger
 
                 $.each(datas, (key, ass) => {
                     var varid = ass.ordpro_id ? ass.ordpro_id : '';
@@ -781,8 +716,6 @@
     }
 
     function viewOrder(id){
-        // var varid = id;
-        // $('orderNumHasil').val(varid);
         $('#orderHasil').modal('show');
         selectId = id;
         getKaryawan(id);

@@ -69,8 +69,6 @@
                 data: $('#formChangePassword').serialize(),
                 url: "{{ route('changepassword') }}",
                 success: function (data) {
-                    debugger;
-                    // table.draw();
                     if(data.success == 1){
                         alert("Password change successfully.");
                     } else{

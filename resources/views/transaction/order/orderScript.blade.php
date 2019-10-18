@@ -95,9 +95,6 @@
                 $(`#${key}`).val(val);
             });
 
-            // 
-            // debugger;
-
             $.ajax({
                 url: "{{ route('getorderdetail') }}",
                 type: "POST",
@@ -105,23 +102,16 @@
                     ordhdr_id: id
                 },
                 success: function (datas) {
-                    // let varHtml = ''
-                    // modalOrderAssumption
-                    
-                    // getTemplate(datas.assumtionData, datas.periodCount)
-                    // $(`#modalOrderAssumption`).modal('show')
                     setTemplateTableUser(datas);
                 },
                 error: function (data) {
                     console.log('Error:', data);
-                    // $(`#modal${module}`).modal('show');
                 }
             });
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
 
-            //searchService(`#ordhdr_service_hdr`, data.ordhdr_service_hdr, `modal${module}`)
-        selectServiceDet()
+            selectServiceDet()
 
             $(`#modal${module}`).modal('show');
 
@@ -138,15 +128,12 @@
                 ordhdr_id: id
             },
             success: function (datas) {
-                let varHtml = ''
-                // modalOrderAssumption
-                
+                let varHtml = ''                
                 getTemplate(datas.assumtionData, datas.periodCount)
                 $(`#modalOrderAssumption`).modal('show')
             },
             error: function (data) {
                 console.log('Error:', data);
-                // $(`#modal${module}`).modal('show');
             }
         });
     });
@@ -162,9 +149,7 @@
             reader.addEventListener('load', function (e) {
                 
                 let csvdata = e.target.result; 
-                // var data = Papa.parse(csvdata, {header: true,});
                 var data =csvFormatter(csvdata)
-                debugger;
                 fileData = data.data;
             });
             
@@ -182,19 +167,13 @@
 
         if (this.files && this.files[0]) {
             var myFile = this.files[0];
-            // fileGambar = this.files[0];
             var reader = new FileReader();
             
             reader.addEventListener('load', function (e) {
-                
-                // let csvdata = e.target.result; 
-                // var data = Papa.parse(csvdata, {header: true,});
-                
                 fileGambar = e.target.result;
             });
             
             var a = reader.readAsBinaryString(myFile);
-            debugger;
             var fileName = url.split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         }
@@ -218,7 +197,6 @@
         });
         
         dataall.detail = fileData;
-        debugger;
 
         $.ajax({
             data: dataall,
@@ -315,8 +293,6 @@
         </table>`;
 
         $('#userUploadTbl').html(varHtml);
-
-        // $('#tableUserUpload').DataTable();
     }
 
     function getTemplate(vardata ={}, periodeCount){
@@ -425,11 +401,9 @@
                 })
 
                 $(`#subAssumption`).html(varHtml);
-                // $(`#ordhdr_id`).val(id);
             },
             error: function (data) {
                 console.log('Error:', data);
-                // $(`#modal${module}`).modal('show');
             }
         });
     }
@@ -580,11 +554,6 @@
         formData.append('num', $('#com_ordhdr_ordnum').val());
         formData.append('file', $('#com_fileupload').prop('files')[0] );
 
-        // var id = $('#com_ordhdr_id').val();
-        // var num = $('#com_ordhdr_ordnum').val();
-        // var file = $('#com_fileupload').prop('files')[0];
-        // debugger;
-
         $.ajax({
             data: formData,
             url: "{{ route('comfirmorder') }}",
@@ -593,24 +562,14 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                // $(`#form${module}`).trigger("reset");
-                // $(`#modal${module}`).modal('hide');
                 $(`#comfirmOrder`).modal('hide');
                 table.draw();
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
             },
             error: function (data) {
                 $(`#modal${module}`).modal('hide');
                 console.log('Error:', data);
-                // $(`#saveBtn${module}`).html('Save');
-                // $(`#saveBtn${module}`).removeAttr("disabled");
-
             }
         });
-
-        // var
-        // var gambar = fileGambar
     }
     
 </script>
