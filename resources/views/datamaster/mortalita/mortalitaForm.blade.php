@@ -22,13 +22,6 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agework</label>
-    
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="mortalitahdr_agework" name="mortalitahdr_agework" placeholder="Enter Mortalita Name" class="col-xs-10 col-sm-5" required/>
-                                    </div>
-                                </div>
-                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Status </label>
 
                                 <div class="col-sm-9">
@@ -44,8 +37,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Agework  </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="number" min="0" class="form-control" 
+                                            id="agework" name="agework" placeholder="Enter Company Name" 
+                                            class="col-xs-10 col-sm-5" value="0"/>
+                                            <a href="#" class="input-group-addon">
+                                                <span id="jml_thn_proc" >
+                                                    <i class="fa fa-arrow-right"></i>
+                                                </span>
+                                            </a>
+                                    </div>
 
-                            <div id="mortalitaDtl"></div>
+                                </div>
+                            </div>
+
 
                             {{-- <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> </label>
@@ -59,6 +67,22 @@
                             </div>  --}}
                             
                         </div>
+                    </div>
+                    <div style="overflow-x:scroll;" class="mb-20">
+                        <table class="table table-responsive table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Masa Kerja</td>
+                                    <td>Persentasi</td>
+                                </tr>
+                            </thead>
+                            <tbody id="mortalitaDtl">
+                                <tr>
+                                    <td colspan="100%">-</td>
+                                </tr>   
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">

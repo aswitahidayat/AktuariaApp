@@ -68,7 +68,7 @@ class MortalitaController extends Controller {
 
     public function edit($mortalitahdr_id)
     {
-        $data = Mortalita::find($mortalitahdr_id);
+        $data = Mortalita::detail($mortalitahdr_id);
         return response()->json($data);
     }
 
@@ -83,39 +83,11 @@ class MortalitaController extends Controller {
 
     function mortalitaTransaction(Request $request){
         $exception = DB::transaction(function() use ($request) {
-            $q = Mortalita::create([
-                'mortalitahdr_name' => $request->mortalitahdr_name,
-                'mortalitahdr_status' => 1,
-                'mortalitahdr_created_by' => 1,
-                'mortalitahdr_created_date' => date(now())
-            ]);
-
-            if($request->mortalitahdr_agework > 0){
-
-                $this->mortalitaDtl($request->mortalitahdr_agework, $q->mortalitahdr_id);
-                // $cd = [];
-                // $agework = $request->mortalitahdr_agework;
-                // for ($x = 1; $x <= $agework; $x++) {
-                //     $cd[]= [
-                //         'mortalitadtl_hdrid' => $q->mortalitahdr_id,
-                //         'mortalitadtl_agework' => $x,
-                //         'mortalitadtl_created_by' => 1,
-                //         'mortalitadtl_created_date' => date(now()),
-                //     ];
-                // }
-
-                // MortalitaDtl::insert($cd);
-
-                // foreach ($request->detail as $key =>$value) {
-                //     $cd = MortalitaDtl::create([
-                //         'mortalitadtl_hdrid' => $q->mortalitahdr_id,
-                //         'mortalitadtl_agework' => $value['mortalitadtl_agework'],
-                //         'mortalitadtl_percentage' => $value['mortalitadtl_percentage'],
-                //         'mortalitadtl_created_by' => 1,
-                //         'mortalitadtl_created_date' => date(now()),
-                //     ]);
-                // }
-            };
+            $q = Mortalita::createData($request);
+            
+            if(sizeof($request->detail) > 0){
+                $this->mortalitaDtl($request->detail, $q->mortalitahdr_id);
+            }
         });
 
         return is_null($exception) ? response()->json(['success'=>'Company Type saved successfully.']) : $exception;
@@ -124,36 +96,36 @@ class MortalitaController extends Controller {
 
     function mortalitaEditTransaction(Request $request){
         $exception = DB::transaction(function() use ($request) {
-            Mortalita::where('mortalitahdr_id', $request->mortalitahdr_id)
-                ->update(['mortalitahdr_name' => $request->mortalitahdr_name,
-                    'mortalitahdr_status' => $request->mortalitahdr_status,
-                    'mortalitahdr_updated_date' => date(now())
-                ]);
-            
-            $tempCountDtl = MortalitaDtl::where('mortalitadtl_hdrid',$request->mortalitahdr_id)->count();
-            
-            if($tempCountDtl != $request->mortalitahdr_agework){
-                MortalitaDtl::where('mortalitadtl_hdrid', $request->mortalitahdr_id)->delete();
-                $this->mortalitaDtl($request->mortalitahdr_agework, $request->mortalitahdr_id);
+            Mortalita::updateData($request);
+            if(sizeof($request->detail) > 0){
+                $this->mortalitaDtl($request->detail, $request->mortalitahdr_id);
             }
-
         });
 
         return is_null($exception) ? response()->json(['success'=>'Company Type edited successfully.']) : $exception;
     }
 
-    function mortalitaDtl($number, $id){
-        $cd = [];
-        $agework = $number;
-        for ($x = 1; $x <= $agework; $x++) {
-            $cd[]= [
-                'mortalitadtl_hdrid' => $id,
-                'mortalitadtl_agework' => $x,
-                'mortalitadtl_created_by' => 1,
-                'mortalitadtl_created_date' => date(now()),
-            ];
+    function mortalitaDtl($detail, $id){
+        foreach ($detail as $key =>$value) {
+            if($value['mortalitadtl_id'] == ''){
+                MortalitaDtl::create([
+                    'mortalitadtl_hdrid' => $id,
+                    'mortalitadtl_agework' => $value['mortalitadtl_agework'],
+                    'mortalitadtl_percentage' => $value['mortalitadtl_percentage'],
+                    'mortalitadtl_created_by' => 1,
+                    'mortalitadtl_created_date' => date(now()),
+                ]);
+            } else {
+                MortalitaDtl::
+                where('mortalitadtl_id', $value['mortalitadtl_id'] )
+                ->update([
+                    'mortalitadtl_agework' => $value['mortalitadtl_agework'],
+                    'mortalitadtl_percentage' => $value['mortalitadtl_percentage'],
+                    'mortalitadtl_updated_by' => 1,
+                    'mortalitadtl_updated_date' => date(now()),
+                ]);
+            }
         }
 
-        MortalitaDtl::insert($cd);
     }
 }

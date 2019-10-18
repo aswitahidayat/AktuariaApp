@@ -83,20 +83,9 @@
                 $("#mortalitahdr_status_inactive").prop("checked", true);
             }
 
-            $.ajax({
-                data: {
-                    mortalitahdr_id: id
-                },
-                url: "{{ route('searchMortalitaDtl') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function (data) {
-                    $(`#mortalitahdr_agework`).val(data.length)
-                },
-                error: function (data) {
-                    console.log('Error:', data);;
-                }
-            });
+            getTemplate(data.detail)
+            data.detailCount ? $("#agework").val(data.detailCount - 1) :  $("#agework").val(0);
+            
         })
     });
 
@@ -105,9 +94,13 @@
         $(`#saveBtn${module}`).attr("disabled", true);
         var data = {};
 
+        var formdata = $(`#form${module}`).serializeArray();
+        $(formdata).each(function(index, obj){
+            data[obj.name] = obj.value;
+        });
         data.detail = normalize();
         $.ajax({
-            data: $(`#form${module}`).serialize(),
+            data: data,
             url: "{{ route('mortalita.store') }}",
             type: "POST",
             dataType: 'json',
@@ -127,41 +120,50 @@
         });
     });
 
-    
+    /*
     $( "#mortalitaAddDtl" ).click(function() {
+        getTemplate()
+    });
+    */
+
+    $( "#jml_thn_proc" ).click(function() {
         getTemplate()
     });
 
     function getTemplate(vardata ={}){
-        var i =$('#mortalitaDtl .mortalita_detail').length ? $('#mortalitaDtl .mortalita_detail').length : 0;
-        var varId = vardata.mortalitadtl_id ? vardata.mortalitadtl_id : '';
-        var varAgework = vardata.mortalitadtl_agework ? vardata.mortalitadtl_agework : '';
-        var varPercentage = vardata.mortalitadtl_percentage ? vardata.mortalitadtl_percentage : 0;
+        $(`#mortalitaDtl`).html('');
+        var varHtml = '';
+        let num = vardata.length ? vardata.length - 1 : parseInt($("#agework").val())
+        var countData = 0;
 
-        var varHtml = `
-        <div class="form-group">
-            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Detail ${i+1} </label>
-            <div class="col-sm-9">
-        
-                <div id="mortalita_detail_${i}" class="mortalita_detail form-group">
-                    <div class="col-xs-6">
-                            <input type="hidden" class="form-control" id="form_dtl_${i}_id"
-                        class="col-xs-10 col-xs-5" value="${varId}" required/>
+        for (i = 1; i <= num+1; i++) {
 
-                        <label class="control-label no-padding-right" for="form-field-1">Agework</label>
-                        <input type="text" class="form-control" id="form_dtl_${i}_agework"
-                        class="col-xs-10 col-xs-5" value="${varAgework}" required/>
-                    </div>
-                    <div class="col-xs-6">
-                        <label class="control-label no-padding-right" for="form-field-1">Percentage</label>
-                        <input type="number" min="0" class="form-control" id="form_dtl_${i}_percentage"
-                        class="col-xs-10 col-xs-5" value="${varPercentage}" required/>
-                    </div>
-                </div>
-            </div>
-        </div>`;
+            var agework = vardata[countData] ? vardata[countData].mortalitadtl_agework : countData
+            var mortalitadtl_id = vardata[countData] ? vardata[countData].mortalitadtl_id : '';
+            var percentage = vardata[countData] ? vardata[countData].mortalitadtl_percentage : 0;
+            varHtml += `
+                <tr class="mortalita_detail">
+                    <td>
+                        <input type="hidden" name="mortalitadtl_id" id="mortalitadtl_id" value="${mortalitadtl_id}" />
+                        <input type="hidden" name="mortalitadtl_agework" id="mortalitadtl_agework" value="${agework}" />
+                        ${countData + 1}
+                    </td>
+                    <td >
+                        ${agework} Tahun
+                    </td>
+                    <td>
+                        <div class="col-xs-10">
+                            <input type="number" class="form-control" id="mortalitadtl_percentage" name="mortalitadtl_percentage"
+                                class="col-xs-10 col-xs-5" value=${percentage} required/>
+                        </div>
+                        <div class="col-xs-2"> % </div>
+                    </td>
 
-        $(`#mortalitaDtl`).append(varHtml);
+                </tr>`
+                countData++
+        }
+
+        $(`#mortalitaDtl`).html(varHtml)
     }
 
     function dataSetter(vardata){
@@ -181,21 +183,18 @@
 
     function normalize(){
         var dataReturn = [];
-        var varresult = $('.mortalita_detail');
+        
+        var myEle = document.getElementsByClassName("mortalita_detail")
+        if(myEle.length > 0){
+            for (let data of myEle){
+                var dataObj = {}
+                dataObj[data.getElementsByTagName('input')[0].name] = data.getElementsByTagName('input')[0].value
+                dataObj[data.getElementsByTagName('input')[1].name] = data.getElementsByTagName('input')[1].value
+                dataObj[data.getElementsByTagName('input')[2].name] = data.getElementsByTagName('input')[2].value
 
-        if(varresult.length > 0){
-            $.each(varresult, function(index, val) {
-                if(!document.getElementById(`form_dtl_${index}_id`).value){
-                    var obj ={
-                        mortalitadtl_agework: document.getElementById(`form_dtl_${index}_agework`) ? document.getElementById(`form_dtl_${index}_agework`).value : 0 ,
-                        mortalitadtl_percentage: document.getElementById(`form_dtl_${index}_percentage`) ? document.getElementById(`form_dtl_${index}_percentage`).value : 0,
-                    }
-
-                    dataReturn.push(obj);
-                }
-            });
+                dataReturn.push(dataObj)
+            }
         }
-
         return dataReturn
     }
         
