@@ -34,7 +34,7 @@ class Mortalita extends Model
         ]); 
     }
 
-    public static function editData($request){
+    public static function updateData($request){
         return Mortalita::where('mortalitahdr_id', $request->mortalitahdr_id)
                 ->update(['mortalitahdr_name' => $request->mortalitahdr_name,
                     'mortalitahdr_status' => $request->mortalitahdr_status,

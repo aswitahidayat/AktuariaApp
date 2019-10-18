@@ -33,7 +33,7 @@
         table = $(`#table${module}`).DataTable({
             processing: true,
             serverSide: true,
-            ordering: true,
+            ordering: false,
             searching: false,
             ajax: {
                     url: "{{ route('searchmortalita') }}",
