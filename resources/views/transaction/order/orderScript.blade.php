@@ -497,6 +497,24 @@
         })
         
     }
+
+    function viewComfirm(id){
+        $.get("{{ route('order.index') }}" +`/${id}/edit`, (data) => {
+            if(data.ordhdr_date){
+                data.ordhdr_date = dateFormat(data.ordhdr_date)
+            }
+
+            if(data.ordhdr_pay_date){
+                data.ordhdr_pay_date = dateFormat(data.ordhdr_pay_date)
+            }
+
+            $.each(data, (key,val) => {
+                $(`#vc_${key}`).val(val);
+            });
+            $(`#viewComfirm`).modal('show');
+        })
+        
+    }
     
     $("#submitSubModal").click(function(){
         var dataReturn =[]

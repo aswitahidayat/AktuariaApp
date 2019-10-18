@@ -233,6 +233,13 @@ class OrderController extends Controller
             $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editOrder">Edit</a>';
             $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="comfirmOrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Comfirm</a>';
         }
+
+        if($row->ordhdr_pay_status == 'C'){
+            // $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")'  class='edit btn btn-primary btn-sm'>View</a>";
+            $btn .= ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="viewComfirm('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">View</a>';
+
+        }
+
         if($param == 'varify'){
             $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->ordhdr_id.'" data-original-title="Comfirm" onclick="verifrder('.$row->ordhdr_id.')" class="assumption btn btn-primary btn-sm comfirmOrder">Verifikasi</a>';
         }

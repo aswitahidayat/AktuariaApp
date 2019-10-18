@@ -29,7 +29,7 @@
             <div class="modal-body">
                 <input type="hidden" class="form-control" required>
                 <div id="subAssumption" class="pb-20"></div>
-                <button type="button" class="btn btn-secondary" onclick="addProgressive()">addProgressive</button>
+                <button type="button" class="btn btn-secondary" onclick="addProgressive()" id="addProgressive">Add Progressive</button>
             </div>
             
             <div class="modal-footer">
@@ -129,6 +129,85 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="modal fade" id="viewComfirm" aria-labelledby="AddOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title blue lighter bigger bolder" id="subModelHeadingOrderAssumption"><i class="ace-icon fa fa-shopping-cart cyan"></i> | Assumption Progressive</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Order Number:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_ordnum" name="vc_ordhdr_ordnum" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Order Date:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_date" name="vc_ordhdr_date" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Valuation Date:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_pay_date" name="vc_ordhdr_pay_date" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Program:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordprg_name" name="vc_ordprg_name"disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Service:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordsrvhdr_name" name="vc_ordsrvhdr_name" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Service Amount:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordsrvdtl_price" name="vc_ordsrvdtl_price" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Period Count:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_period_count" name="vc_ordhdr_period_count" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Period Last Year:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_period_lastyear" name="vc_ordhdr_period_lastyear" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Pension Age:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_pension_age" name="vc_ordhdr_pension_age" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">AVG Salary Increase:</label>
+                        <div class="col-sm-8 pb-20">
+                            <input type="text" class="form-control" id="vc_ordhdr_sal_increase" name="vc_ordhdr_sal_increase" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ace-icon fa fa-undo bigger-110"></i>Cancel</button>
+            </div>
+        </div>
     </div>
 </div>
 

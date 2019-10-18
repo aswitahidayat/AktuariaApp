@@ -381,7 +381,6 @@
                 type: "POST",
                 dataType: 'json',
                 data:{
-                    ordsrvhdr_id: varid
                 },
                 success: function (datas) {
                     let varHtml = '';
@@ -392,7 +391,7 @@
                     $('#ordhdr_service_dtl').html(varHtml);
                     $('#ordhdr_service_dtl').val(selected);
                     // selectSearch(div, modal, 'searchservice', 'ordsrvhdr')
-    
+                    setService();
                 },
                 error: function (data) {
                     console.log('Error:', data);
@@ -400,33 +399,32 @@
             });
         } 
 
-            $('#ordhdr_service_dtl').select2({
-                placeholder: 'Cari...',
-                dropdownParent: $(`#modal${module}`),
-                ajax: {
-                    url: "{{ route('servicedetail') }}",
-                    dataType: 'json',
-                    delay: 250,
-                    type: 'POST',
-                    data: function (params, page){
-                        return{
-                            name: params.term
-                        }
-                    },
-                    processResults: function (data) {
-                        return {
-                            results:  $.map(data, function (item) {
-                                return {
-                                    text: item.ordsrvdtl_desc,
-                                    id: item.ordsrvdtl_id
-                                }
-                            })
-                        };
-                    },
-                    cache: true
-                }
-            });
-        
+        $('#ordhdr_service_dtl').select2({
+            placeholder: 'Cari...',
+            dropdownParent: $(`#modal${module}`),
+            ajax: {
+                url: "{{ route('servicedetail') }}",
+                dataType: 'json',
+                delay: 250,
+                type: 'POST',
+                data: function (params, page){
+                    return{
+                        name: params.term
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results:  $.map(data, function (item) {
+                            return {
+                                text: item.ordsrvdtl_desc,
+                                id: item.ordsrvdtl_id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
 
     }
 
@@ -464,7 +462,7 @@
     function getTemplate(vardata ={}, periodeCount, disable){
         debugger
         $(`#assumption`).html('');
-        disable = disable ? 'disabled' : ''
+        var setdisable = disable ? 'disabled' : ''
         let provHtml = '';
                 
         var countData = 0;
@@ -477,12 +475,12 @@
             if(ass.ordass_sp == 'P'){
                 opsi =`<option value="S" >Single</option>
                             <option value="P" selected>Progresive</option>`;
-                input = `<input type="button" name="ordass_value" class="btn btn-secondary btn-sm" value="Edit Progresive" onclick="showSubModal('${ass.ordass_id}')" ${disable}/>`
+                input = `<input type="button" name="ordass_value" class="btn btn-secondary btn-sm" value="Edit Progresive" onclick="showSubModal('${ass.ordass_id}', ${disable})" />`
             } else {
                 opsi =`<option value="S" selected>Single</option>
                             <option value="P" >Progresive</option>`;
                 input = `<input type="number" name="ordass_value" class="form-control" id="form_assumption_${ass.assump_templ_code}_val"
-                                class="col-xs-10 col-xs-5" value=${ass.ordass_value} required ${disable}/>`
+                                class="col-xs-10 col-xs-5" value=${ass.ordass_value} required ${setdisable}/>`
             }
 
             if (periode != ass.ordass_periode){
@@ -500,9 +498,9 @@
                             <div class="col-sm-10">
                                 <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" />
                                 <input type="hidden" id="form_assumption_${ass.ordass_id}_sp" 
-                                    name="coytypedtl_assumpt_sp" value="S" ${disable}/>
+                                    name="coytypedtl_assumpt_sp" value="S" ${setdisable}/>
                                 <select type="number" name="ordass_value" class="form-control" id="${idmor}"
-                                    class="col-xs-10 col-xs-5"  value=${ass.ordass_value} ${disable}>
+                                    class="col-xs-10 col-xs-5"  value=${ass.ordass_value} ${setdisable}>
                                 </select>
                             </div>
                         </div>
@@ -515,11 +513,11 @@
                         <div class="col-sm-10">
                             <form class="form-assumption">
                                 <div class="col-xs-3">
-                                    <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" ${disable}/>
+                                    <input type="hidden" name="ordass_id" id="ordass_id" value="${ass.ordass_id}" ${setdisable}/>
                                     <select class="form-control select2-single" style="width:100%;" 
                                         onchange="changeAssumption('${ass.ordass_id}', this.value)" 
                                         id="form_assumption_${ass.ordass_id}_sp"
-                                        name="coytypedtl_assumpt_sp" ${disable}>
+                                        name="coytypedtl_assumpt_sp" ${setdisable}>
                                         ${opsi}
                                     </select>
                                 </div>
@@ -540,13 +538,13 @@
         $(`#assumption`).html(provHtml);
     }
 
-    function showSubModal(id = 0){
+    function showSubModal(id = 0, disable){
         $('#modalOrderAssumption').modal('hide');
         $(`#subModalOrderAssumption`).modal('show');
-        getProgressive(id)
+        getProgressive(id, disable)
     }
 
-    function getProgressive(id){
+    function getProgressive(id, disable){
         $.ajax({
             url: "{{ route('getprogressive') }}",
             type: "POST",
@@ -555,6 +553,8 @@
             },
             success: function (datas) {
                 let varHtml = '';
+                setdisable = disable ? 'disabled' : ''
+                debugger
 
                 $.each(datas, (key, ass) => {
                     var varid = ass.ordpro_id ? ass.ordpro_id : '';
@@ -568,23 +568,26 @@
                         <div class="col-xs-4">
                             <label class="control-label no-padding-right" for="form-field-1">Min</label>
                             <input type="number" min="0" class="form-control" name="ordpro_amt_min"
-                            class="col-xs-10 col-xs-5" required value="${varmin}"/>
+                            class="col-xs-10 col-xs-5" required value="${varmin}" ${setdisable}/>
                         </div>
                         <div class="col-xs-4">
                             <label class="control-label no-padding-right" for="form-field-1">Max</label>
                             <input type="number" min="0" class="form-control" name="ordpro_amt_max"
-                            class="col-xs-10 col-xs-5" required value="${varmax}"/>
+                            class="col-xs-10 col-xs-5" required value="${varmax}" ${setdisable}/>
                         </div>
                         <div class="col-xs-4">
                             <label class="control-label no-padding-right" for="form-field-1">Value</label>
                             <input type="number" min="0" class="form-control" name="ordpro_value"
-                            class="col-xs-10 col-xs-5" required value="${varvalue}" />
+                            class="col-xs-10 col-xs-5" required value="${varvalue}" ${setdisable}/>
                         </div>
                     </form>`;
 
                 })
 
                 $(`#subAssumption`).html(varHtml);
+                $( "#submitSubModal" ).prop( "disabled", disable );
+                $( "#addProgressive" ).prop( "disabled", disable );
+
             },
             error: function (data) {
                 console.log('Error:', data);
