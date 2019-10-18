@@ -1,20 +1,15 @@
 <?php
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Identity;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class IdentityController extends Controller
+class IdentityController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
         return view('datamaster.identity.identityindex');
@@ -33,7 +28,6 @@ class IdentityController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->typeid_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editIdentity">Edit</a>';
-                    // $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->typeid_id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteIdentity">Delete</a>';
                     return $btn;
                 })
                 ->addColumn('statusName', function($row){

@@ -2,26 +2,16 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\SubDistrict;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class SubDistrictController extends Controller
+class SubDistrictController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request){
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
-        }
-
         if($request->ajax())
         {
             // $data = SubDistrict::get();

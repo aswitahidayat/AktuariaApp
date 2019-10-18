@@ -1,27 +1,17 @@
 <?php
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Mortalita\Mortalita;
 use App\Models\Mortalita\MortalitaDtl;
-use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class MortalitaController extends Controller {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+class MortalitaController extends AdminController {
 
     public function index(Request $request)
     {
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
-        }
-
         return view('datamaster.mortalita.mortaliaIndex');
     }
 

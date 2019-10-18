@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Company;
 use App\Models\CompanyDetail;
 use App\Models\CompanyDetailSub;
@@ -11,20 +11,10 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class CompanyController extends Controller
+class CompanyController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request)
     {
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
-        }
-
         return view('datamaster.company.companyindex');
     }
 

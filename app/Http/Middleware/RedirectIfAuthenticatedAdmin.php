@@ -18,7 +18,7 @@ class RedirectIfAuthenticatedAdmin
     public function handle($request, Closure $next, $guard = null)
     {
 
-        if(Auth::user()->user_type == '3') {
+        if(Auth::user()->user_type != '1') {
             abort(404);
         }
 

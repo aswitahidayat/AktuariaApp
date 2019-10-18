@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Benefit\Benefit;
 use App\Models\Benefit\BenefitDtl;
 use Auth;
@@ -9,19 +9,10 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class BenefitController extends Controller {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+class BenefitController extends AdminController {
 
     public function index(Request $request)
     {
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
-        }
-
         return view('datamaster.benefit.benefitIndex');
     }
 

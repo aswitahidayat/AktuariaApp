@@ -1,21 +1,15 @@
 <?php
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\UserType;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class UserTypeController extends Controller
+class UserTypeController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
-
     public function index(Request $request)
     {
         return view('datamaster.usertype.usertypeindex');

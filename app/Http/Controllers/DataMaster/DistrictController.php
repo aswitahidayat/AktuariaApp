@@ -2,29 +2,18 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\District;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class DistrictController extends Controller
+class DistrictController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index(Request $request){
-        if(Auth::user()->level == 'user') {
-            Alert::info('Oopss..', 'Anda dilarang masuk ke area ini.');
-            return redirect()->to('/');
-        }
-
         if($request->ajax())
         {
-            // $data = District::get();
             $data = DB::table('kka_dab.mst_district')
             ->leftJoin('kka_dab.mst_province', 'kka_dab.mst_district.dis_provid', '=', 'kka_dab.mst_province.prov_id')
             ->get();

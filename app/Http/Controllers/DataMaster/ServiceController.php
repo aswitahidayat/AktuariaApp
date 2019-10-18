@@ -2,23 +2,16 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Service\Service;
 use App\Models\Service\ServiceDetail;
 
-use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class ServiceController extends Controller
+class ServiceController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
-
     public function index(Request $request)
     {
         return view('datamaster.service.serviceIndex', compact('datas'));
@@ -95,11 +88,6 @@ class ServiceController extends Controller
     }
     
     public function serviceDetail(Request $request){
-        // $data = ServiceDetail::where('ordsrvdtl_hdrid', $request->ordsrvhdr_id)->get();
-        // return response()->json($data);
-
-        // $data = ServiceDetail::where('ordsrvdtl_hdrid', $request->ordsrvhdr_id)->get();
-
         $query =Service::leftJoin('kka_dab.mst_order_service_dtl AS dtl', 'ordsrvhdr_id', '=', 'dtl.ordsrvdtl_hdrid');
         $query->where('ordsrvhdr_status', 1);
         $query->whereDate('ordsrvdtl_startdate','<=', date(now()));

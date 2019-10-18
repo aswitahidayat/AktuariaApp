@@ -8,7 +8,7 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 use App\Models\Company;
 use App\Models\CompanyDetail;
 
@@ -17,13 +17,8 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class CompanyDetailController extends Controller
+class CompanyDetailController extends AdminController
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
 
