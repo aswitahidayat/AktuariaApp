@@ -30,7 +30,7 @@
                                     {{-- <select class="chosen-select form-control" id="ordhdr_service_hdr" name="ordhdr_service_hdr" 
                                         placeholder="Choose a Program..." style="width:100%;"></select> --}}
 
-                                    <input type="hidden"  id="ordhdr_service_hdr" name="ordhdr_id">
+                                    <input type="hidden"  id="ordhdr_service_hdr" name="ordhdr_service_hdr">
                                     <select class="chosen-select form-control" id="ordhdr_service_dtl" name="ordhdr_service_dtl" 
                                         placeholder="Choose Service Amount..." style="width:100%;" required></select>
                                 </div>

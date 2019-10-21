@@ -1,14 +1,14 @@
 <?php
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use App\Models\Mortalita\Mortalita;
 use App\Models\Mortalita\MortalitaDtl;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class MortalitaController extends AdminController {
+class MortalitaController extends Controller {
 
     public function index(Request $request)
     {

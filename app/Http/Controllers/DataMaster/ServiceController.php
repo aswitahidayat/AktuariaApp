@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use App\Models\Service\Service;
 use App\Models\Service\ServiceDetail;
 
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class ServiceController extends AdminController
+class ServiceController extends Controller
 {
     public function index(Request $request)
     {

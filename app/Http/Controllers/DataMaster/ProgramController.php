@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\DataMaster;
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use App\Models\OrderProgram;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
 
-class ProgramController extends AdminController
+class ProgramController extends Controller
 {
     public function index(Request $request)
     {
