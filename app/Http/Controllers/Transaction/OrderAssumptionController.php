@@ -62,7 +62,10 @@ class OrderAssumptionController extends Controller
             foreach ($request->dataAssumption as $key =>$ass) {
                 OrderAssumption::
                     where('ordass_id', $ass['ordass_id'])
-                    ->update(['ordass_value' => $ass['ordass_value']]);
+                    ->update([
+                        'ordass_value' => isset($ass['ordass_value']) ? $ass['ordass_value'] : 0,
+                        'ordass_sp' => 'S',
+                    ]);
             }
         });
     }

@@ -68,7 +68,9 @@
         $('#userUploadTbl').html('');
         $('#ordhdr_service_dtl').html('');
         $('#fileupload').val('');
+        $(`#ordhdr_id`).val('');
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
+        searchPartner(`#ordhdr_bizpartid`, '', `modal${module}`);
     });
 
     $('body').on('click', `.edit${module}`, function () {
@@ -164,7 +166,8 @@
         
         dataall.detail = fileData;
         var sel = document.getElementById("ordhdr_service_dtl");
-        var price= sel.options[sel.selectedIndex].text;
+        // var price= sel.options[sel.selectedIndex].text;
+        var price=  $('#service_hdr_view').html()
         price = formatCompCurrency(price)
         dataall.ordhdr_amount = price
 
@@ -228,6 +231,7 @@
             });
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
+            searchPartner(`#ordhdr_bizpartid`,  data.ordhdr_bizpartid, `modal${module}`);
             selectServiceDet(data.ordhdr_service_hdr, data.ordhdr_service_dtl)
 
             $(`#modal${module}`).modal('show');
@@ -481,6 +485,7 @@
     }
 
     function getProgressive(id, disable){
+        $(`#subModalid`).val(id);
         $.ajax({
             url: "{{ route('getprogressive') }}",
             type: "POST",
@@ -532,7 +537,7 @@
 
     function addProgressive(){
         let varHtml = '';
-        var id =  $(`#ordhdr_id`).val();
+        var id =  $(`#subModalid`).val();
         varHtml +=  `
             <form class="progresive_form" style="display: flex;" >
                 <input type="hidden" name="ordpro_id" value ="" />
@@ -564,7 +569,7 @@
         if(typ == 'S'){
             varHtml = `
                 <label class="control-label no-padding-right" for="form-field-1">&nbsp;</label> 
-                <input type="number" min="0" class="form-control" id="form_assumption_${key}_val"
+                <input type="number" min="0" name="ordass_value" class="form-control" id="form_assumption_${key}_val"
                     class="col-xs-10 col-xs-5" required/>`;
         } else if (typ == 'P') {
             varHtml = `
@@ -820,10 +825,11 @@
                 letHtml +=`<tr class="grabbing" onclick="hasilDtl(${val.ordchdr_id})">`
                 letHtml +=  `<td>${key + 1}</td>`
                 letHtml +=  `<td>${val.orddtl_npk}</td>`
-                letHtml +=  `<td>${val.orddtl_name}</td>`
+                letHtml +=  `<td nowrap>${val.orddtl_name}</td>`
                 letHtml +=  `<td>${val.orddtl_sex}</td>`
-                letHtml +=  `<td>${formatHumanDate(val.orddtl_startdate)}</td>`
-                letHtml +=  `<td>${formatHumanCurrency(val.orddtl_curr_sal)}</td>`
+                letHtml +=  `<td nowrap>${formatHumanDate(val.orddtl_startdate)}</td>`
+                letHtml +=  `<td nowrap>${formatHumanDate(val.ordchdr_pensiondate)}</td>`
+                letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_val_sal)}</td>`
                 letHtml +=  `<td>${formatHumanCurrency(val.ordchdr_pension_sal)}</td>`
                 letHtml +=  `<td>${val.ordchdr_age_val}</td>`                
                 letHtml +=  `<td>${val.ordchdr_past_srv}</td>`
@@ -867,7 +873,7 @@
                 letHtml +=  `<td>${val.ordcdtl_age}</td>`
                 letHtml +=  `<td>${val.ordcdtl_past_serv}</td>`
                 letHtml +=  `<td>${val.ordcdtl_future_serv}</td>`
-                letHtml +=  `<td>${val.ordcdtl_past_serv + val.ordcdtl_future_serv}</td>`
+                letHtml +=  `<td>${parseFloat(parseFloat(val.ordcdtl_past_serv) + parseFloat(val.ordcdtl_future_serv)).toFixed(2)}</td>`
                 letHtml +=  `<td>${val.ordcdtl_factor_ben_m}</td>`
                 letHtml +=  `<td>${val.ordcdtl_factor_ben_d}</td>`
                 letHtml +=  `<td>${val.ordcdtl_factor_ben_w}</td>`

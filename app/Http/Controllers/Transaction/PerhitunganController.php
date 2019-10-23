@@ -7,6 +7,7 @@ use App\Models\Order\Order;
 use App\Models\Order\OrderDtl;
 use App\Models\Order\OrderAssumption;
 use App\Models\Assumption;
+// use App\Jobs\Hitung;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -78,10 +79,14 @@ class PerhitunganController extends Controller
                     $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")' class='edit btn btn-primary btn-sm'>View</a>";
                     $btn .= ' <span data-toggle="tooltip" data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionView">Assumption</span>';
                 }
+
+                if ($row->ordhdr_pay_status == 'W'){
+                    $btn .= "Loading";
+                }
                 $pag[$key]->DT_RowIndex = ($key+ 1)+$request->start;
                 $pag[$key]->statusName = 'Active';
                 $pag[$key]->action = $btn;
-                $pag[$key]->paymentStatusName = $this->paymentStatus($row);
+                $pag[$key]->paymentStatusName = Order::getStatus($row->ordhdr_pay_status);
             }
             return $pag;
         } else if ($reqType == 'get'){
@@ -94,25 +99,18 @@ class PerhitunganController extends Controller
         
     }
 
-    function paymentStatus($row){
-        if($row->ordhdr_pay_status == 'P'){
-            return 'Paid';
-        } else if ($row->ordhdr_pay_status == 'C'){
-            return 'Confirm';
-        } else if ($row->ordhdr_pay_status == 'N'){
-            return 'New';
-        }
-    }
-    
+    // TODO Background Process
     function hitungOrder(Request $request){
         $user_id = Auth::user()->user_id;
-        $allUsersCount=DB::select(" select * from kka_dab.order_calc('$request->orderid', '$request->ordernum', '$user_id')");
-
+        $allUsersCount=DB::select(" select * from kka_dab.order_calc($request->orderid, '$request->ordernum', $user_id)");
+        
         Order::
-        where('ordhdr_id', $request->orderid)
-        ->update([
-            'ordhdr_pay_status' => 'C',
-            ]);
+        where('ordhdr_id', $this->orderid)
+        ->update(['ordhdr_pay_status' => 'C',]);
+        
+        
+        // Hitung::dispatch($request->all());
+       
         return response()->json(['success'=>'Order saved successfully.']);
     }
 

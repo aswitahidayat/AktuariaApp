@@ -61,7 +61,6 @@
                             <th>Nomor Order</th>
                             <th>Program</th>
                             <th>Customer</th>
-                            <th>Status</th>
                         </tr>
                         </thead>
 

@@ -17,6 +17,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="order-number" class="col-sm-4 control-label no-padding-right bolder">Client:</label>
+                                <div class="col-sm-8 pb-20">
+                                    <select class="chosen-select form-control" id="ordhdr_bizpartid" name="ordhdr_bizpartid" 
+                                        placeholder="Choose a Program..." style="width:100%;"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="agent-email" class="col-sm-4 control-label no-padding-right bolder">Program:</label>
                                 <div class="col-sm-8 pb-20">
                                     <select class="chosen-select form-control" id="ordhdr_program" name="ordhdr_program" 
@@ -81,7 +88,7 @@
                             <div class="form-group">
                                 <label for="valuation-date" class="col-sm-4 control-label no-padding-right bolder">Valuation Date:</label>
                                 <div class="col-sm-8 pb-20">
-                                    <input type="date" class="form-control" id="ordhdr_pay_date" name="ordhdr_pay_date" required>
+                                    <input type="date" class="form-control" id="ordhdr_val_date" name="ordhdr_val_date" required>
                                 </div>
                             </div>
                             <div class="form-group">

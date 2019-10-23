@@ -27,7 +27,7 @@
                 <h4 class="modal-title blue lighter bigger bolder" id="subModelHeadingOrderAssumption"><i class="ace-icon fa fa-shopping-cart cyan"></i> | Assumption Progressive</h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" class="form-control" required>
+                <input type="hidden" id="subModalid" class="form-control" required>
                 <div id="subAssumption" class="pb-20"></div>
                 <button type="button" class="btn btn-secondary" onclick="addProgressive()" id="addProgressive">Add Progressive</button>
             </div>
@@ -250,9 +250,10 @@
                             <tr>
                                 <td rowspan="2">No</td>
                                 <td rowspan="2">NIK</td>
-                                <td rowspan="2">Name</td>
-                                <td rowspan="2" >Sex</td>
-                                <td rowspan="2" class="padding-cell">Work</td>
+                                <td rowspan="2">Nama</td>
+                                <td rowspan="2" >Jenis Kelamin</td>
+                                <td rowspan="2" class="padding-cell">Tgl Mulai Kerja</td>
+                                <td rowspan="2" class="padding-cell">tgl Pensiun</td>
                                 <td rowspan="2">Salary at Valuation Date</td>
                                 <td rowspan="2">Salary at Pension Date</td>
                                 <td rowspan="2">Age At Valuation Date</td>

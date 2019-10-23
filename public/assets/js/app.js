@@ -147,6 +147,34 @@ function searchServiceDtl(div, selected = '', modal){
     }
 }
 
+
+function searchPartner(div, selected = '', modal){
+    $(div).html('');
+
+    if(selected){
+        $.ajax({
+            url: "/getpartner",
+            type: "POST",
+            dataType: 'json',
+            success: function (datas) {
+                let varHtml = '';
+                $.each(datas, (key, item) => {
+                    varHtml +=  `<option value="${item.bizpart_id}" >${item.bizpart_coy_name}</option>`
+                });
+                $(div).html(varHtml);
+                $(div).val(selected);
+                selectSearch2(div, modal, 'getpartner', 'bizpart_id', 'bizpart_coy_name')
+
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    } else {
+        selectSearch2(div, modal, 'getpartner', 'bizpart_id', 'bizpart_coy_name')
+    }
+}
+
 function selectSearch(div = '', modal = '', route = '', mod = ''){
     $(div).select2({
         placeholder: 'Cari...',
@@ -167,6 +195,36 @@ function selectSearch(div = '', modal = '', route = '', mod = ''){
                         return {
                         text: item[`${mod}_name`],
                         id: item[`${mod}_id`]
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+}
+
+
+function selectSearch2(div = '', modal = '', route = '', id = '', name = ''){
+    $(div).select2({
+        placeholder: 'Cari...',
+        dropdownParent: $(`#${modal}`),
+        ajax: {
+            url: `/${route}`,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    name: params.term,
+                }
+            },
+            processResults: function (datas) {
+                return {
+                    results:  $.map(datas, function (item) {
+                        return {
+                        text: item[`${name}`],
+                        id: item[`${id}`]
                         }
                     })
                 };

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Shandy
- * Date: 4/22/2019
- * Time: 7:30 PM
- */
-
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\Controller;
@@ -68,12 +61,8 @@ class AgentController extends Controller
 
     public function edit($id)
     {
-        // $data  = Regist::find($id);
         $data = $this->agent(new Request, 'edit', $id);
         return response()->json($data);
-
-        // $utype = User::find($id);
-        // return response()->json($utype);
     }
 
     public function store(Request $request)
@@ -86,7 +75,7 @@ class AgentController extends Controller
         return $response;
     }
 
-    public function agent(Request $request, $reqType ='', $param = ''){
+    public function agent(Request $request, $reqType ='', $param = '', $isPic = false){
         $query = User::
             leftJoin('kka_dab.mst_bizpartner', 'user_bizpartid', '=', 'kka_dab.mst_bizpartner.bizpart_id')
             ->leftJoin('kka_dab.trn_regis', 'kka_dab.mst_bizpartner.bizpart_regisid', '=', 'kka_dab.trn_regis.regis_id');
@@ -95,7 +84,11 @@ class AgentController extends Controller
             $query->where('regis_name', 'LIKE', "%$request->name%");
         }
 
-        $query->where('user_type', "2");
+        if($isPic == true){
+            $query->where('user_type', "3");
+        } else {
+            $query->where('user_type', "2");
+        }
 
         if($reqType == 'pagging'){
             $length = $request->length != '' ? $request->length : 10;
@@ -119,24 +112,24 @@ class AgentController extends Controller
         }
     }
 
-    function agentTransaction(Request $request){
-        $exception = DB::transaction(function() use ($request) {
-            $dataRegist = $this->normalizeRegist($request);
+    function agentTransaction(Request $request, $isPic = false){
+        $exception = DB::transaction(function() use ($request, $isPic) {
+            $dataRegist = $this->normalizeRegist($request, $isPic);
             $q1 = Regist::create($dataRegist);
 
-            $dataPartner = $this->normalizePartner($request, $q1->regis_id);
+            $dataPartner = $this->normalizePartner($request, $q1->regis_id, $isPic);
             $q2 = Partner::create($dataPartner);
 
-            $dataUser = $this->normalizeUser($request, $q2->bizpart_id);
+            $dataUser = $this->normalizeUser($request, $q2->bizpart_id, $isPic);
             $q3 = User::create($dataUser);
         });
         return is_null($exception) ? response()->json(['success'=>'Agent saved successfully.']) : $exception;
 
     }
 
-    function agentEditTransaction(Request $request){
-        $exception = DB::transaction(function() use ($request) {
-            $dataRegist = $this->normalizeRegist($request, true);
+    function agentEditTransaction(Request $request, $isPic = false){
+        $exception = DB::transaction(function() use ($request, $isPic) {
+            $dataRegist = $this->normalizeRegist($request, true, $isPic);
             $q1 = Regist::where('regis_id', $request->regis_id)->update($dataRegist);
 
             $dataPartner = $this->normalizePartner($request, '', true);
@@ -148,15 +141,10 @@ class AgentController extends Controller
         return is_null($exception) ? response()->json(['success'=>'Agent saved successfully.']) : $exception;
     }
 
-    function normalizeRegist(Request $request, $isEdit = ''){
+    function normalizeRegist(Request $request, $isEdit = '', $isPic){
         $now = date(now());
 
         $result = [
-            // 'regis_num' => $this->regnum(),
-            // 'regis_activate_by' => 1,
-            // 'regis_activate_date' => $now,
-            // 'regis_user_type' => 2,
-            // 'regis_date' => $now,
             'regis_email' => $request->agent_email,
             'regis_name' => $request->agent_name,
             'regis_typeid' => $request->type_identity,
@@ -166,8 +154,6 @@ class AgentController extends Controller
             'regis_birthplace' => $request->agent_birth_place,
             'regis_birthdate' => $request->agent_birth_date,
             'regis_npwp' => $request->npwp,
-            // 'regis_created_by' => 1,
-            // 'regis_created_date' => $now,
         ];
 
         if($isEdit == ''){
@@ -187,9 +173,6 @@ class AgentController extends Controller
         $now = date(now());
 
         $result = [
-            // 'bizpart_regisid' => $regis_id,
-            // 'bizpart_num' => $this->bizpartnum(),
-            // 'bizpart_user_type' => 2,
             'bizpart_pic_email' => $request->agent_email,
             'bizpart_pic_name' => $request->agent_name,
             'bizpart_pic_hp' => $request->agent_phone,
@@ -199,9 +182,6 @@ class AgentController extends Controller
 
             'bizpart_pic_typeid' => $request->type_identity,
             'bizpart_pic_idnum' => $request->identity_number,
-            
-            // 'bizpart_created_by' => 1,
-            // 'bizpart_created_date' => $now,
         ];
 
         if($isEdit == ''){
@@ -220,14 +200,8 @@ class AgentController extends Controller
         $now = date(now());
 
         $result = [
-            // 'user_bizpartid' => $bizpart_id,
-            // 'user_type' => 2,
             'user_name' => $request->agent_email,
             'user_email' => $request->agent_email,
-            // 'user_password' => Hash::make('sehati'),
-            // 'user_status' => 1,
-            // 'user_created_by' => 1,
-            // 'user_created_date' => $now
         ];
 
         if($isEdit == ''){

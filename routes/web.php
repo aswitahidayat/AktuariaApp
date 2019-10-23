@@ -72,13 +72,19 @@ Route::post('/getDetail','DataMaster\ServiceController@getDetail')->name("getdet
 
 Route::resource('program','DataMaster\ProgramController');
 Route::post('/searchprogram','DataMaster\ProgramController@search')->name("searchprogram");
+
+Route::post('/getpartner','DataMaster\PartnerController@search')->name("getpartner");
+
+Route::resource('/bank', 'DataMaster\BankController');
+Route::post('/searchbank','DataMaster\BankController@search')->name("searchbank");
+
 Route::resource('agent','Transaction\AgentController');
 Route::post('/searchagent','Transaction\AgentController@search')->name("searchagent");
 Route::post('/emailchecker','Transaction\AgentController@emailChecker')->name("emailchecker");
 
 Route::resource('order','Transaction\OrderController');
 Route::post('searchorder','Transaction\OrderController@search')->name("searchorder");
-Route::post('searchVerify','Transaction\OrderController@searchVerify')->name("searchverify");
+Route::post('searchVerify','Transaction\VBayarController@search')->name("searchverify");
 Route::post('/getOrderDetail','Transaction\OrderController@getOrderDetail')->name("getorderdetail");
 Route::post('/getAssumption','Transaction\OrderAssumptionController@getAssumption')->name("getassumption");
 Route::post('/setAssumption','Transaction\OrderAssumptionController@setAssumption')->name("setassumption");
@@ -106,7 +112,6 @@ Route::post('/upload/proses', 'UploadController@proses_upload');
 
 Route::get('/test', 'Util\WordController@proses_word')->name("word");
 Route::get('/testpdf', 'Util\WordController@process_pdf')->name("word");
-
 
 Route::resource('menu','MenuController');
 

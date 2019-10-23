@@ -53,7 +53,8 @@ class OrderController extends Controller
     {
         $exception = DB::transaction(function() use ($request) {
             if($request->ordhdr_id == ''){
-                // $data = new Order();
+                // var_dump(sizeof($request->detail));
+                // exit();
                 $orderNum = $this->orderNum();
                 $q = Order::create([
                     'ordhdr_ordnum' => $orderNum,
@@ -68,14 +69,13 @@ class OrderController extends Controller
                     'ordhdr_sal_increase' => $request->ordhdr_sal_increase,
                     
                     'ordhdr_date' => $request->ordhdr_date,
-                    'ordhdr_pay_date' => $request->ordhdr_pay_date,
+                    'ordhdr_val_date' => $request->ordhdr_val_date,
                     'ordhdr_amount' => $request->ordhdr_amount,
-                    'ordhdr_pay_amt' => $request->ordhdr_amount,
         
                     'ordhdr_pay_status' => 'N',
                     'ordhdr_by' => Auth::user()->user_id,
                     'ordhdr_created_by' => Auth::user()->user_id,
-                    'ordhdr_bizpartid' => Auth::user()->user_bizpartid,
+                    'ordhdr_bizpartid' => $request->ordhdr_bizpartid,
 
                     'ordhdr_created_date' => date(now()),
                 ]);
@@ -86,8 +86,8 @@ class OrderController extends Controller
                 Order::
                     where('ordhdr_id', $request->ordhdr_id)
                     ->update([
-                    'ordhdr_amount' => $request->ordhdr_amount,
-                    'ordhdr_pay_amt' => $request->ordhdr_amount,
+                        'ordhdr_amount' => $request->ordhdr_amount,
+                        'ordhdr_pay_amt' => $request->ordhdr_amount,
                         'ordhdr_program' => $request->ordhdr_program,
                         'ordhdr_service_hdr' => $request->ordhdr_service_hdr,
                         'ordhdr_service_dtl' => $request->ordhdr_service_dtl,
@@ -97,7 +97,7 @@ class OrderController extends Controller
                         'ordhdr_date' => $request->ordhdr_date,
                         'ordhdr_amount' => $request->ordhdr_amount,
                         'ordhdr_work_age_min' => $request->ordhdr_work_age_min,
-
+                    'ordhdr_val_date' => $request->ordhdr_val_date,
                         ]);
 
                 // $this->setOrderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
@@ -115,8 +115,10 @@ class OrderController extends Controller
     }
 
     public function setOrderDetail($detail, $id, $num){
+        $answers = [];
         foreach ($detail as $key =>$value) {
-            $cd = OrderDtl::create([
+            // $cd = OrderDtl::insert([
+            $answers[] = [
                 'orddtl_hdrid' => $id,
                 'orddtl_ordnum' => $num,
                 'orddtl_npk' => !empty($value['NPK'])?$value['NPK']:'',
@@ -128,12 +130,25 @@ class OrderController extends Controller
                 'orddtl_addr' => !empty($value['Address'])?$value['Address']:'',
                 'orddtl_hp' => !empty($value['HP'])?$value['HP']:'',
                 'orddtl_startdate' => !empty($value['Startdate'])?$value['Startdate']:'',
-                'orddtl_curr_sal' => !empty($value['Salery'])?$value['Salery']:'',
+                'orddtl_curr_sal' => !empty($value['Salery'])?$value['Salery']:0,
 
                 'orddtl_created_by' => 1,
                 'orddtl_created_date' => date(now()),
-            ]);
+            // ]);
+            ];
         }
+
+        $answers = collect($answers); 
+
+        $chunks = $answers->chunk(50);
+
+        foreach ($chunks as $chunk)
+        {
+        // \DB::table('items_details')->insert($chunk->toArray());
+        OrderDtl::insert($chunk->toArray());
+        }
+
+        // OrderDtl::insert($answers);
     }
 
     public function orderNum():?string 
@@ -206,8 +221,7 @@ class OrderController extends Controller
                 $pag[$key]->DT_RowIndex = ($key+ 1 + $request->start)+$request->start;
                 $pag[$key]->statusName = 'Active';
                 $pag[$key]->action = $this->setActionButton($row, $param);
-                $pag[$key]->paymentStatusName = $this->paymentStatus($row);
-                
+                $pag[$key]->paymentStatusName = Order::getStatus($row->ordhdr_pay_status);
             }
             return $pag;
         } else if ($reqType == 'get'){
@@ -245,16 +259,6 @@ class OrderController extends Controller
         }
 
         return $btn;
-    }
-
-    function paymentStatus($row){
-        if($row->ordhdr_pay_status == 'P'){
-            return 'Paid';
-        } else if ($row->ordhdr_pay_status == 'C'){
-            return 'Confirm';
-        } else if ($row->ordhdr_pay_status == 'N'){
-            return 'New';
-        }
     }
 
     public function getOrderDetail(Request $request){

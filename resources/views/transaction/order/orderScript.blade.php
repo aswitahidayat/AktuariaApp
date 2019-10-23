@@ -66,8 +66,9 @@
         $('#userUploadTbl').html('');
         $('#ordhdr_service_dtl').html('');
         $('#fileupload').val('');
-        
+        $(`#ordhdr_id`).val();
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
+        searchPartner(`#ordhdr_bizpartid`, '', `modal${module}`);
         // searchService(`#ordhdr_service_hdr`, '', `modal${module}`)
         selectServiceDet()
     });
@@ -82,6 +83,7 @@
             $(`#saveBtn${module}`).html("Edit");
             $('#ordhdr_service_dtl').html('');
             $('#fileupload').val('');
+            $(`#ordhdr_id`).val('');
 
             if(data.ordhdr_date){
                 data.ordhdr_date = dateFormat(data.ordhdr_date)
@@ -110,7 +112,8 @@
             });
 
             searchProgram(`#ordhdr_program`, data.ordhdr_program, `modal${module}`);
-
+            searchPartner(`#ordhdr_bizpartid`, data.ordhdr_bizpartid, `modal${module}`);
+            
             selectServiceDet()
 
             $(`#modal${module}`).modal('show');
@@ -197,7 +200,6 @@
         });
         
         dataall.detail = fileData;
-
         $.ajax({
             data: dataall,
             url: "{{ route('order.store') }}",
