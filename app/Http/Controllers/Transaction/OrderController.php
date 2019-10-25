@@ -97,7 +97,7 @@ class OrderController extends Controller
                         'ordhdr_date' => $request->ordhdr_date,
                         'ordhdr_amount' => $request->ordhdr_amount,
                         'ordhdr_work_age_min' => $request->ordhdr_work_age_min,
-                    'ordhdr_val_date' => $request->ordhdr_val_date,
+                        'ordhdr_val_date' => $request->ordhdr_val_date,
                         ]);
 
                 // $this->setOrderDetail($request->detail, $request->ordhdr_id, $q->ordhdr_ordnum);
@@ -115,10 +115,10 @@ class OrderController extends Controller
     }
 
     public function setOrderDetail($detail, $id, $num){
-        $answers = [];
+        // $answers = [];
         foreach ($detail as $key =>$value) {
-            // $cd = OrderDtl::insert([
-            $answers[] = [
+            $cd = OrderDtl::insert([
+            // $answers[] = [
                 'orddtl_hdrid' => $id,
                 'orddtl_ordnum' => $num,
                 'orddtl_npk' => !empty($value['NPK'])?$value['NPK']:'',
@@ -134,19 +134,19 @@ class OrderController extends Controller
 
                 'orddtl_created_by' => 1,
                 'orddtl_created_date' => date(now()),
-            // ]);
-            ];
+            ]);
+            // ];
         }
 
-        $answers = collect($answers); 
+        // $answers = collect($answers); 
 
-        $chunks = $answers->chunk(50);
+        // $chunks = $answers->chunk(50);
 
-        foreach ($chunks as $chunk)
-        {
-        // \DB::table('items_details')->insert($chunk->toArray());
-        OrderDtl::insert($chunk->toArray());
-        }
+        // foreach ($chunks as $chunk)
+        // {
+        // // \DB::table('items_details')->insert($chunk->toArray());
+        // OrderDtl::insert($chunk->toArray());
+        // }
 
         // OrderDtl::insert($answers);
     }

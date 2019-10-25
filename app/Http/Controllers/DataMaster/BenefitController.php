@@ -19,7 +19,7 @@ class BenefitController extends AdminController {
     public function searchBenefit(Request $request){
         if($request->ajax())
         {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = Benefit::query();
             if($request->name != ''){
@@ -42,7 +42,7 @@ class BenefitController extends AdminController {
 
     public function searchBenefitDtl(Request $request){
         if($request->ajax()) {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = BenefitDtl::query();
             if($request->bendtl_hdrid != ''){

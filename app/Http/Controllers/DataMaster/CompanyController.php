@@ -21,7 +21,7 @@ class CompanyController extends AdminController
     public function search(Request $request){
         if($request->ajax())
         {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = Company::query();
             if($request->name != ''){
@@ -33,7 +33,7 @@ class CompanyController extends AdminController
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->coytypehdr_id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editCompanyType">Edit</a>';
-                    // $btn = $btn." <a href='". route('company.index')."/detail/$row->coytypehdr_id' data-toggle='tooltip'  data-original-title='Detail' class='btn btn-warning btn-sm detailCompanyType'>Detail</a>";
+                    // $btn = $btn." <a href='". route('companytype.index')."/detail/$row->coytypehdr_id' data-toggle='tooltip'  data-original-title='Detail' class='btn btn-warning btn-sm detailCompanyType'>Detail</a>";
                     // $btn = $btn." <a href='javascript:void(0)' data-toggle='tooltip'  data-id='$row->coytypehdr_id' data-original-title='Delete' class='btn btn-danger btn-sm deleteCompanyType'>Delete</a>";
                     return $btn;
                 })

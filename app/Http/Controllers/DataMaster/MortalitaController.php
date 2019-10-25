@@ -18,7 +18,7 @@ class MortalitaController extends Controller {
     public function searchMortalita(Request $request){
         if($request->ajax())
         {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = Mortalita::query();
             if($request->name != ''){
@@ -44,7 +44,7 @@ class MortalitaController extends Controller {
     public function searchMortalitaDtl(Request $request){
         if($request->ajax())
         {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = MortalitaDtl::query();
             if($request->mortalitahdr_id != ''){

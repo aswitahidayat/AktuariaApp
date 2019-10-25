@@ -32,13 +32,13 @@ Route::post('/searchusertype','DataMaster\UserTypeController@search')->name("sea
 Route::resource('identity','DataMaster\IdentityController');
 Route::post('searchidentity','DataMaster\IdentityController@search')->name("searchidentity");
 
-Route::resource('company','DataMaster\CompanyController');
-Route::post('/getcompanydtl','DataMaster\CompanyController@getCompanyDtl')->name("getcompanydtl");
-Route::post('/searchcompany','DataMaster\CompanyController@search')->name("searchcompany");
+Route::resource('companytype','DataMaster\CompanyController');
+Route::post('/getcompanytypedtl','DataMaster\CompanyController@getCompanyDtl')->name("getcompanydtl");
+Route::post('/searchcompanytype','DataMaster\CompanyController@search')->name("searchcompanytype");
 
 Route::resource('detail','DataMaster\CompanyDetailController');
-Route::get('company/detail/{id}','DataMaster\CompanyDetailController@detail');
-Route::post('company/getdetail','DataMaster\CompanyDetailController@getDetail');
+Route::get('companytype/detail/{id}','DataMaster\CompanyDetailController@detail');
+Route::post('companytype/getdetail','DataMaster\CompanyDetailController@getDetail');
 Route::get('getTemplate', 'AssumptionController@getAssumptionTemplate')->name("getTemplate");
 // Route::resource('companydetail','DataMaster\CompanyDetailController');
 
@@ -73,7 +73,7 @@ Route::post('/getDetail','DataMaster\ServiceController@getDetail')->name("getdet
 Route::resource('program','DataMaster\ProgramController');
 Route::post('/searchprogram','DataMaster\ProgramController@search')->name("searchprogram");
 
-Route::post('/getpartner','DataMaster\PartnerController@search')->name("getpartner");
+Route::post('/getpartner','Transaction\CompanyPartnerController@searchApi')->name("getpartner");
 
 Route::resource('/bank', 'DataMaster\BankController');
 Route::post('/searchbank','DataMaster\BankController@search')->name("searchbank");
@@ -81,6 +81,12 @@ Route::post('/searchbank','DataMaster\BankController@search')->name("searchbank"
 Route::resource('agent','Transaction\AgentController');
 Route::post('/searchagent','Transaction\AgentController@search')->name("searchagent");
 Route::post('/emailchecker','Transaction\AgentController@emailChecker')->name("emailchecker");
+
+Route::resource('pic','Transaction\PicController');
+Route::post('/searchpic','Transaction\PicController@search')->name("searchpic");
+
+Route::resource('partner','Transaction\CompanyPartnerController');
+Route::post('/searchpartner','Transaction\CompanyPartnerController@search')->name("searchpartner");
 
 Route::resource('order','Transaction\OrderController');
 Route::post('searchorder','Transaction\OrderController@search')->name("searchorder");

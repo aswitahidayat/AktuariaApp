@@ -17,7 +17,7 @@
             if(confirm("Are You sure want to delete !")){
                 $.ajax({
                     type: "DELETE",
-                    url: "{{ route('company.store') }}"+'/'+id,
+                    url: "{{ route('companytype.store') }}"+'/'+id,
                     success: function (data) {
                         table.draw();
                     },
@@ -36,7 +36,7 @@
             ordering: true,
             searching: false,
             ajax: {
-                    url: "{{ route('searchcompany') }}",
+                    url: "{{ route('searchcompanytype') }}",
                     type: "POST",
                     data: {
                         name: name
@@ -68,7 +68,7 @@
 
     $('body').on('click', `.edit${module}`, function () {
         var id = $(this).data('id');
-        $.get("{{ route('company.index') }}" +`/${id}/edit`, (data) => {
+        $.get("{{ route('companytype.index') }}" +`/${id}/edit`, (data) => {
             $('#modelHeading'+module).html(`Edit ${module}`);
             $(`#saveBtn${module}`).html("Edit");
             $(`#modal${module}`).modal('show');
@@ -118,7 +118,7 @@
 
         $.ajax({
             data: dataall,
-            url: "{{ route('company.store') }}",
+            url: "{{ route('companytype.store') }}",
             type: "POST",
             dataType: 'json',
             success: function (data) {

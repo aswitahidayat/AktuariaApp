@@ -75,7 +75,7 @@
                 ordering: true,
                 searching: false,
                 ajax: {
-                    url: "{{ route('company.index') }}/getdetail",
+                    url: "{{ route('companytype.index') }}/getdetail",
                     type: "POST",
                     data: {
                         name: name,

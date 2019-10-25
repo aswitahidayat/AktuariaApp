@@ -69,7 +69,7 @@ class ZipController extends AdminController
         }
 
         if($request->subdis != ''){
-            $query->where('subdis_disid', $request->subdis);
+            $query->where('zip_subdisid', $request->subdis);
         }
 
         if($request->name != ''){

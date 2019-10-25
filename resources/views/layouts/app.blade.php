@@ -198,7 +198,7 @@
                         <img class="nav-user-photo" src="{{ asset('assets/images/avatars/user.gif')}}" alt="{{Auth::user()->user_email}}" />
                         <span class="user-info">
 							<small>Welcome,</small>
-                            {{Auth::user()->user_email ?? "Email"}}
+                            {{Auth::user()->user_name ?? "Nama"}}
                         </span>
 
                         <i class="ace-icon fa fa-caret-down"></i>
@@ -212,12 +212,12 @@
                             </a>
                         </li>
 
-                        <li>
+                        {{--  <li>
                             <a href="">
                                 <i class="ace-icon fa fa-user"></i>
                                 Profile
                             </a>
-                        </li>
+                        </li>  --}}
 
                         <li class="divider"></li>
 
@@ -332,8 +332,8 @@
 <!-- inline scripts related to this page -->
 
 <script>
-    /*
-    $.ajax({
+    
+    {{-- $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -341,13 +341,55 @@
         url: "{{ route('menu.index') }}",
         success: function (data) {
             //table.draw();
-            debugger;
+            var varhtml= '';
+
+            data.forEach(function(menu) {
+                if(menu.child.length >0){
+                        varhtml += `<li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon ${menu.mn_icon}"></i>
+                                <span class="menu-text">${menu.mn_name}</span>
+                                <b class="arrow fa fa-angle-down"></b>
+                                <b class="arrow"></b>
+                                <ul class="submenu">`
+                                menu.child.forEach(function(submenu) {
+                                    varhtml += `<li class="">
+                                            <a href="${submenu.mn_link}">
+                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                <span class="menu-text">${submenu.mn_name}</span>
+                                            </a>
+                            
+                                            <b class="arrow"></b>
+                                        </li>`
+                                })
+                            
+                    varhtml +=`</ul></a></li>`
+                } else {
+                    varhtml += `<li class="">
+                            <a href="${menu.mn_link}">
+                                <i class="${menu.mn_icon}"></i>
+                                <span class="menu-text"> ${menu.mn_name} </span>
+                            </a>
+                        
+                        </li>`
+                }
+                
+                {{--  if(menu.child.length >0){
+                    varhtml += `<ul class="submenu">`
+                    
+                    varhtml += `</ul>`
+                }
+                varhtml +=`</li>`  --}}
+            })
+
+            $('#dyn-menu').html(varhtml)
+            
         },
         error: function (data) {
             //console.log('Error:', data);
         }
-    });
-    */
+    }); --}}
+    
 </script>
 
 @yield('js')

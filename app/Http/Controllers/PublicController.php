@@ -24,7 +24,7 @@ class PublicController extends Controller
     public function searchCompany(Request $request){
         if($request->ajax())
         {
-            $url = route('company.index');
+            $url = route('companytype.index');
 
             $query = Company::query();
             if($request->name != ''){
