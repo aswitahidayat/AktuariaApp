@@ -105,7 +105,7 @@ class PerhitunganController extends Controller
         $allUsersCount=DB::select(" select * from kka_dab.order_calc($request->orderid, '$request->ordernum', $user_id)");
         
         Order::
-        where('ordhdr_id', $this->orderid)
+        where('ordhdr_id', $request->orderid)
         ->update(['ordhdr_pay_status' => 'C',]);
         
         

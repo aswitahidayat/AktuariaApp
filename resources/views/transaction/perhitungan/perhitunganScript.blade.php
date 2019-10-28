@@ -213,7 +213,7 @@
             }
             $.each(data, (key,val) => {
                 $(`#${key}`).val(val);
-                $(`#${key}`).prop("disabled", disable)
+                //$(`#${key}`).prop("disabled", disable)
             });
 
             $.ajax({
@@ -824,7 +824,7 @@
             $.each(datas, (key, val) => {
                 letHtml +=`<tr class="grabbing" onclick="hasilDtl(${val.ordchdr_id})">`
                 letHtml +=  `<td>${key + 1}</td>`
-                letHtml +=  `<td>${val.orddtl_npk}</td>`
+                letHtml +=  `<td nowrap>${val.orddtl_npk}</td>`
                 letHtml +=  `<td nowrap>${val.orddtl_name}</td>`
                 letHtml +=  `<td>${val.orddtl_sex}</td>`
                 letHtml +=  `<td nowrap>${formatHumanDate(val.orddtl_startdate)}</td>`
