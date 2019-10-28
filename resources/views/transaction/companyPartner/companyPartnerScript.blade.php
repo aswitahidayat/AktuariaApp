@@ -38,8 +38,8 @@
         //show modal
         $(`#create${module}`).click(function () {
             $('#saveBtn').html('Save');
-            $('#usertype_id').val('');
-            $('#UsertypeForm').trigger("reset");
+            $('#bizpart_id').val('');
+            $('#partnerForm').trigger("reset");
             $('#modelHeading').html("Create Partner");
             $('#saveBtn').removeAttr("disabled");
             $('#modelPartner').modal('show');

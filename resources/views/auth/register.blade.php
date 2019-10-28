@@ -41,7 +41,7 @@
                                     <i class="ace-icon fa fa-retweet"></i>
                                 </span>
                                 <span id="pass_err" class="invalid-feedback" role="alert" style="display: none">
-                                    <small class="text-danger" >Passwords Don't Match</small>   
+                                    <small class="text-danger" >Passwords Dont Match</small>   
                                 </span>
                             </label>
 

@@ -11,6 +11,7 @@
                     <div class="row">
                         <div class="col-xs-6" style="padding-right: 20px;padding-left: 20px;">
                             <input type="hidden" name="bizpart_id" id="bizpart_id">
+                            <p><strong> Enter your company details : </strong></p>
                             <div class="form-group">
                                 <label for="usertype_name" class="col-form-label bolder">Partner Name :</label>
                                 <input type="text" class="form-control" id="bizpart_coy_name" name="bizpart_coy_name" placeholder="Enter Name" value="" maxlength="50" required>
@@ -32,7 +33,7 @@
                                 <input type="text" class="form-control" id="bizpart_coy_addr" name="bizpart_coy_addr" placeholder="Enter Address" value="" maxlength="50" required>
                             </div>
                             <div class="form-group">
-                                <label for="usertype_name" class="col-form-label bolder">Prov :</label>
+                                <label for="usertype_name" class="col-form-label bolder">Provinsi :</label>
                                 <div class="col-sm-12 p0">
                                     <select id="bizpart_coy_provid" name="bizpart_coy_provid" class="form-control input-lg select2-single" 
                                         placeholder="Provinsi" style="width:100%;" ></select>
@@ -42,7 +43,7 @@
                                 <label for="usertype_name" class="col-form-label bolder">Kab/Kota :</label>
                                 <div class="col-sm-12 p0">
                                     <select class="chosen-select form-control" 
-                                        id="bizpart_coy_disid" name="bizpart_coy_disid" placeholder="Kota/Kabupaten" >
+                                        id="bizpart_coy_disid" name="bizpart_coy_disid" placeholder="Kota/Kabupaten" style="width:100%;">
                                         <option value="" disabled selected>Kota/Kabupaten</option>            
                                     </select>
                                 </div>
@@ -51,7 +52,7 @@
                                 <label for="usertype_name" class="col-form-label bolder">Kecamatan :</label>
                                 <div class="col-sm-12 p0">
                                     <select class="chosen-select form-control" 
-                                        id="bizpart_coy_subdisid" name="bizpart_coy_subdisid" placeholder="Kota/Kabupaten" >
+                                        id="bizpart_coy_subdisid" name="bizpart_coy_subdisid" placeholder="Kota/Kabupaten" style="width:100%;">
                                         <option value="" disabled selected>Kecamatan</option>
             
                                     </select>
@@ -61,7 +62,7 @@
                                 <label for="usertype_name" class="col-form-label bolder">Pos :</label>
                                 <div class="col-sm-12 p0">
                                     <select class="chosen-select form-control" 
-                                        id="bizpart_coy_zipcode" name="bizpart_coy_zipcode" placeholder="Kota/Kabupaten" />
+                                        id="bizpart_coy_zipcode" name="bizpart_coy_zipcode" placeholder="Kota/Kabupaten" style="width:100%;" />
                                         <option value="" disabled selected>Pos</option>
                                     </select>
                                 </div>
@@ -107,6 +108,7 @@
                         </div>
                         <div class="col-xs-6" style="padding-right: 20px;padding-left: 20px;">
 
+                        <p> <strong> Enter your personal details : </strong></p>
                             <div class="form-group">
                             
                                 <label for="usertype_name" class="col-form-label bolder">PIC Nama :</label>
@@ -123,9 +125,11 @@
                                 <span class="block input-icon input-icon-right">
                                     <label for="usertype_name" class="col-form-label bolder">PIC Type Id :</label>
 
-                                    <select class="chosen-select form-control" 
-                                        id="bizpart_pic_typeid" name="bizpart_pic_typeid" >
-                                    </select>
+                                    <div class="col-sm-12 p0">
+                                        <select class="chosen-select form-control" 
+                                            id="bizpart_pic_typeid" name="bizpart_pic_typeid" style="width:100%;">
+                                        </select>
+                                    </div>
                                 </span>
                             </div>
 

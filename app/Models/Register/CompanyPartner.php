@@ -23,12 +23,12 @@ class CompanyPartner extends Model
         'bizpart_pic_birthdate', 'bizpart_pic_npwp',
 
         'bizpart_coy_name', 'bizpart_coytype_hdr', 'bizpart_coy_npwp',
-        'bizpart_coy_addr', 'bizpart_coy_village', 'bizpart_coy_zipcodeid',
+        'bizpart_coy_addr', 'bizpart_coy_village', 'bizpart_coy_zipcode',
         'bizpart_coy_provid', 'bizpart_coy_disid', 'bizpart_coy_subdisid',
         'bizpart_coy_phone1', 'bizpart_coy_phone2', 'bizpart_coy_fax',
         'bizpart_coy_web', 'bizpart_coy_email',
         
-        'bizpart_created_by', 'bizpart_created_date'
+        'bizpart_created_by', 'bizpart_created_date', 'bizpart_status'
     ];
 
     public static function paging($request){
@@ -71,6 +71,7 @@ class CompanyPartner extends Model
 
         $result = [
 
+            'bizpart_user_type' => '2',
             'bizpart_pic_email' => $request->bizpart_pic_email,
             'bizpart_pic_name' => $request->bizpart_pic_name, 
             'bizpart_pic_typeid' => $request->bizpart_pic_typeid, 
@@ -97,6 +98,9 @@ class CompanyPartner extends Model
             'bizpart_status' => $request->bizpart_status,
 
         ];
+
+        var_dump($result);
+        exit();
 
         return $result;
     }

@@ -45,8 +45,8 @@
             $('#ajaxModel').modal('show');
         });
 
-        //ad & ed
-        $('body').on('click', '.editUsertype', function () {
+        //ad & ed editUsertype
+        $('body').on('click', `.edit${module}`, function () {
             var id = $(this).data('id');
             $.get("{{ route('usertype.index') }}" +'/' + id +'/edit', function (data) {
                 $('#modelHeading').html("Edit User Type");
