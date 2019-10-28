@@ -333,12 +333,13 @@
 
 <script>
     
-    {{-- $.ajax({
+    
+    $.ajax({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        type: "get",
-        url: "{{ route('menu.index') }}",
+        type: "POST",
+        url: "{{ route('searchmenu') }}",
         success: function (data) {
             //table.draw();
             var varhtml= '';
@@ -374,12 +375,12 @@
                         </li>`
                 }
                 
-                {{--  if(menu.child.length >0){
+                if(menu.child.length >0){
                     varhtml += `<ul class="submenu">`
                     
                     varhtml += `</ul>`
                 }
-                varhtml +=`</li>`  --}}
+                varhtml +=`</li>` 
             })
 
             $('#dyn-menu').html(varhtml)
@@ -388,7 +389,7 @@
         error: function (data) {
             //console.log('Error:', data);
         }
-    }); --}}
+    });
     
 </script>
 

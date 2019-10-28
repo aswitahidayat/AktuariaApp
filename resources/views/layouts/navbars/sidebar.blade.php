@@ -34,10 +34,8 @@
     </div> --}}
     <!-- /.sidebar-shortcuts -->
 
-    <ul class="nav nav-list">
+    <ul id="dyn-menu" class="nav nav-list">
         
-        @include('layouts.navbars.menubar') 
-
     </ul><!-- /.nav-list -->
 
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">

@@ -266,11 +266,10 @@ function searchKota(div, selected = '', modal, dataProv){
             url: "/searchdistrict",
             type: "POST",
             dataType: 'json',
-            data: function (params, page){
-                return{
-                    name: params.term,
-                    prov: dataProv,
-                }
+            data: 
+            {
+                prov: dataProv,
+                
             },
             success: function (datas) {
                 let varHtml = '';
@@ -324,20 +323,18 @@ function selectSearchKota(div = '', modal = '', route = '', id = '', name = '', 
 
 function searchKecamatan(div, selected = '', modal, dataDis){
     if(selected){
+        debugger;
         $.ajax({
             url: "/searchsubdistrict",
             type: "POST",
             dataType: 'json',
-            data: function (params, page){
-                return{
-                    name: params.term,
+            data: {
                     dis: dataDis,
-                }
             },
             success: function (datas) {
                 let varHtml = '';
                 $.each(datas.data, (key, item) => {
-                    varHtml +=  `<option value="${item.dis_id}" >${item.dis_name}</option>`
+                    varHtml +=  `<option value="${item.subdis_id}" >${item.subdis_name}</option>`
                 });
                 $(div).html(varHtml);
                 $(div).val(selected);
@@ -390,11 +387,8 @@ function searchPost(div, selected = '', modal, dataSubDis){
             url: "/searchzip",
             type: "POST",
             dataType: 'json',
-            data: function (params, page){
-                return{
-                    name: params.term,
+            data: {
                     subdis: dataSubDis,
-                }
             },
             success: function (datas) {
                 let varHtml = '';

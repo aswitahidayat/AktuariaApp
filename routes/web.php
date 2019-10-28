@@ -120,4 +120,6 @@ Route::get('/test', 'Util\WordController@proses_word')->name("word");
 Route::get('/testpdf', 'Util\WordController@process_pdf')->name("word");
 
 Route::resource('menu','MenuController');
+Route::post('searchmenu','MenuController@search')->name("searchmenu");
+Route::post('searchmenuview','MenuController@searchview')->name("searchmenuview");
 
