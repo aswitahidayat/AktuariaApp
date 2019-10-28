@@ -24,7 +24,15 @@
                     </div>
 
                     <div class="form-group" id="menuPremitDiv">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="usertype_name" class="col-form-label bolder">Menu Parent :</label>
+                        <div class="col-sm-12 p0 pb-20">
+                            <select class="chosen-select form-control"  id="mn_parent" name="mn_parent" 
+                                placeholder="Menu Parent..." style="width:100%;">
+                            </select>                         
+                        </div>
                     </div>
 
                     <div class="form-group">

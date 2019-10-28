@@ -14,6 +14,14 @@ class Menu extends Model
     public $incrementing = true;
     public $timestamps = false;
 
+    protected $fillable = [
+        'mn_name',
+        'mn_status', 
+        'mn_parent',
+        'mn_link', 
+        'mn_order', 
+    ];
+
     public static function findPermition(){
         $querry = DB::table('kka_dab.mst_menu');
         $usrtype = Auth::user()->user_type;

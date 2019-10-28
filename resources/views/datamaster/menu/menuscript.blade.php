@@ -43,6 +43,7 @@
             $('#modelHeading').html("Create New Menu");
             $('#saveBtn').removeAttr("disabled");
             $('#ajaxModel').modal('show');
+            searchMenu('#mn_parent', '', 'ajaxModel')
         });
 
         //ad & ed
@@ -65,12 +66,14 @@
                 var varHtml = '';
 
                 $.each(data.permit, (key,val) => {
-                    varHtml += `<input type="checkbox" name="mn_${val.usertype_id}" value="1" checked>${val.usertype_name}<br>`
+                    var varchecked = val.mnp_id ? 'checked': ''
+                    varHtml += `<input type="checkbox" name="mn_permit_${val.usertype_id}" value="${val.usertype_id}" ${varchecked}>${val.usertype_name}<br>`
                 
                 });
 
                 $('#menuPremitDiv').html(varHtml)
-                
+
+                searchMenu('#mn_parent', data.mn_parent, 'ajaxModel')
 
             })
         });
@@ -78,15 +81,25 @@
         $( "#MenuForm" ).submit(function( e ) {
             e.preventDefault();
 
-            var a = $('#MenuForm').serialize()
+            var formdata = $(`#MenuForm`).serializeArray();
+            var dataall = {};
+            dataall.permit = []
+            $(formdata ).each(function(index, obj){
+                if(obj.name.includes("mn_permit_")){
+                    dataall.permit.push(obj.value)
+                } else {
+                    dataall[obj.name] = obj.value;
+                }
+            });
+
+            //var a = $('#MenuForm').serialize()
             debugger;
-            /*
 
             $('#saveBtn').html('Sending..');
             $("#saveBtn").attr("disabled", true);
             $.ajax({
-                data: $('#MenuForm').serialize(),
-                url: "{{ route('usertype.store') }}",
+                data: dataall,
+                url: "{{ route('menu.store') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
@@ -102,7 +115,7 @@
                     $('#saveBtn').removeAttr("disabled");
                 }
             });
-            */
+            
         });
 
         //delete

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\MenuPermition;
 use Auth;
 use Illuminate\Http\Request;
 use DataTables;
@@ -76,28 +77,73 @@ class MenuController extends Controller
 
     public function edit($usertype_id)
     {
-        $utype = Menu::find($usertype_id);
-        $utype['permit'] = Menu::editPermit($usertype_id);
-        return response()->json($utype);
+        $dataReturn = Menu::find($usertype_id);
+        $dataReturn['permit'] = Menu::editPermit($usertype_id);
+        return response()->json($dataReturn);
     }
 
     public function store(Request $request)
     {
-        if($request->usertype_id == ''){
-            $data = new UserType();
-            $data->usertype_name = $request->usertype_name;
-            $data->usertype_desc = $request->usertype_desc;
-            $data->usertype_status = $request->usertype_status;
-            $data->usertype_created_by = Auth::id();
-            $data->usertype_created_date = date(now());
-            $data->save();
+        if($request->mn_id == ''){
+            $q =  Menu::create([
+
+                'mn_name' => $request->mn_name,
+                'mn_status' => $request->mn_status,
+                'mn_parent' => $request->mn_parent,
+                'mn_link' => $request->mn_link,
+                'mn_order' => $request->mn_order,
+    
+                'usertype_created_by' => Auth::id(),
+                'usertype_created_date' => date(now()),
+            ]);
+            $this->checkPremit ($q->mn_id, $request->permit);
         }else{
-            DB::table('kka_dab.mst_user_type')
-                ->where('usertype_id', $request->usertype_id)
-                ->update(['usertype_name' => $request->usertype_name,
-                    'usertype_desc' => $request->usertype_desc,
-                     'usertype_status' => $request->usertype_status]);
+            Menu::where('mn_id', $request->mn_id)
+                ->update(['mn_name' => $request->mn_name,
+                    'mn_status' => $request->mn_status,
+                     'mn_parent' => $request->mn_parent,
+                     'mn_link' => $request->mn_link,
+                     'mn_order' => $request->mn_order,
+                     ]);
+
+            $this->checkPremit ($request->mn_id, $request->permit);            
         }
         return response()->json(['success'=>'User Type saved successfully.']);
+    }
+
+    public function checkPremit($mn_id = '', $usertype_id = ''){
+        if ($mn_id != '' && $usertype_id  != ''){
+            //delete
+            $delquery = MenuPermition::where('mnp_mn', $mn_id);
+            if(count($usertype_id) >0){
+                $delquery->whereNotIn('mnp_usrt', $usertype_id);
+            }
+
+            $delquery->delete();
+
+            if(count($usertype_id) >0){
+
+                foreach ($usertype_id as $key =>$row) {
+                    $query2 = MenuPermition::where('mnp_mn', $mn_id)->where('mnp_usrt', $row)->count();
+                    if($query2 == 0 ){
+                        $this->insertpremit($mn_id, $row);
+                    }
+                }
+            }
+        } else {
+            MenuPermition::where('mnp_mn', $mn_id)->delete();
+        }
+    }
+
+    function insertpremit($mn_id, $mnp_usrt){
+        $cd = MenuPermition::insert([
+                'mnp_mn' => $mn_id,
+                'mnp_usrt' => $mnp_usrt,
+            ]);
+    }
+
+    function findParent(){
+        $dataReturn = Menu::where('mn_parent', 0)->get();
+        return response()->json($dataReturn);
     }
 }
