@@ -43,6 +43,7 @@
             $('#modelHeading').html("Create New Menu");
             $('#saveBtn').removeAttr("disabled");
             $('#ajaxModel').modal('show');
+            setPremit('')
             searchMenu('#mn_parent', '', 'ajaxModel')
         });
 
@@ -62,17 +63,7 @@
                 } else if(data.mn_status != 1){
                     $("#mn_status_inactive").prop("checked", true);
                 }
-
-                var varHtml = '';
-
-                $.each(data.permit, (key,val) => {
-                    var varchecked = val.mnp_id ? 'checked': ''
-                    varHtml += `<input type="checkbox" name="mn_permit_${val.usertype_id}" value="${val.usertype_id}" ${varchecked}>${val.usertype_name}<br>`
-                
-                });
-
-                $('#menuPremitDiv').html(varHtml)
-
+                setPremit(data.permit)
                 searchMenu('#mn_parent', data.mn_parent, 'ajaxModel')
 
             })
@@ -91,9 +82,6 @@
                     dataall[obj.name] = obj.value;
                 }
             });
-
-            //var a = $('#MenuForm').serialize()
-            debugger;
 
             $('#saveBtn').html('Sending..');
             $("#saveBtn").attr("disabled", true);
@@ -118,21 +106,22 @@
             
         });
 
-        //delete
-        $('body').on('click', '.deleteUsertype', function () {
-            var id = $(this).data("id");
-            if(confirm("Are You sure want to delete !")){
-                $.ajax({
-                    type: "DELETE",
-                    url: "{{ route('usertype.store') }}"+'/'+id,
-                    success: function (data) {
-                        table.draw();
-                    },
-                    error: function (data) {
-                        console.log('Error:', data);
-                    }
-                });
-            }
-        });
+        async function setPremit(permits = ''){
+            var varHtml = '';
+            if(permits == ''){
+                permits = await findUsertype()
+            } 
+            
+            $.each(permits, (key,val) => {
+                var varchecked = val.mnp_id ? 'checked': ''
+                varHtml += `<input type="checkbox" name="mn_permit_${val.usertype_id}" value="${val.usertype_id}" ${varchecked}>${val.usertype_name}<br>`
+            })
+            
+            $('#menuPremitDiv').html(varHtml)
+        }
+
+        function findUsertype(){
+            return $.post("{{ route('searchusernonadmin') }}", (permits) => {})
+        }
     });
 </script>

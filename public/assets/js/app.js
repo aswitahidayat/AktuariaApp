@@ -507,11 +507,6 @@ function searchIdType(div, selected = '', modal, dataSubDis){
             url: "/searchidentity",
             type: "POST",
             dataType: 'json',
-            data: function (params, page){
-                return{
-                    name: params.term,
-                }
-            },
             success: function (datas) {
                 let varHtml = '';
                 $.each(datas.data, (key, item) => {
@@ -554,6 +549,68 @@ function selectIdType(div = '', modal = '', route = '', id = '', name = '', nest
                         id: item.typeid_id
                         }
                     })
+                };
+            },
+            cache: true
+        }
+    });
+}
+
+function searchMenu(div, selected = '', modal, dataSubDis){
+    if(selected){
+        $.ajax({
+            url: "/findParent",
+            type: "POST",
+            dataType: 'json',
+            success: function (datas) {
+                debugger;
+                let varHtml = '';
+                varHtml += `<option value="0" >None</option>`;
+
+                $.each(datas, (key, item) => {
+                    varHtml +=  `<option value="${item.mn_id}" >${item.mn_name}</option>`
+                });
+                $(div).html(varHtml);
+                $(div).val(selected);
+                selectMenu(div, modal)
+
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+    } else {
+        selectMenu(div, modal)
+    }
+}
+
+function selectMenu(div = '', modal = ''){
+    $(div).select2({
+        placeholder: 'Cari...',
+        dropdownParent: $(`#${modal}`),
+        ajax: {
+            url: `/findParent`,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function (params, page){
+                return{
+                    name: params.term,
+                }
+            },
+            processResults: function (datas) {
+                var results = []
+                
+                results.push({text: "None", id: 0});
+                results = results.concat($.map(datas, function (item) {
+                    return {
+                    text: item.mn_name,
+                    id: item.mn_id
+                    }
+                }))
+
+                return {
+                    results: results
                 };
             },
             cache: true

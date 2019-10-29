@@ -23,8 +23,8 @@ class UserTypeController extends AdminController
             $query->where('usertype_name', 'LIKE',  "%$request->name%");
         }
 
-        $length = $request->length != '' ? $request->length : 10;
-        $query->skip($request->start)->take($length)->get();
+        // $length = $request->length != '' ? $request->length : 10;
+        // $query->skip($request->start)->take($length)->get();
 
         $data = $query->orderBy('usertype_id')->get();
 
@@ -42,6 +42,13 @@ class UserTypeController extends AdminController
             ->rawColumns(['action'])
             ->make(true);
 
+    }
+
+    public function searchNonAdmin(Request $request)
+    {
+        $query = UserType::query();
+        $query->where('usertype_id', '<>',  "1");
+        return $query->orderBy('usertype_id')->get();
     }
 
     public function store(Request $request)

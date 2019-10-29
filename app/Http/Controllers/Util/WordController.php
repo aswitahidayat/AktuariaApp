@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class WordController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function proses_word(){
         $template = new \PhpOffice\PhpWord\TemplateProcessor('assets/doc/template.docx');
         $template->setValue('name', 'John Doe');

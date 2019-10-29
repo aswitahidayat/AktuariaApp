@@ -20,10 +20,12 @@
 
                     <div class="form-group">
                         <label for="usertype_name" class="col-form-label bolder">Menu Order :</label>
-                        <input type="text" class="form-control" id="mn_order" name="mn_order" placeholder="Enter Name" value="" maxlength="50" >
+                        <input type="number" class="form-control" id="mn_order" name="mn_order" placeholder="Enter Name" value="" maxlength="50" >
                     </div>
 
-                    <div class="form-group" id="menuPremitDiv">
+                    <div class="form-group" >
+                        <label for="usertype_name" class="col-form-label bolder">Menu Permission :</label>
+                        <div id="menuPremitDiv"></div>
                     </div>
 
                     <div class="form-group">
