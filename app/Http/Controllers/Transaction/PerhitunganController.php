@@ -76,7 +76,8 @@ class PerhitunganController extends Controller
                     $btn .= ' <span data-toggle="tooltip" data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionView">Assumption</span>';
                 }
                 if ($row->ordhdr_pay_status == 'P'){
-                    $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")' class='edit btn btn-primary btn-sm'>View</a>";
+                    $btn .= "<a href='javascript:void(0)' onclick='viewOrder(\"$row->ordhdr_id\")' class='edit btn btn-primary btn-sm'>View</a> ";
+                    $btn .= "<a href='halaman?hitung=$row->ordhdr_ordnum'  class='edit btn btn-primary btn-sm'>Halaman</a> ";
                     $btn .= ' <span data-toggle="tooltip" data-id="'.$row->ordhdr_id.'" data-original-title="Assumption" class="assumption btn btn-primary btn-sm assumptionView">Assumption</span>';
                 }
 

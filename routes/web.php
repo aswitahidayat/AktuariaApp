@@ -119,10 +119,14 @@ Route::post('/upload/proses', 'UploadController@proses_upload');
 
 Route::get('/test', 'Util\WordController@proses_word')->name("word");
 Route::get('/testpdf', 'Util\WordController@process_pdf')->name("word");
+Route::post('/pdfhtml', 'Util\WordController@process_pdf_by_html')->name("pdfhtml");
+Route::post('/process_xls_by_html', 'Util\WordController@process_xls_by_html')->name("process_xls_by_html");
 
 Route::resource('menu','MenuController');
 Route::post('searchmenu','MenuController@search')->name("searchmenu");
 Route::post('searchmenuview','MenuController@searchview')->name("searchmenuview");
 Route::post('/findParent','MenuController@findParent')->name("findParent");
 
+Route::get('/halaman','Transaction\HalamanController@index')->name("halaman");
+Route::post('/getHalaman','Transaction\HalamanController@getHalaman')->name("getHalaman");
 
