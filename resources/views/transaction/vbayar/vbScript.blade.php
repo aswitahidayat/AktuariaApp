@@ -31,7 +31,6 @@
                 {name: 'action', orderable: false, searchable: false, data: 'action'},
                 {name: 'ordhdr_ordnum', data: 'ordhdr_ordnum'},//
                 {name: 'ordprg_name', data: 'ordprg_name'},//
-                {name: 'ordhdr_period_lastyear', data: ''},//
             ]
 
         });

@@ -60,7 +60,6 @@
                             <th>Actions</th>
                             <th>Nomor Order</th>
                             <th>Program</th>
-                            <th>Customer</th>
                         </tr>
                         </thead>
 
