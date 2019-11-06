@@ -198,6 +198,8 @@ class OrderController extends Controller
     }
 
     public function orderList(Request $request, $reqType ='', $param = ''){
+        $usertype = Auth::user()->user_type;
+
         $query = Order::
             leftJoin('kka_dab.mst_order_program AS prog', 'ordhdr_program', '=', 'prog.ordprg_id')
             ->leftJoin('kka_dab.mst_order_service_hdr AS serv', 'ordhdr_service_hdr', '=', 'serv.ordsrvhdr_id')
@@ -209,6 +211,10 @@ class OrderController extends Controller
 
         if($param == 'varify'){
             $query->where('ordhdr_pay_status', 'N');
+        }
+
+        if($usertype != '1') {
+            $query->where('ordhdr_created_by', $usertype);
         }
 
         if($reqType == 'pagging'){

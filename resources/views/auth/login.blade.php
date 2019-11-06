@@ -24,31 +24,31 @@ try {
                         @csrf
                         <fieldset>
                             <label class="block clearfix">
-                                        <span class="block input-icon input-icon-right">
-                                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="user_email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <span class="block input-icon input-icon-right">
+                                    <input id="email" type="email" class="form-control{{ $errors->has('user_email') ? ' is-invalid' : '' }}" name="user_email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                            @if ($errors->has('user_email'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('email') }}</strong>
-                                                </span>
-                                            @endif
-                                            <i class="ace-icon fa fa-user"></i>
-                                        </span>
+                                    <i class="ace-icon fa fa-user"></i>
+                                </span>
                             </label>
 
                             <label class="block clearfix">
-                                        <span class="block input-icon input-icon-right">
-                                            <input id="password" type="password" class="form-control{{ $errors->has('user_password') ? ' is-invalid' : '' }}" name="user_password" placeholder="Password" required autocomplete="current-password">
+                                <span class="block input-icon input-icon-right">
+                                    <input id="password" type="password" class="form-control{{ $errors->has('user_password') ? ' is-invalid' : '' }}" name="user_password" placeholder="Password" required autocomplete="current-password">
 
-                                            @if ($errors->has('user_password'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('password') }}</strong>
-                                                </span>
-                                            @endif
-                                            <i class="ace-icon fa fa-lock"></i>
+                                    @if ($errors->has('user_password'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('password') }}</strong>
                                         </span>
+                                    @endif
+                                    <i class="ace-icon fa fa-lock"></i>
+                                </span>
                             </label>
 
+                            @if ($errors->has('user_email'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('user_email') }}</strong>
+                                </span>
+                            @endif
                             <div class="space"></div>
 
                             <div class="clearfix">
