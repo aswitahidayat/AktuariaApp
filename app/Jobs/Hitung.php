@@ -9,10 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order\Order;
 
-use Illuminate\Http\Request;
-use Auth;
 use DB;
-use Illuminate\Support\Facades\Log;
 
 class Hitung implements ShouldQueue
 {
@@ -21,19 +18,19 @@ class Hitung implements ShouldQueue
     private $request = null;
     private $orderid = '';
     private $ordernum = '';
-
-
+    private $user_id = 0;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($request, $user_id)
     {
         // var_dump($request);
         $this->orderid = $request['orderid'];
         $this->ordernum = $request['ordernum'];
+        $this->user_id = $user_id;
 
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
             $out->writeln('construct');
@@ -46,54 +43,22 @@ class Hitung implements ShouldQueue
      */
     public function handle()
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln('attempt');
-
         $exception = DB::transaction(function() {
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln('attempt');
             Order::
             where('ordhdr_id', $this->orderid)
             ->update([
                 'ordhdr_pay_status' => 'W',
                 ]);
 
-                
-            $user_id = Auth::user()->user_id;
-            $allUsersCount=DB::select(" select * from kka_dab.order_calc($this->orderid, '$this->ordernum', $user_id)");
-            
+            $allUsersCount=DB::select(" select * from kka_dab.order_calc($this->orderid, '$this->ordernum', $this->user_id)");            
             
             Order::
             where('ordhdr_id', $this->orderid)
             ->update(['ordhdr_pay_status' => 'C',]);
             $out = new \Symfony\Component\Console\Output\ConsoleOutput();
             $out->writeln('finish');
-        });
-
-        
-
-        // return true;
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Queue::before(function (JobProcessing $event) {
-            // $event->connectionName
-            // $event->job
-            // $event->job->payload()
-        });
-
-        Queue::after(function (JobProcessed $event) {
-            // $event->connectionName
-            // $event->job
-            // $event->job->payload()
-
-            Order::
-            where('ordhdr_id', $this->orderid)
-            ->update(['ordhdr_pay_status' => 'C',]);
         });
     }
 }

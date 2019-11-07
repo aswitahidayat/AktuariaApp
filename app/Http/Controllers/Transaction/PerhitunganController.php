@@ -7,7 +7,7 @@ use App\Models\Order\Order;
 use App\Models\Order\OrderDtl;
 use App\Models\Order\OrderAssumption;
 use App\Models\Assumption;
-// use App\Jobs\Hitung;
+use App\Jobs\Hitung;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -15,6 +15,9 @@ use DataTables;
 use DB;
 use Redirect,Response;
 use Helper;
+
+use Spatie\Async\Pool;
+use App\Jobs\Coba;
 
 class PerhitunganController extends Controller
 {
@@ -108,15 +111,36 @@ class PerhitunganController extends Controller
 
     // TODO Background Process
     function hitungOrder(Request $request){
+        // $pool
+        // ->add(function ()use($request, $user_id) {
+        //     // ...
+        //     $allUsersCount=DB::select("select * from kka_dab.order_calc($request->orderid, '$request->ordernum', $user_id)");
+        // })
+        // ->then(function ($output)use($request) {
+        //     // On success, `$output` is returned by the process or callable you passed to the queue.
+        //     Order::
+        //     where('ordhdr_id', $request->orderid)
+        //     ->update(['ordhdr_pay_status' => 'C',]);
+        // })
+        // ->catch(function ($exception) {
+        //     // When an exception is thrown from within a process, it's caught and passed here.
+        // })
+        // ->timeout(function () {
+        //     // A process took too long to finish.
+        // });
+
         $user_id = Auth::user()->user_id;
-        $allUsersCount=DB::select(" select * from kka_dab.order_calc($request->orderid, '$request->ordernum', $user_id)");
+        // $allUsersCount=DB::select(" select * from kka_dab.order_calc($request->orderid, '$request->ordernum', $user_id)");
         
         Order::
         where('ordhdr_id', $request->orderid)
-        ->update(['ordhdr_pay_status' => 'C',]);
+        ->update(['ordhdr_pay_status' => 'W',]);
+
+        // $pool = Pool::create();
+        // $pool->add(new Coba());
         
         
-        // Hitung::dispatch($request->all());
+        Hitung::dispatch($request->all(), $user_id);
        
         return response()->json(['success'=>'Order saved successfully.']);
     }
