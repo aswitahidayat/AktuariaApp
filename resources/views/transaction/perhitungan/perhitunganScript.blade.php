@@ -608,7 +608,7 @@
                 },
                 url: "{{ route('hitungorder') }}",
                 success: function (data) {
-                    alert("Perhitungan berhasil");
+                    alert("Proses perhitungan sudah dilakukan");
                     table.draw();
                 },
                 error: function (data) {
