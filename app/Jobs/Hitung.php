@@ -52,13 +52,34 @@ class Hitung implements ShouldQueue
                 'ordhdr_pay_status' => 'W',
                 ]);
 
-            $allUsersCount=DB::select(" select * from kka_dab.order_calc($this->orderid, '$this->ordernum', $this->user_id)");            
+            try {
+                $allUsersCount=DB::select(" select * from kka_dab.order_calc($this->orderid, '$this->ordernum', $this->user_id)");            
+            } catch(Exception $e) {
+                $this->writeln($e);
+            }
             
+
             Order::
             where('ordhdr_id', $this->orderid)
             ->update(['ordhdr_pay_status' => 'C',]);
             $out = new \Symfony\Component\Console\Output\ConsoleOutput();
             $out->writeln('finish');
         });
+
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln($exception);
+    }
+
+    public function failed($e)
+    {
+        // Send user notification of failure, etc...
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln('Fail');
+
+        $out->writeln($e);
+
+        Order::
+            where('ordhdr_id', $this->orderid)
+            ->update(['ordhdr_pay_status' => 'N',]);
     }
 }

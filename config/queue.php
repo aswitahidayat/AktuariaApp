@@ -38,7 +38,7 @@ return [
             'driver' => 'database',
             'table' => 'kka_dab.jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            'tries' => 1,
         ],
 
         'beanstalkd' => [
@@ -47,6 +47,7 @@ return [
             'queue' => 'default',
             'retry_after' => 90,
             'block_for' => 0,
+            'tries' => 3,
         ],
 
         'sqs' => [

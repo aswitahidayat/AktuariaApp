@@ -142,7 +142,7 @@ class PerhitunganController extends Controller
         
         Hitung::dispatch($request->all(), $user_id);
        
-        return response()->json(['success'=>'Order saved successfully.']);
+        return response()->json(['success'=>'Order Sudah di hitung.']);
     }
 
     function getKaryawan(Request $request)
