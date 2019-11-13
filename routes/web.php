@@ -12,6 +12,9 @@
 */
 
 Route::get('/', 'SigninController@index')->name('/');
+Route::get('csrf', function () {
+    return csrf_token(); 
+});
 Route::post('/pub/searchcompany','PublicController@searchCompany')->name("searchcompanypub");
 Route::post('/pub/searchIdentity','PublicController@searchIdentity')->name("searchIdentitypub");
 Route::post('/pub/searchProvinsi','PublicController@searchProvinsi')->name("searchprovincepub");
@@ -121,6 +124,7 @@ Route::get('/test', 'Util\WordController@proses_word')->name("word");
 Route::get('/testpdf', 'Util\WordController@process_pdf')->name("word");
 Route::post('/pdfhtml', 'Util\WordController@process_pdf_by_html')->name("pdfhtml");
 Route::post('/process_xls_by_html', 'Util\WordController@process_xls_by_html')->name("process_xls_by_html");
+Route::post('/test2', 'Util\TestController@test');
 
 Route::resource('menu','MenuController');
 Route::post('searchmenu','MenuController@search')->name("searchmenu");

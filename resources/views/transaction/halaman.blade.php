@@ -635,7 +635,7 @@ function a(datas){
         vartable[74].innerHTML += `<td></td>`
         vartable[75].innerHTML += `<td>0</td>`
         vartable[76].innerHTML += `<td>${formatHumanCurrency(beban)}</td>`
-        vartable[77].innerHTML += `<td>0</td>` //TODO
+        vartable[77].innerHTML += `<td>0</td>`
         vartable[78].innerHTML += `<td>0</td>`
         vartable[79].innerHTML += `<td>0</td>`
         vartable[80].innerHTML += `<td>${formatHumanCurrency(totalAkhir)}</td>`
@@ -694,7 +694,7 @@ function a(datas){
         vartable[127].innerHTML += `<td></td>`
         vartable[128].innerHTML += `<td>${formatHumanCurrency(parseFloat(kewajiban_yang_diharapkan) - parseFloat(akhir_periode))}</td>`
         vartable[129].innerHTML += `<td></td>`
-        var rekonsiliasi = 0 //TODO
+        var rekonsiliasi = 0 
         var total = parseFloat(rekonsiliasi) + parseFloat(kewajiban_yang_diharapkan) - parseFloat(akhir_periode)
         vartable[130].innerHTML += `<td></td>`
         vartable[131].innerHTML += `<td>${rekonsiliasi}</td>`
