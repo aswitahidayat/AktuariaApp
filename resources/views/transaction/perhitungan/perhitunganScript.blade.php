@@ -27,6 +27,9 @@
 
     function fill_datatable(name = ''){
         table = $(`#table${module}`).DataTable({
+            initComplete: function(settings, json) {
+                cekError(json.recordsFails)
+            },
             processing: true,
             serverSide: true,
             searching: false,
@@ -58,6 +61,7 @@
     $(`#create${module}`).click(function () {
         $(`#saveBtn${module}`).html("Save");
         $(`#form${module}`).trigger("reset");
+        //$(`#form${module}`)form.reset()
         $('#coytypehdr_id').val('');
         
         $('#tombol_upload').show()
@@ -68,7 +72,9 @@
         $('#userUploadTbl').html('');
         $('#ordhdr_service_dtl').html('');
         $('#fileupload').val('');
+        $('#fileupload').siblings(".custom-file-label").addClass("selected").html('');
         $(`#ordhdr_id`).val('');
+
         searchProgram(`#ordhdr_program`, '', `modal${module}`);
         searchPartner(`#ordhdr_bizpartid`, '', `modal${module}`);
     });
@@ -120,6 +126,7 @@
                 let csvdata = e.target.result; 
                 data = csvFormatter(csvdata)
                 fileData = data.data;
+                setTemplateTableUser(fileData)
             });
             
             reader.readAsBinaryString(myFile);
@@ -149,10 +156,10 @@
 
     });
 
-    $('#btnUpload').click(function(){
+    {{-- $('#btnUpload').click(function(){
         $('#userUploadTbl').html('');
         setTemplateTableUser(fileData)
-    })
+    }) --}}
 
     $( `#form${module}` ).submit(function( e ) {
         $(`#saveBtn${module}`).html('Sending..');
@@ -268,10 +275,10 @@
                     ordhdr_id: id
                 },
                 success: function (datas) {
-                    setTemplateTableUser(datas);
+                    setTemplateTableUser(datas)
                 },
                 error: function (data) {
-                    console.log('Error:', data);
+                    console.log('Error:', data)
                 }
             });
 
@@ -283,47 +290,65 @@
     function setTemplateTableUser(varData){
         var tblHtml = '';
 
-        varData.forEach(function(item, index){
-            tblHtml += '<tr>';
-            tblHtml += `<td> ${index + 1} </td>`;
-            tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
-            tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
-            tblHtml += `<td> ${item.Gender ? item.Gender.toUpperCase() : '-'} </td>`;
-            tblHtml += `<td> ${item.Birthdate ? formatHumanDate(item.Birthdate) : '-'} </td>`;
-            tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
-            tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
-            tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
-            tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
+        try {
+            varData.forEach(function(item, index){
+                var q = new Date()
+                var m = q.getMonth()
+                var d = q.getDay()
+                var y = q.getFullYear()
+    
+                var date = new Date(y,m,d)
+                if(new Date(item.Birthdate) > date){
+                    throw new Error('File Birthdate Salah')
+                }
+                tblHtml += '<tr>';
+                tblHtml += `<td> ${index + 1} </td>`;
+                tblHtml += `<td> ${item.NPK ? item.NPK : '-'} </td>`;
+                tblHtml += `<td> ${item.Name ? item.Name : '-'} </td>`;
+                tblHtml += `<td> ${item.Gender ? item.Gender.toUpperCase() : '-'} </td>`;
+                tblHtml += `<td> ${item.Birthdate ? formatHumanDate(item.Birthdate) : '-'} </td>`;
+                tblHtml += `<td> ${item.KTP ? item.KTP : '-'} </td>`;
+                tblHtml += `<td> ${item.NPWP ? item.NPWP : '-'} </td>`;
+                tblHtml += `<td> ${item.Address ? item.Address : '-'} </td>`;
+                tblHtml += `<td> ${item.HP ? item.HP : '-'} </td>`;
+    
+                tblHtml += `<td> ${item.Startdate ? formatHumanDate(item.Startdate) : '-'} </td>`;
+                tblHtml += `<td> ${item.Salery ? formatHumanCurrency(item.Salery) : '-'} </td>`;
+    
+                tblHtml += '</tr>';
+            });
 
-            tblHtml += `<td> ${item.Startdate ? formatHumanDate(item.Startdate) : '-'} </td>`;
-            tblHtml += `<td> ${item.Salery ? formatHumanCurrency(item.Salery) : '-'} </td>`;
-
-            tblHtml += '</tr>';
-        });
-        var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th width="100px">NPK</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Birthdate</th>
-                    <th>KTP</th>
-                    <th>NPWP</th>
-                    <th>Address</th>
-                    <th>HP</th>
-                    <th>Startdate</th>
-                    <th>Salery</th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-                ${tblHtml}
-            </tbody>
-        </table>`;
-
-        $('#userUploadTbl').html(varHtml);
+            var varHtml = ` <table id="tableUserUpload" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th width="100px">NPK</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Birthdate</th>
+                        <th>KTP</th>
+                        <th>NPWP</th>
+                        <th>Address</th>
+                        <th>HP</th>
+                        <th>Startdate</th>
+                        <th>Salery</th>
+    
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    ${tblHtml}
+                </tbody>
+            </table>`
+    
+            $('#userUploadTbl').html(varHtml)
+        } catch(e){
+            var a =`<div class="alert alert-danger" role="alert">
+                <strong>${e}</strong>
+              </div>`
+            $('#userUploadTbl').html(a)
+            $('#fileupload').siblings(".custom-file-label").addClass("selected").html('')
+        }
     }
 
     function selectServiceDet(id, selected){
@@ -915,4 +940,19 @@
         )
     }
     
+    function cekError(datas){
+        $(`#modalOrderFailBody`).html('');
+        if(datas.length > 0){
+            var txt= `Order dengan nomor berikut gagal dihitung: 
+            <ul>`
+                $.each(datas, (key, val) => {
+                    txt += `<li>${val.fail_ordhdr_ordnum}</li>`
+                })
+                
+                txt += `</ul>`
+
+                $(`#modalOrderFailBody`).html(txt);
+            $(`#modalOrderFail`).modal('show');
+        }
+    }
 </script>

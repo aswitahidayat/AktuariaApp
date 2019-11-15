@@ -18,6 +18,7 @@ use Helper;
 
 use Spatie\Async\Pool;
 use App\Jobs\Coba;
+use App\Models\FailLog;
 
 class PerhitunganController extends Controller
 {
@@ -38,6 +39,8 @@ class PerhitunganController extends Controller
             $b['data']= $this->orderList($request, 'pagging');
             $b['recordsFiltered']= $this->orderList($request, 'count');
             $b['recordsTotal']= $this->orderList($request, 'count');
+            $b['recordsFails']= $this->cekError();
+
             return $b;
         }
     }
@@ -163,6 +166,14 @@ class PerhitunganController extends Controller
             ->where('ordcdtl_ordchdrid', "$request->ordcdtl_ordchdrid");
         $data = $query->get();
         return response()->json($data);   
+    }
+
+    function cekError(){
+        $query = FailLog::query();
+        $query->where('fail_new', true);
+        $ret =$query->orderBy('fail_date')->get();
+        $query->update(['fail_new' => false]);
+        return $ret;
     }
 
 }

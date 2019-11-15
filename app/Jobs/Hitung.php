@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Order\Order;
+use App\Models\FailLog;
 
 use DB;
 
@@ -81,5 +82,10 @@ class Hitung implements ShouldQueue
         Order::
             where('ordhdr_id', $this->orderid)
             ->update(['ordhdr_pay_status' => 'N',]);
+
+        $data = new FailLog();
+        $data->fail_ordhdr_ordnum = $this->ordernum;
+        $data->fail_date = date(now());
+        $data->save();
     }
 }

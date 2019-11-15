@@ -62,7 +62,7 @@ function csvFormatter(csvdata){
 		header: true,
 		quoteChar: "'",
 		escapeChar: "'",
-		skipEmptyLines: true,
+        skipEmptyLines: true,
 	});
 }
 
