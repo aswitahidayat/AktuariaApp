@@ -113,9 +113,9 @@
                                     <label class="custom-file-label" for="customFile"></label>
                                 </div>
                             </div>
-                            <div class="col-sm-4 pb-20">
+                            {{-- <div class="col-sm-4 pb-20">
                                 <button type="button" id="btnUpload" class="btn btn-secondary btn-sm">Upload</button>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
@@ -126,6 +126,21 @@
                     <button id="saveBtnOrder" type="submit" class="btn btn-primary"><i class="ace-icon fa fa-save bigger-110"></i>Save</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalOrderFail" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title blue lighter bigger bolder" id="modelHeadingOrder">Perhitungan Gagal</h4>
+            </div>
+            <div id="modalOrderFailBody" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
         </div>
     </div>
 </div>
