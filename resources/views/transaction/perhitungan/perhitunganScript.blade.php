@@ -298,8 +298,21 @@
                 var y = q.getFullYear()
     
                 var date = new Date(y,m,d)
+                
+                if(isNaN(new Date(item.Birthdate).getTime())){
+                    throw new Error(`Birthdate No:${index + 1} - NPK:${item.NPK} Salah`)
+                }
+
+                if(isNaN(new Date(item.Startdate).getTime())){
+                    throw new Error(`Startdate No:${index + 1} - NPK:${item.NPK} Salah`)
+                }
+
                 if(new Date(item.Birthdate) > date){
-                    throw new Error('File Birthdate Salah')
+                    throw new Error(`Birthdate No:${index + 1} - NPK:${item.NPK} Salah`)
+                }
+
+                if(isNaN(parseFloat(item.Salery)) ){
+                    throw new Error(`Salery No ${index + 1} - ${item.NPK} Salah`)
                 }
                 tblHtml += '<tr>';
                 tblHtml += `<td> ${index + 1} </td>`;
@@ -946,7 +959,7 @@
             var txt= `Order dengan nomor berikut gagal dihitung: 
             <ul>`
                 $.each(datas, (key, val) => {
-                    txt += `<li>${val.fail_ordhdr_ordnum}</li>`
+                    txt += `<li>${val.fail_ordhdr_ordnum} - ${val.msg}</li>`
                 })
                 
                 txt += `</ul>`

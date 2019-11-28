@@ -83,9 +83,11 @@ class Hitung implements ShouldQueue
             where('ordhdr_id', $this->orderid)
             ->update(['ordhdr_pay_status' => 'N',]);
 
+        $msg = explode("\n", $e);
         $data = new FailLog();
         $data->fail_ordhdr_ordnum = $this->ordernum;
         $data->fail_date = date(now());
+        $data->msg = $msg[0];
         $data->save();
     }
 }
