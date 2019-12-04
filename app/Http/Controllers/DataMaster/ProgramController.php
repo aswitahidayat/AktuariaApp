@@ -32,7 +32,7 @@ class ProgramController extends Controller
                 ->make(true);
         }
 
-        return view('datamaster.program.index', compact('datas'));
+        return view('datamaster.program.index');
     }
 
     public function search(Request $request){

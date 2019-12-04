@@ -17,7 +17,7 @@
             if(confirm("Are You sure want to delete !")){
                 $.ajax({
                     type: "DELETE",
-                    url: "{{ route('company.store') }}"+'/'+id,
+                    url: "{{ route('companytype.store') }}"+'/'+id,
                     success: function (data) {
                         table.draw();
                     },
